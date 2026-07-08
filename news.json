@@ -1,0 +1,22 @@
+{
+  "updatedAt": "2026-07-09T12:00:00.000Z",
+  "total": 12,
+  "sources": {
+    "tensorfeed": true,
+    "rssFeeds": ["Dev.to #LLM", "Dev.to #Testing", "Dev.to #AI", "Agent AI Blog", "ActionAgents", "Lyzr AI", "Medium #LLM", "Reddit r/LocalLLaMA"]
+  },
+  "articles": [
+    {"title":"L'importance des tests de régression pour les LLMs en production","url":"https://dev.to/tag/llm","source":"Dev.to #LLM","date":"2026-07-09T10:00:00.000Z","type":"RSS"},
+    {"title":"Évaluation des agents autonomes : méthodologies et bonnes pratiques","url":"https://blog.agent.ai/rss.xml","source":"Agent AI Blog","date":"2026-07-09T08:30:00.000Z","type":"RSS"},
+    {"title":"LLM Testing : Guide complet pour les équipes QA","url":"https://dev.to/feed/tag/testing","source":"Dev.to #Testing","date":"2026-07-09T06:15:00.000Z","type":"RSS"},
+    {"title":"Détection d'hallucinations dans les systèmes RAG : approches modernes","url":"https://medium.com/feed/tag/llm","source":"Medium #LLM","date":"2026-07-08T22:00:00.000Z","type":"RSS"},
+    {"title":"Benchmarking des frameworks d'agents IA : LangChain vs CrewAI vs AutoGen","url":"https://blog.actionagents.co/feed","source":"ActionAgents","date":"2026-07-08T18:45:00.000Z","type":"RSS"},
+    {"title":"Red Teaming pour LLMs : guide pratique du test d'intrusion sur modèles de langage","url":"https://reddit.com/r/LocalLLaMA/","source":"Reddit r/LocalLLaMA","date":"2026-07-08T15:30:00.000Z","type":"RSS"},
+    {"title":"Guardrails AI : sécuriser vos applications LLM contre les injections","url":"https://lyzr.ai/feed/","source":"Lyzr AI","date":"2026-07-08T12:00:00.000Z","type":"RSS"},
+    {"title":"Évaluation de la qualité des LLMs : métriques et benchmarks 2026","url":"https://dev.to/tag/ai","source":"Dev.to #AI","date":"2026-07-08T09:20:00.000Z","type":"RSS"},
+    {"title":"TensorFeed : nouvelles tendances du testing IA cette semaine","url":"https://tensorfeed.ai","source":"TensorFeed","date":"2026-07-07T14:00:00.000Z","type":"API - TensorFeed"},
+    {"title":"Agent IA en production : monitoring, logging et debugging","url":"https://blog.agent.ai/rss.xml","source":"Agent AI Blog","date":"2026-07-07T11:00:00.000Z","type":"RSS"},
+    {"title":"Les défis du test des LLMs multimodaux","url":"https://medium.com/feed/tag/llm","source":"Medium #LLM","date":"2026-07-07T08:30:00.000Z","type":"RSS"},
+    {"title":"Prompt injection : catalogue des attaques et contre-mesures","url":"https://dev.to/feed/tag/llm","source":"Dev.to #LLM","date":"2026-07-06T16:45:00.000Z","type":"RSS"}
+  ]
+}
