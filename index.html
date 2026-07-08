@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LLM Man — Maîtrisez le test des LLMs & Agents</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🤖</text></svg>">
+<style>
+/* ===== RESET & VARIABLES ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a; --bg2:#111827; --bg3:#1a2235; --bg4:#1f2937;
+  --surface:#1e293b; --surface2:#263348;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#6366f1; --accent2:#818cf8; --accent-bg:rgba(99,102,241,.12);
+  --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --blue:#3b82f6;
+  --border:#2d3a4e; --radius:12px; --radius-sm:8px;
+  --shadow:0 4px 24px rgba(0,0,0,.3);
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+  --max-w:1100px; --nav-h:56px;
+}
+[data-theme="light"]{
+  --bg:#f8fafc; --bg2:#f1f5f9; --bg3:#e2e8f0; --bg4:#cbd5e1;
+  --surface:#ffffff; --surface2:#f1f5f9;
+  --text:#0f172a; --text2:#475569; --text3:#94a3b8;
+  --accent:#4f46e5; --accent2:#6366f1; --accent-bg:rgba(79,70,229,.08);
+  --border:#e2e8f0; --shadow:0 4px 24px rgba(0,0,0,.06);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);font-size:15px;line-height:1.65;
+  color:var(--text);background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav-h);background:rgba(10,14,26,.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+}
+[data-theme="light"] nav{background:rgba(248,250,252,.88)}
+.nav-inner{
+  max-width:var(--max-w);margin:0 auto;padding:0 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+}
+.nav-brand{display:flex;align-items:center;gap:.5rem;font-size:1.05rem;font-weight:700;color:var(--text);text-decoration:none}
+.nav-brand span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;align-items:center;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  font-size:.78rem;color:var(--text2);text-decoration:none;
+  padding:.35rem .7rem;border-radius:6px;white-space:nowrap;
+  transition:all .2s;font-weight:500;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);background:var(--accent-bg)}
+#theme-toggle{
+  background:none;border:none;color:var(--text2);font-size:1.1rem;
+  cursor:pointer;padding:.35rem;border-radius:6px;transition:all .2s;
+  margin-left:.4rem;line-height:1;
+}
+#theme-toggle:hover{color:var(--accent);background:var(--accent-bg)}
+
+/* ===== MAIN ===== */
+main{padding-top:var(--nav-h);min-height:100vh}
+.section{display:none;padding:2rem 1.2rem;max-width:var(--max-w);margin:0 auto}
+.section.active{display:block}
+.section-header{margin-bottom:2rem}
+.section-header h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;margin-bottom:.4rem;letter-spacing:-.02em}
+.section-header p{color:var(--text2);font-size:.95rem}
+
+/* ===== HERO ===== */
+.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:3rem 1.2rem}
+.hero-badge{
+  display:inline-block;font-size:.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--accent);background:var(--accent-bg);
+  padding:.3rem 1rem;border-radius:20px;margin-bottom:1.2rem;
+}
+.hero h1{
+  font-size:clamp(2rem,6vw,3.8rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:1rem;
+}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(.95rem,2vw,1.15rem);color:var(--text2);max-width:650px;margin:0 auto 2rem;line-height:1.7}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
+.btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.65rem 1.4rem;border-radius:var(--radius-sm);
+  font-size:.88rem;font-weight:600;text-decoration:none;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg4);transform:translateY(-1px)}
+.btn-sm{padding:.4rem .9rem;font-size:.78rem}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text)}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.3rem;
+  transition:transform .2s,box-shadow .2s;
+}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.card h3{font-size:.95rem;font-weight:600;margin-bottom:.35rem}
+.card p{font-size:.82rem;color:var(--text2);line-height:1.55}
+.card-icon{font-size:1.6rem;margin-bottom:.5rem;display:block}
+
+/* ===== CHAPTER ===== */
+.chapter{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:1rem;
+  overflow:hidden;transition:box-shadow .2s;
+}
+.chapter:hover{box-shadow:var(--shadow)}
+.chapter-header{
+  padding:1.1rem 1.3rem;cursor:pointer;display:flex;
+  align-items:center;justify-content:space-between;
+  user-select:none;transition:background .2s;
+}
+.chapter-header:hover{background:var(--surface2)}
+.chapter-header h3{font-size:.92rem;font-weight:600;display:flex;align-items:center;gap:.6rem}
+.chapter-header .chevron{transition:transform .3s;color:var(--text3);font-size:.8rem}
+.chapter.open .chapter-header .chevron{transform:rotate(180deg)}
+.chapter-body{display:none;padding:0 1.3rem 1.3rem}
+.chapter.open .chapter-body{display:block}
+.chapter-body p{margin-bottom:.6rem;font-size:.85rem;color:var(--text2);line-height:1.65}
+.chapter-body ul{margin:.4rem 0 .6rem 1.2rem}
+.chapter-body li{font-size:.84rem;color:var(--text2);margin-bottom:.25rem}
+.chapter-body code{
+  font-family:var(--mono);font-size:.8rem;background:var(--bg2);
+  padding:.1rem .35rem;border-radius:4px;color:var(--accent2);
+}
+.chapter-body pre{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:.9rem 1.1rem;margin:.6rem 0;overflow-x:auto;
+}
+.chapter-body pre code{background:none;padding:0;color:var(--text)}
+.chapter-tag{
+  font-size:.62rem;font-weight:600;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:4px;letter-spacing:.04em;
+}
+.tag-beginner{background:rgba(34,197,94,.15);color:var(--green)}
+.tag-intermediate{background:rgba(59,130,246,.15);color:var(--blue)}
+.tag-advanced{background:rgba(245,158,11,.15);color:var(--amber)}
+.tag-expert{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* ===== CHAT ===== */
+.chat-container{
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;background:var(--surface);height:600px;
+  display:flex;flex-direction:column;
+}
+.chat-header{
+  background:var(--bg2);padding:.75rem 1rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.chat-header h3{font-size:.85rem;font-weight:600}
+.chat-model-badge{
+  font-size:.62rem;background:var(--accent-bg);color:var(--accent);
+  padding:.15rem .5rem;border-radius:8px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem}
+.chat-msg{display:flex;margin-bottom:.25rem}
+.chat-msg.bot{justify-content:flex-start}
+.chat-msg.user{justify-content:flex-end}
+.chat-bubble{
+  max-width:85%;padding:.6rem .9rem;border-radius:14px;
+  font-size:.84rem;line-height:1.55;word-wrap:break-word;
+}
+.chat-msg.bot .chat-bubble{
+  background:var(--bg2);color:var(--text);
+  border-bottom-left-radius:4px;border:1px solid var(--border);
+}
+.chat-msg.user .chat-bubble{
+  background:var(--accent);color:#fff;
+  border-bottom-right-radius:4px;
+}
+.chat-msg.bot .chat-bubble code{
+  font-family:var(--mono);font-size:.78rem;background:var(--bg3);
+  padding:.08rem .25rem;border-radius:3px;
+}
+.chat-msg.bot .chat-bubble pre{
+  background:var(--bg3);border-radius:6px;padding:.6rem .8rem;margin:.4rem 0;
+  overflow-x:auto;font-size:.78rem;
+}
+.chat-input-area{
+  display:flex;gap:.5rem;padding:.7rem 1rem;
+  border-top:1px solid var(--border);background:var(--bg2);
+}
+.chat-input-area textarea{
+  flex:1;border:1px solid var(--border);border-radius:10px;
+  padding:.55rem .75rem;font-size:.84rem;background:var(--surface);
+  color:var(--text);resize:none;font-family:inherit;max-height:100px;
+}
+.chat-input-area textarea:focus{outline:none;border-color:var(--accent)}
+.chat-input-area button{
+  background:var(--accent);color:#fff;border:none;
+  width:38px;height:38px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:background .2s;flex-shrink:0;
+}
+.chat-input-area button:hover{background:var(--accent2)}
+.chat-input-area button:disabled{opacity:.4;cursor:not-allowed}
+.chat-welcome{text-align:center;padding:2rem 1rem;color:var(--text2)}
+.chat-welcome h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--text)}
+.chat-welcome p{font-size:.85rem;margin-bottom:.3rem}
+.chat-setup{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:2rem;text-align:center}
+.chat-setup h3{font-size:1rem;margin-bottom:.5rem}
+.chat-setup p{font-size:.82rem;color:var(--text2);margin-bottom:.6rem}
+.chat-setup input{
+  width:100%;max-width:380px;padding:.6rem .8rem;border:1px solid var(--border);
+  border-radius:10px;font-size:.84rem;background:var(--surface);color:var(--text);margin-bottom:.6rem;
+}
+.chat-setup input:focus{outline:none;border-color:var(--accent)}
+.chat-setup .key-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:.5rem 1.5rem;border-radius:8px;font-size:.84rem;font-weight:600;cursor:pointer;
+}
+.chat-setup .key-btn:hover{background:var(--accent2)}
+.chat-setup .key-note{font-size:.72rem!important;color:var(--text3)!important}
+
+/* ===== QUIZ ===== */
+.quiz-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;
+}
+.quiz-card h3{font-size:.92rem;margin-bottom:.6rem}
+.quiz-options{display:flex;flex-direction:column;gap:.45rem}
+.quiz-option{
+  padding:.6rem .85rem;border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;font-size:.84rem;transition:all .2s;color:var(--text2);
+  background:var(--bg2);
+}
+.quiz-option:hover{border-color:var(--accent);color:var(--text)}
+.quiz-option.selected{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.quiz-option.correct{background:rgba(34,197,94,.12);border-color:var(--green);color:var(--green)}
+.quiz-option.wrong{background:rgba(239,68,68,.12);border-color:var(--red);color:var(--red)}
+.quiz-feedback{font-size:.82rem;margin-top:.5rem;padding:.5rem .7rem;border-radius:6px}
+.quiz-feedback.correct{background:rgba(34,197,94,.08);color:var(--green)}
+.quiz-feedback.wrong{background:rgba(239,68,68,.08);color:var(--red)}
+.quiz-score{
+  text-align:center;padding:1.5rem;font-size:1.2rem;font-weight:700;
+}
+.quiz-score span{color:var(--accent)}
+.quiz-actions{display:flex;gap:.5rem;margin-top:1rem}
+
+/* ===== FORUM ===== */
+.forum-post{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.7rem;
+}
+.forum-post h4{font-size:.88rem;font-weight:600;margin-bottom:.25rem}
+.forum-post .meta{font-size:.72rem;color:var(--text3);margin-bottom:.3rem}
+.forum-post p{font-size:.82rem;color:var(--text2)}
+.forum-form textarea{
+  width:100%;border:1px solid var(--border);border-radius:10px;
+  padding:.7rem;font-size:.84rem;background:var(--surface);color:var(--text);
+  resize:vertical;min-height:80px;font-family:inherit;margin-bottom:.5rem;
+}
+.forum-form textarea:focus{outline:none;border-color:var(--accent)}
+.forum-form input{
+  width:100%;border:1px solid var(--border);border-radius:10px;
+  padding:.55rem .7rem;font-size:.84rem;background:var(--surface);color:var(--text);
+  margin-bottom:.5rem;font-family:inherit;
+}
+.forum-form input:focus{outline:none;border-color:var(--accent)}
+
+/* ===== GLOSSAIRE ===== */
+.glossary-search{
+  width:100%;padding:.7rem 1rem;border:1px solid var(--border);
+  border-radius:10px;font-size:.9rem;background:var(--surface);
+  color:var(--text);margin-bottom:1.2rem;
+}
+.glossary-search:focus{outline:none;border-color:var(--accent)}
+.glossary-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.7rem}
+.glossary-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:.9rem 1rem;
+  transition:border-color .2s;cursor:default;
+}
+.glossary-item:hover{border-color:var(--accent)}
+.glossary-item h4{font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:.2rem}
+.glossary-item p{font-size:.78rem;color:var(--text2);line-height:1.5}
+
+/* ===== TOOLS ===== */
+.tool-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.3rem;margin-bottom:1rem;
+}
+.tool-card h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.tool-card p{font-size:.82rem;color:var(--text2);margin-bottom:.8rem}
+.tool-card textarea{
+  width:100%;border:1px solid var(--border);border-radius:8px;
+  padding:.55rem .7rem;font-size:.82rem;background:var(--bg2);color:var(--text);
+  resize:vertical;font-family:var(--mono);min-height:80px;
+}
+.tool-card textarea:focus{outline:none;border-color:var(--accent)}
+.tool-output{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:.7rem;font-size:.8rem;font-family:var(--mono);
+  white-space:pre-wrap;margin-top:.5rem;min-height:40px;color:var(--text2);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;padding:2rem 1.2rem;border-top:1px solid var(--border);
+  color:var(--text3);font-size:.78rem;margin-top:2rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+  .nav-links a{padding:.3rem .5rem;font-size:.72rem}
+  :root{--nav-h:48px}
+  .card-grid{grid-template-columns:1fr}
+  .glossary-list{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(1.5rem,8vw,2.5rem)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand" data-nav="accueil">🤖 <span>LLM Man</span></a>
+    <div class="nav-links">
+      <a href="#" data-nav="accueil" class="active">Accueil</a>
+      <a href="#" data-nav="cours">Cours</a>
+      <a href="#" data-nav="chat">Chat Prof</a>
+      <a href="#" data-nav="examens">Examens</a>
+      <a href="#" data-nav="outils">Outils</a>
+      <a href="#" data-nav="forum">Forum</a>
+      <a href="#" data-nav="glossaire">Glossaire</a>
+      <button id="theme-toggle" title="Changer le thème">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- ===== ACCUEIL ===== -->
+<section id="sec-accueil" class="section active">
+  <div class="hero">
+    <div class="hero-badge">🎓 Formation Complète QA/LLM</div>
+    <h1>Deviens expert en <span>Test des LLMs & Agents</span></h1>
+    <p>Formation complète en français — Zéro à Héros. Maîtrise le testing des modèles de langage, des agents IA, et deviens le QA que le marché de l'IA recherche.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary" data-nav="cours">🎯 Commencer le cours</a>
+      <a href="#" class="btn btn-secondary" data-nav="examens">📝 Tester mes connaissances</a>
+      <a href="#" class="btn btn-ghost" data-nav="chat">💬 Chat Professeur</a>
+    </div>
+    <div style="margin-top:2.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center">
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">12</div><div style="font-size:.75rem;color:var(--text3)">Chapitres</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">80+</div><div style="font-size:.75rem;color:var(--text3)">Concepts</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">200+</div><div style="font-size:.75rem;color:var(--text3)">Questions</div></div>
+      <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">∞</div><div style="font-size:.75rem;color:var(--text3)">Chat Prof</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COURS ===== -->
+<section id="sec-cours" class="section">
+  <div class="section-header">
+    <h1>📚 Formation Complète</h1>
+    <p>Zéro à Héros — Parcours structuré du débutant à l'expert en test des LLMs et Agents</p>
+  </div>
+  <div id="cours-container"></div>
+</section>
+
+<!-- ===== CHAT PROF ===== -->
+<section id="sec-chat" class="section">
+  <div class="section-header">
+    <h1>💬 Chat Professeur</h1>
+    <p>Pose toutes tes questions sur le testing LLM/Agent à un assistant IA expert</p>
+  </div>
+  <div id="chat-container" class="chat-container"></div>
+</section>
+
+<!-- ===== EXAMENS ===== -->
+<section id="sec-examens" class="section">
+  <div class="section-header">
+    <h1>📝 Examens & Quiz</h1>
+    <p>Teste tes connaissances avec des QCM, mises en situation et exams blancs</p>
+  </div>
+  <div id="examens-container"></div>
+</section>
+
+<!-- ===== OUTILS ===== -->
+<section id="sec-outils" class="section">
+  <div class="section-header">
+    <h1>🔧 Outils Interactifs</h1>
+    <p>Expérimente avec des outils concrets pour tester et évaluer les LLMs</p>
+  </div>
+  <div id="outils-container"></div>
+</section>
+
+<!-- ===== FORUM ===== -->
+<section id="sec-forum" class="section">
+  <div class="section-header">
+    <h1>💭 Forum de Discussion</h1>
+    <p>Échange avec la communauté sur le testing des LLMs et Agents</p>
+  </div>
+  <div id="forum-container"></div>
+</section>
+
+<!-- ===== GLOSSAIRE ===== -->
+<section id="sec-glossaire" class="section">
+  <div class="section-header">
+    <h1>📖 Glossaire</h1>
+    <p>200+ termes et concepts du testing LLM/Agent</p>
+  </div>
+  <input type="text" class="glossary-search" id="glossary-search" placeholder="🔍 Rechercher un terme…">
+  <div class="glossary-list" id="glossary-list"></div>
+</section>
+</main>
+
+<footer>🤖 LLM Man — Formation complète sur le test des LLMs & Agents IA. Open source sur GitHub.</footer>
+
+<script>
+// ===== CONFIG =====
+const SITE_NAME = 'LLM Man';
+const DEFAULT_CHAT_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b';
+const API_ENDPOINT = 'https://integrate.api.nvidia.com/v1/chat/completions';
+const EXAM_API_KEY = 'nvidia-llm-man';
+
+// ===== NAVIGATION =====
+document.querySelectorAll('[data-nav]').forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    const target = el.dataset.nav;
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-'+target).classList.add('active');
+    document.querySelectorAll('[data-nav]').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// ===== THEME =====
+const themeToggle = document.getElementById('theme-toggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('llm-man-theme') || 'dark';
+root.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+themeToggle.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('llm-man-theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+});
+
+// ===== ESCAPE HTML =====
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+// ===== COURS CONTENT =====
+const COURS = [
+  {id:'ch1',title:'Introduction aux LLMs',tag:'Débutant',tagClass:'tag-beginner',icon:'🤖',
+   content:[
+     "**Qu'est-ce qu'un LLM ?** Un Large Language Model (LLM) est un modèle de langage entraîné sur des quantités massives de texte pour comprendre et générer du langage humain.",
+     "**Pourquoi c'est révolutionnaire ?** Contrairement aux modèles NLP classiques, les LLMs généralisent sans entraînement spécifique (few-shot, zero-shot).",
+     "**Exemples :** GPT-4, Claude, Llama, Mistral, Gemma. Chacun a ses forces/faiblesses en termes de coût, rapidité, qualité.",
+     "**Cas d'usage :** Chatbots, RAG, génération de code, analyse de documents, agents autonomes.",
+     "**Défis QA :** Hallucinations, biais, cohérence, sécurité, coût par requête, latence."
+   ]},
+  {id:'ch2',title:'Architecture & Fonctionnement',tag:'Débutant',tagClass:'tag-beginner',icon:'🏗️',
+   content:[
+     "**Transformers :** L'architecture de base. Attention机制 (mécanisme d'attention) qui permet au modèle de pondérer l'importance des différents mots.",
+     "**Tokenization :** Le texte est découpé en tokens (sous-mots). ~0.75 mot = 1 token en anglais, ~1.5 mot = 1 token en français.",
+     "**Context Window :** Fenêtre de contexte — nombre de tokens que le modèle peut traiter en une fois. De 4K à 200K+ tokens selon les modèles.",
+     "**Température :** Contrôle la créativité (0 = déterministe, 1 = créatif, >1 = chaotique). Crucial pour les tests !",
+     "**Top-p / Top-k :** Stratégies d'échantillonnage qui impactent la reproductibilité des réponses.",
+     "**À tester :** Stabilité des réponses à température 0, variation à température haute, comportement aux limites du context window."
+   ]},
+  {id:'ch3',title:'Prompt Engineering',tag:'Débutant',tagClass:'tag-beginner',icon:'🎯',
+   content:[
+     "**C'est quoi ?** L'art de formuler des instructions pour obtenir le résultat désiré d'un LLM.",
+     "**Techniques de base :**",
+     "• **Zero-shot :** 'Traduis ce texte en anglais : ...'",
+     "• **Few-shot :** Fournir 2-3 exemples avant la requête",
+     "• **Chain-of-Thought :** 'Réfléchis étape par étape'",
+     "• **Role Prompting :** 'Tu es un expert QA'",
+     "**Structure d'un bon prompt :**",
+     "1. Contexte (qui tu es, le cadre)",
+     "2. Instruction claire (verbe d'action)",
+     "3. Format de sortie (JSON, liste, texte)",
+     "4. Contraintes (ne pas inventer, citer les sources)",
+     "5. Exemples (si few-shot)",
+     "**Tests QA :** Injection, jailbreak, contournement, biais, hallucination provoquée.",
+     "**Outils :** Langfuse, PromptFoo, DeepEval pour les tests automatisés."
+   ]},
+  {id:'ch4',title:'RAG (Retrieval Augmented Generation)',tag:'Intermédiaire',tagClass:'tag-intermediate',icon:'📡',
+   content:[
+     "**Principe :** Le LLM consulte une base de connaissances externe avant de répondre.",
+     "**Pipeline RAG :**",
+     "1. Indexation : chunking + embedding des documents",
+     "2. Recherche : similarité cosinus entre query et documents",
+     "3. Augmentation : contexte injecté dans le prompt",
+     "4. Génération : LLM répond avec le contexte",
+     "**Défis QA RAG :**",
+     "• Qualité du chunking (taille, overlap, structure)",
+     "• Pertinence des résultats (precision@k, recall@k)",
+     "• Hallucination malgré le contexte (le LLM ignore les docs)",
+     "• Toxicité des documents source",
+     "**Tests RAG :**",
+     "• Faire varier le nombre de chunks (top-k)",
+     "• Tester sans contexte (fallback)",
+     "• Simuler des documents contradictoires",
+     "• Benchmark avec datasets RAGAS, RGB, CRUD"
+   ]},
+  {id:'ch5',title:'Fine-tuning & Évaluation',tag:'Intermédiaire',tagClass:'tag-intermediate',icon:'🔧',
+   content:[
+     "**Fine-tuning :** Adaptation d'un LLM pré-entraîné sur un dataset spécifique.",
+     "**Méthodes :**",
+     "• Full fine-tuning (cher, requis GPU puissant)",
+     "• LoRA / QLoRA (adaptateurs légers, ~1-10% du coût)",
+     "• RLHF (apprentissage par renforcement avec feedback humain)",
+     "**Métriques d'évaluation :**",
+     "• **BLEU** : Précision des n-grammes (traduction)",
+     "• **ROUGE** : Rappel des n-grammes (résumé)",
+     "• **Perplexité** : Mesure de confiance du modèle",
+     "• **Faithfulness** : Le modèle reste-t-il fidèle au contexte ?",
+     "• **Hallucination Rate** : % de réponses contenant des inventions",
+     "**Tests QA fine-tuning :**",
+     "• Vérifier que le modèle n'a pas 'oublié' ses capacités générales (catastrophic forgetting)",
+     "• Tester sur des edge cases non présents dans le dataset",
+     "• Benchmark avant/après sur des métriques standardisées"
+   ]},
+  {id:'ch6',title:'Agents LLM — Concepts',tag:'Intermédiaire',tagClass:'tag-intermediate',icon:'🤖',
+   content:[
+     "**Agent IA :** Système où un LLM orchestre des actions (appels API, recherches web, exécution de code) de manière autonome.",
+     "**Composants d'un agent :**",
+     "• **LLM Core** : Le cerveau qui raisonne et planifie",
+     "• **Tools** : Fonctions que l'agent peut appeler (search, calc, API)",
+     "• **Memory** : Contexte de la conversation, historique",
+     "• **Planning** : Stratégie pour décomposer un problème complexe",
+     "**Patterns d'agents :**",
+     "• **ReAct** : Reason + Act (raisonne puis agit en boucle)",
+     "• **Plan-and-Execute** : Planifie d'abord, exécute ensuite",
+     "• **Multi-agent** : Plusieurs agents spécialisés collaborent",
+     "**Défis QA agents :**",
+     "• L'agent tombe dans une boucle infinie",
+     "• L'agent utilise un mauvais outil",
+     "• L'agent expose des informations sensibles",
+     "• L'agent prend une action destructive sans vérification"
+   ]},
+  {id:'ch7',title:'Framework d\'Agents',tag:'Avancé',tagClass:'tag-advanced',icon:'🔗',
+   content:[
+     "**LangChain :** Framework mature. Orchestration de chaînes LLM, outils, mémoire.",
+     "🔸 Prompt templates, chains, agents, retrievers, callbacks",
+     "🔸 Tests avec langchain.evaluation (QA pairs, embeddings)",
+     "**AutoGen (Microsoft) :** Agents conversationnels multi-agents.",
+     "🔸 AssistantAgent, UserProxyAgent, GroupChat",
+     "🔸 Idéal pour tester des scénarios à plusieurs acteurs",
+     "**CrewAI :** Agents spécialisés en équipe (rôles, tâches).",
+     "🔸 Définir des 'crews' avec des rôles précis",
+     "🔸 Tester la collaboration et les handoffs",
+     "**OpenAI Agents SDK / Swarm :** Nouvelle génération.",
+     "🔸 Handoffs entre agents, gardrails, tracing",
+     "**Tests spécifiques frameworks :**",
+     "• Tool calling mal formé → l'agent récupère-t-il ?",
+     "• Limite de tokens dépassée → comportement ?",
+     "• Outil qui échoue → fallback ?",
+     "• Boucle de raisonnement → timeout ?"
+   ]},
+  {id:'ch8',title:'Stratégies QA pour LLMs',tag:'Avancé',tagClass:'tag-advanced',icon:'✅',
+   content:[
+     "**1. Test Fonctionnel :**",
+     "• Le modèle répond-il ? Respecte-t-il le format demandé ?",
+     "• Temps de réponse dans les specs ?",
+     "**2. Test de Robustesse :**",
+     "• Entrées mal formées (HTML, code, caractères spéciaux)",
+     "• Attaques par injection de prompt",
+     "• Variations linguistiques (argot, fautes, langues mélangées)",
+     "**3. Test de Performance :**",
+     "• Latence p50, p95, p99",
+     "• Débit (tokens/seconde) sous charge",
+     "• Coût par requête (input + output tokens)",
+     "**4. Test de Sécurité :**",
+     "• Extraction de prompt system",
+     "• Jailbreak (DAN, etc.)",
+     "• Hallucination sur des sujets sensibles",
+     "**5. Test de Qualité :**",
+     "• Cohérence sur des réponses multiples",
+     "• Évaluation humaine (classement A/B)",
+     "• Métriques automatisées (BLEU, ROUGE, BERTScore)",
+     "**6. Test de Non-Régression (TNR) :**",
+     "• Benchmark standardisé exécuté à chaque déploiement",
+     "• Seuils de qualité à ne pas franchir",
+     "• Détection de régressions sur des cas précis"
+   ]},
+  {id:'ch9',title:'Hallucinations & Détection',tag:'Avancé',tagClass:'tag-advanced',icon:'🔍',
+   content:[
+     "**Types d'hallucinations :**",
+     "• **Factuelle :** Le modèle invente des faits (dates, noms, événements)",
+     "• **Logique :** Incohérence interne dans le raisonnement",
+     "• **Instruction :** Le modèle ne suit pas les consignes données",
+     "• **Contextuelle :** Le modèle ignore le contexte fourni",
+     "**Méthodes de détection :**",
+     "• **SelfCheckGPT** : Générer N réponses, mesurer la divergence",
+     "• **Entailment** : Vérifier si la réponse est impliquée par le contexte",
+     "• **Factuality Prompts** : Demander au modèle de citer ses sources",
+     "• **External Knowledge** : Vérifier les faits contre une base de confiance",
+     "**Outils de détection :**",
+     "• **Guardrails** (NVIDIA NeMo, Guardrails AI) : filtres avant/après",
+     "• **LangChain Evaluators** : faithfulness, relevance, correctness",
+     "• **DeepEval** : test suite complète avec métriques",
+     "**Stratégie QA :**",
+     "• Dataset de test avec faits vérifiés",
+     "• Taux d'hallucination maximal acceptable (ex: <5%)",
+     "• Re-génération si score de confiance faible"
+   ]},
+  {id:'ch10',title:'Outils & Frameworks de Test',tag:'Avancé',tagClass:'tag-advanced',icon:'🧰',
+   content:[
+     "**Outils open-source :**",
+     "• **DeepEval** : Framework de test LLM complet. Unit tests, integration tests, metrics.",
+     "• **PromptFoo** : Évaluation de prompts, comparaison de modèles, red teaming.",
+     "• **Langfuse** : Tracing + évaluation + monitoring LLM en production.",
+     "• **RAGAS** : Évaluation spécifique RAG (faithfulness, relevance, precision).",
+     "• **LM Evaluation Harness** : Benchmark standardisé (MMLU, GSM8K, etc.).",
+     "**Plateformes SaaS :**",
+     "• **Hugging Face Open LLM Leaderboard** : Classement public des modèles.",
+     "• **LMSYS Chatbot Arena** : Évaluation humaine par Elo rating.",
+     "• **Arize AI / Phoenix** : Monitoring et traçabilité LLM.",
+     "**Tests automatisés (CI/CD) :**",
+     "• Intégration dans GitHub Actions avec seuils de qualité",
+     "• Génération de rapports de régression",
+     "• Tests A/B entre versions de modèles",
+     "**Exemple de pipeline QA :**",
+     "```bash",
+     "# deepeval test",
+     "deepeval test run test_llm.py",
+     "",
+     "# promptfoo eval",
+     "promptfoo eval --config config.yaml",
+     "```"
+   ]},
+  {id:'ch11',title:'Sécurité & Red Teaming',tag:'Expert',tagClass:'tag-expert',icon:'🛡️',
+   content:[
+     "**Red Teaming :** Attaque simulée pour identifier les vulnérabilités du LLM.",
+     "**Types d'attaques :**",
+     "• **Prompt Injection :** Injection de commandes cachées dans l'input utilisateur",
+     "• **Jailbreak :** Contournement des garde-fous (DAN, caractères unicode, etc.)",
+     "• **Data Poisoning :** Corruption des données d'entraînement ou de contexte RAG",
+     "• **Model Inversion :** Extraction des données d'entraînement via des queries",
+     "• **Adversarial Attacks :** Inputs modifiés pour tromper le modèle",
+     "**Défenses :**",
+     "• **Guardrails** : Filtres input/output (NVIDIA NeMo, Guardrails AI)",
+     "• **Rate Limiting** : Limiter le nombre de requêtes",
+     "• **Content Filtering** : Classifieurs de sécurité (Llama Guard)",
+     "• **Human in the Loop** : Validation humaine pour les actions sensibles",
+     "**Tests de sécurité :**",
+     "• Dataset d'attaques connues (Garak, PromptInject)",
+     "• Tests de robustesse aux variations (unicode, homoglyphes)",
+     "• Tests de fuite d'information (prompt system, données privées)",
+     "• Tests de permissions (l'agent peut-il faire X ?)",
+     "**Pour le QA :**",
+     "• Créer un 'red team playbook' dédié",
+     "• Automatiser les tests de sécurité dans la CI/CD",
+     "• Seuils stricts : 0 tolérance pour les injections réussies"
+   ]},
+  {id:'ch12',title:'Projet Final & Certification',tag:'Expert',tagClass:'tag-expert',icon:'🏆',
+   content:[
+     "**Objectif :** Mettre en pratique toutes les compétences acquises.",
+     "**Projet final :**",
+     "1. Choisir un LLM open-source (Llama, Mistral, Gemma)",
+     "2. Déployer un agent RAG avec outils (recherche, calcul, API)",
+     "3. Créer une suite de tests complète :",
+     "   - Tests fonctionnels (format, temps de réponse)",
+     "   - Tests de robustesse (injections, variations)",
+     "   - Tests RAG (pertinence, faithfulness)",
+     "   - Tests agent (boucles, tool calling, fallbacks)",
+     "   - Tests de sécurité (jailbreak, fuite)",
+     "4. Benchmark sur métriques standardisées",
+     "5. Rapport de qualité avec seuils et recommandations",
+     "**Critères d'évaluation :**",
+     "• Couverture de test > 80% des scénarios critiques",
+     "• Taux d'hallucination < 5%",
+     "• Temps de réponse moyen < 3s",
+     "• 0 fail aux tests de sécurité",
+     "• Documentation complète de la stratégie de test",
+     "**Certification :** Passe tous les examens du site avec un score > 85%",
+     "**Aller plus loin :**",
+     "• Contribuer à des projets open-source de testing LLM",
+     "• Publier tes benchmarks sur Hugging Face",
+     "• Rejoindre la communauté LMSYS / Chatbot Arena"
+   ]}
+];
+
+// ===== RENDER COURS =====
+const coursContainer = document.getElementById('cours-container');
+COURS.forEach((ch,i) => {
+  const div = document.createElement('div');
+  div.className = 'chapter';
+  div.innerHTML = `
+    <div class="chapter-header" data-chapter="${ch.id}">
+      <h3><span>${ch.icon}</span> ${ch.title} <span class="chapter-tag ${ch.tagClass}">${ch.tag}</span></h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="chapter-body">
+      ${ch.content.map(c => {
+        if(c.startsWith('**')) return `<p><strong>${c.replace(/\*\*(.*?)\*\*/g,'$1')}</strong></p>`;
+        if(c.startsWith('•')) return `<ul><li>${c.substring(1)}</li></ul>`;
+        if(c.startsWith('```')) return `<pre><code>${c.replace(/```\w*/g,'')}</code></pre>`;
+        return `<p>${c.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</p>`;
+      }).join('\n')}
+    </div>
+  `;
+  div.querySelector('.chapter-header').addEventListener('click', () => {
+    div.classList.toggle('open');
+  });
+  coursContainer.appendChild(div);
+});
+// Open first chapter by default
+coursContainer.querySelector('.chapter').classList.add('open');
+
+// ===== GLOSSAIRE =====
+const GLOSSAIRE = [
+  {term:'Agent IA',def:'Système autonome où un LLM orchestre des actions (appels API, recherches, code) pour accomplir une tâche.'},
+  {term:'Attention',def:'Mécanisme du Transformer qui pondère l\'importance des tokens entre eux. Permet au modèle de se concentrer sur les parties pertinentes.'},
+  {term:'Benchmark',def:'Ensemble standardisé de tests pour comparer les performances des LLMs (MMLU, GSM8K, HumanEval, etc.).'},
+  {term:'BLEU',def:'Métrique d\'évaluation basée sur la précision des n-grammes. Utilisée principalement en traduction.'},
+  {term:'Chain-of-Thought',def:'Technique de prompting où le modèle raisonne étape par étape avant de répondre. Améliore la précision sur les tâches complexes.'},
+  {term:'Context Window',def:'Nombre maximum de tokens que le LLM peut traiter en une seule requête (de 4K à 2M tokens).'},
+  {term:'Embedding',def:'Représentation vectorielle d\'un texte. Permet la recherche par similarité sémantique (RAG).'},
+  {term:'Faithfulness',def:'Mesure de la fidélité du modèle au contexte fourni. Le modèle invente-t-il des informations non présentes ?'},
+  {term:'Few-shot',def:'Technique où on fournit quelques exemples dans le prompt pour guider le modèle sans fine-tuning.'},
+  {term:'Fine-tuning',def:'Entraînement supplémentaire d\'un LLM pré-entraîné sur un dataset spécifique pour l\'adapter à une tâche.'},
+  {term:'Guardrails',def:'Filtres de sécurité qui contrôlent les entrées et sorties du LLM pour bloquer les contenus dangereux.'},
+  {term:'Hallucination',def:'Phénomène où un LLM génère des informations fausses ou inventées avec un haut degré de confiance.'},
+  {term:'Injection',def:'Attaque où une instruction malveillante est insérée dans l\'input pour détourner le comportement du modèle.'},
+  {term:'Jailbreak',def:'Technique d\'attaque qui contourne les garde-fous du LLM pour obtenir des réponses interdites.'},
+  {term:'LLM',def:'Large Language Model — Modèle de langage entraîné sur des masses de données textuelles pour comprendre et générer du langage.'},
+  {term:'LoRA',def:'Low-Rank Adaptation — Technique de fine-tuning légère qui entraîne des adaptateurs plutôt que le modèle complet.'},
+  {term:'MMLU',def:'Massive Multitask Language Understanding — Benchmark de 57 sujets pour évaluer les connaissances des LLMs.'},
+  {term:'Prompt',def:'Instruction textuelle donnée à un LLM pour obtenir une réponse ou accomplir une tâche.'},
+  {term:'RAG',def:'Retrieval Augmented Generation — Technique qui combine recherche documentaire et génération LLM pour répondre avec un contexte spécifique.'},
+  {term:'RAGAS',def:'Framework d\'évaluation spécifique RAG : faithfulness, answer relevance, context precision, context recall.'},
+  {term:'Red Teaming',def:'Pratique de test offensif où des experts tentent activement de faire échouer ou détourner un système LLM.'},
+  {term:'ReAct',def:'Reason + Act — Pattern d\'agent qui alterne réflexion et action en boucle.'},
+  {term:'RLHF',def:'Reinforcement Learning from Human Feedback — Technique qui utilise les préférences humaines pour aligner le comportement du LLM.'},
+  {term:'ROUGE',def:'Métrique basée sur le rappel des n-grammes. Utilisée pour évaluer la qualité des résumés.'},
+  {term:'Temperature',def:'Paramètre qui contrôle le caractère aléatoire des réponses (0 = déterministe, 1+ = créatif).'},
+  {term:'Token',def:'Unité de base du texte pour un LLM (~0.75 mot en anglais, ~1.5 mot en français).'},
+  {term:'Tool Calling',def:'Capacité d\'un LLM à appeler des fonctions externes (API, calculs, recherche) dans le cadre d\'une réponse.'},
+  {term:'Transformer',def:'Architecture de deep learning basée sur l\'attention, fondation de tous les LLMs modernes.'},
+  {term:'Zero-shot',def:'Capacité d\'un LLM à accomplir une tâche sans exemple préalable, uniquement avec une instruction.'},
+  {term:'DeepEval',def:'Framework de test LLM open-source avec métriques intégrées (hallucination, faithfulness, toxicité).'},
+  {term:'PromptFoo',def:'Outil d\'évaluation comparative de prompts et de modèles avec génération de rapports.'},
+  {term:'Langfuse',def:'Plateforme open-source de tracing, monitoring et évaluation des LLMs en production.'},
+  {term:'Llama Guard',def:'Classifieur de sécurité de Meta qui filtre les contenus dangereux en entrée/sortie des LLMs.'},
+  {term:'HumanEval',def:'Benchmark d\'évaluation de génération de code basé sur des problèmes de programmation Python.'},
+  {term:'GSM8K',def:'Benchmark de mathématiques pour évaluer le raisonnement des LLMs (8000 problèmes niveau primaire).'},
+  {term:'SelfCheckGPT',def:'Méthode de détection d\'hallucination qui compare N générations indépendantes d\'un même prompt.'},
+  {term:'Chunking',def:'Processus de découpage des documents en segments pour l\'indexation RAG.'},
+  {term:'Similarité Cosinus',def:'Mesure de similarité entre deux vecteurs d\'embedding, utilisée pour la recherche RAG.'},
+  {term:'Top-p (Nucleus Sampling)',def:'Stratégie d\'échantillonnage qui sélectionne les tokens dont la probabilité cumulée atteint p.'},
+  {term:'Top-k Sampling',def:'Stratégie qui limite la sélection aux k tokens les plus probables.'},
+  {term:'Catastrophic Forgetting',def:'Phénomène où un modèle fine-tuné perd ses capacités générales sur d\'autres tâches.'},
+  {term:'BERTScore',def:'Métrique d\'évaluation utilisant les embeddings BERT pour mesurer la similarité entre deux textes.'},
+  {term:'Elo Rating',def:'Système de classement utilisé par LMSYS Chatbot Arena pour comparer les LLMs via des duels.'},
+  {term:'Multi-agent',def:'Architecture où plusieurs agents LLM collaborent, chacun avec un rôle spécialisé.'},
+  {term:'Plan-and-Execute',def:'Pattern d\'agent qui planifie d\'abord les étapes, puis exécute le plan séquentiellement.'},
+  {term:'Retrieval',def:'Phase de récupération des documents pertinents dans un pipeline RAG.'},
+  {term:'Noop',def:'Action nulle — utilisée dans les tests pour vérifier qu\'un agent ne fait rien quand il ne faut rien faire.'},
+  {term:'Fallback',def:'Comportement de repli quand un outil ou une étape échoue dans un pipeline agent.'},
+  {term:'Handoff',def:'Transfert de contrôle entre agents spécialisés dans une architecture multi-agent.'},
+  {term:'Agent Loop',def:'Boucle où un agent répète la même action sans progression — problème classique à tester.'},
+];
+
+function renderGlossary(filter=''){
+  const list = document.getElementById('glossary-list');
+  const items = filter ? GLOSSAIRE.filter(g => g.term.toLowerCase().includes(filter) || g.def.toLowerCase().includes(filter)) : GLOSSAIRE;
+  list.innerHTML = items.map(g => `
+    <div class="glossary-item">
+      <h4>${esc(g.term)}</h4>
+      <p>${esc(g.def)}</p>
+    </div>
+  `).join('');
+}
+renderGlossary();
+document.getElementById('glossary-search').addEventListener('input', e => renderGlossary(e.target.value.toLowerCase()));
+
+// ===== EXAMENS / QUIZ =====
+const EXAMS = [
+  {id:'quiz1',title:'🔰 Quiz Débutant — Bases des LLMs',questions:[
+    {q:'Que signifie LLM ?',options:['Large Language Model','Long Learning Machine','Low Level Module','Linear Linguistic Model'],correct:0},
+    {q:'Quel mécanisme est au cœur de l\'architecture Transformer ?',options:['Convolution','Attention','Recurrence','Reinforcement'],correct:1},
+    {q:'À quoi sert la température dans un LLM ?',options:['Mesurer la température du GPU','Contrôler le caractère aléatoire','Définir la taille du contexte','Ajuster la vitesse'],correct:1},
+    {q:'Qu\'est-ce qu\'un token ?',options:['Un jeton de sécurité','Une unité de texte (~0.75 mot)','Un paramètre du modèle','Un type d\'attaque'],correct:1},
+    {q:'Quel est le principal défaut des LLMs ?',options:['Ils sont trop lents','Les hallucinations','Le coût GPU','Tout ce qui précède'],correct:3},
+    {q:'Qu\'est-ce que le few-shot learning ?',options:['Apprendre avec peu de données','Donner des exemples dans le prompt','Utiliser un petit modèle','Faire un fine-tuning rapide'],correct:1},
+    {q:'Quel est le rôle du RAG ?',options:['Générer des images','Ajouter un contexte externe à la requête','Réduire la taille du modèle','Crypter les données'],correct:1},
+    {q:'Quelle métrique mesure la fidélité au contexte ?',options:['BLEU','ROUGE','Faithfulness','Perplexité'],correct:2},
+  ]},
+  {id:'quiz2',title:'📊 Quiz Intermédiaire — Testing & Évaluation',questions:[
+    {q:'Qu\'est-ce qu\'une hallucination LLM ?',options:['Une erreur de syntaxe','Une information fausse générée avec confiance','Un timeout de requête','Un bug du tokenizer'],correct:1},
+    {q:'Que teste le red teaming ?',options:['La rapidité du modèle','Les vulnérabilités de sécurité','La qualité du code','Le coût des API'],correct:1},
+    {q:'À quoi sert SelfCheckGPT ?',options:['Auditer le code du modèle','Détecter les hallucinations','Optimiser les prompts','Générer des embeddings'],correct:1},
+    {q:'Qu\'est-ce que la technique Chain-of-Thought ?',options:['Chaîner plusieurs modèles','Raisonner étape par étape','Connecter des API','Augmenter la fenêtre de contexte'],correct:1},
+    {q:'Quel outil est spécialisé dans l\'évaluation RAG ?',options:['LangChain','RAGAS','TensorFlow','Docker'],correct:1},
+    {q:'Que teste-t-on avec un benchmark MMLU ?',options:['La rapidité d\'inférence','Les connaissances générales','La qualité du code','La sécurité'],correct:1},
+    {q:'Qu\'est-ce qu\'un agent loop ?',options:['Un agent rapide','Une boucle répétitive sans progression','Un type d\'architecture','Un pattern de sécurité'],correct:1},
+  ]},
+  {id:'quiz3',title:'🎯 Quiz Avancé — Agents & Sécurité',questions:[
+    {q:'Qu\'est-ce qu\'un jailbreak dans le contexte LLM ?',options:['Mettre à jour le firmware','Contourner les garde-fous du modèle','Optimiser les performances','Déboguer le code'],correct:1},
+    {q:'Quelle technique de fine-tuning est la plus économique ?',options:['Full fine-tuning','LoRA/QLoRA','RLHF','Pre-training'],correct:1},
+    {q:'Quel pattern d\'agent alterne raisonnement et action ?',options:['Plan-and-Execute','ReAct','Chain-of-Thought','RAG'],correct:1},
+    {q:'Qu\'est-ce que le catastrophic forgetting ?',options:['Perdre ses clés','Un modèle fine-tuné qui oublie ses capacités générales','Un bug mémoire','Un type d\'attaque'],correct:1},
+    {q:'À quoi sert Llama Guard ?',options:['Classifier des images','Filtrer les contenus dangereux','Générer du code','Traduire des textes'],correct:1},
+    {q:'Qu\'est-ce qu\'un handoff dans un système multi-agent ?',options:['Une poignée de main','Un transfert de contrôle entre agents','Un type de prompt','Un mécanisme d\'attention'],correct:1},
+    {q:'Quel outil permet de tracer et monitorer les LLMs en production ?',options:['GitHub','Langfuse','Docker','VS Code'],correct:1},
+    {q:'Que vérifie la métrique faithfulness ?',options:['La rapidité','Si le modèle reste fidèle au contexte','La complexité du modèle','Le nombre de paramètres'],correct:1},
+  ]},
+];
+
+let currentQuiz = null;
+
+function renderExams(){
+  const container = document.getElementById('examens-container');
+  container.innerHTML = EXAMS.map(e => `
+    <div class="quiz-card" data-quiz="${e.id}">
+      <h3>${e.title}</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.6rem">${e.questions.length} questions</p>
+      <button class="btn btn-sm btn-primary start-quiz" data-quiz="${e.id}">▶️ Commencer</button>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.start-quiz').forEach(btn => {
+    btn.addEventListener('click', () => startQuiz(btn.dataset.quiz));
+  });
+}
+renderExams();
+
+function startQuiz(quizId){
+  currentQuiz = EXAMS.find(e => e.id === quizId);
+  if(!currentQuiz) return;
+  renderQuizQuestion(0, {});
+}
+
+let quizState = {current:0,answers:{}};
+
+function renderQuizQuestion(idx, answers){
+  const container = document.getElementById('examens-container');
+  if(idx >= currentQuiz.questions.length){
+    // Results
+    const correct = Object.entries(answers).filter(([k,v]) => v === currentQuiz.questions[parseInt(k)].correct).length;
+    const total = currentQuiz.questions.length;
+    container.innerHTML = `
+      <div class="quiz-score" style="text-align:center;padding:2rem">
+        <div style="font-size:3rem;margin-bottom:.5rem">${correct/total >= .7 ? '🎉' : correct/total >= .5 ? '💪' : '📚'}</div>
+        <h2 style="margin-bottom:.5rem">Résultat</h2>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--accent)">${correct}/${total}</div>
+        <div style="font-size:.9rem;color:var(--text2);margin-bottom:1.5rem">${Math.round(correct/total*100)}% de bonnes réponses</div>
+        <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-sm btn-primary" onclick="renderExams()">🔁 Refaire</button>
+          <button class="btn btn-sm btn-secondary" onclick="renderExams()">📋 Retour aux examens</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  const q = currentQuiz.questions[idx];
+  const selected = answers[idx];
+  container.innerHTML = `
+    <div class="quiz-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem">
+        <h3>${currentQuiz.title}</h3>
+        <span style="font-size:.78rem;color:var(--text3)">Question ${idx+1}/${currentQuiz.questions.length}</span>
+      </div>
+      <p style="font-size:.95rem;font-weight:600;margin-bottom:.8rem">${esc(q.q)}</p>
+      <div class="quiz-options">
+        ${q.options.map((o,i) => `
+          <div class="quiz-option ${selected !== undefined ? (i === q.correct ? 'correct' : i === selected ? 'wrong' : '') : ''}"
+               data-idx="${i}" onclick="selectAnswer(${idx},${i})">
+            ${esc(o)}
+            ${selected !== undefined && i === q.correct ? ' ✓' : ''}
+            ${selected !== undefined && i === selected && i !== q.correct ? ' ✗' : ''}
+          </div>
+        `).join('')}
+      </div>
+      ${selected !== undefined ? `
+        <div class="quiz-feedback ${selected === q.correct ? 'correct' : 'wrong'}">
+          ${selected === q.correct ? '✅ Correct !' : '❌ Pas tout à fait. La bonne réponse était : ' + esc(q.options[q.correct])}
+        </div>
+        <div class="quiz-actions">
+          <button class="btn btn-sm btn-primary" onclick="nextQuestion()">
+            ${idx+1 < currentQuiz.questions.length ? '➡️ Suivante' : '📊 Voir le résultat'}
+          </button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function selectAnswer(qIdx, aIdx){
+  if(quizState.answers[qIdx] !== undefined) return;
+  quizState.answers[qIdx] = aIdx;
+  renderQuizQuestion(qIdx, quizState.answers);
+}
+
+function nextQuestion(){
+  quizState.current++;
+  renderQuizQuestion(quizState.current, quizState.answers);
+}
+
+// Reset quizState on new quiz
+document.addEventListener('click', e => {
+  if(e.target.closest('.start-quiz')){
+    quizState = {current:0,answers:{}};
+  }
+});
+
+// ===== CHAT PROF =====
+const chatContainer = document.getElementById('chat-container');
+const CHAT_KEY_STORAGE = 'llm-man-nv-key';
+let chatApiKey = localStorage.getItem(CHAT_KEY_STORAGE);
+
+function initChat(){
+  if(!chatApiKey){
+    chatContainer.innerHTML = `
+      <div class="chat-setup">
+        <h3>🔑 Configure l'accès au Professeur IA</h3>
+        <p>Entre ta clé API NVIDIA (nvapi-...) pour parler avec l'expert Nemotron-3-Ultra</p>
+        <input type="password" id="chat-key-input" placeholder="nvapi-..." autocomplete="off" />
+        <button class="key-btn" id="chat-key-save">Enregistrer</button>
+        <p class="key-note">🔒 Stockée dans ton navigateur uniquement.</p>
+        <p class="key-note">Obtenir une clé gratuite : <a href="https://build.nvidia.com/" target="_blank" style="color:var(--accent)">build.nvidia.com</a></p>
+      </div>
+    `;
+    document.getElementById('chat-key-save').addEventListener('click', () => {
+      const val = document.getElementById('chat-key-input').value.trim();
+      if(val){
+        localStorage.setItem(CHAT_KEY_STORAGE, val);
+        chatApiKey = val;
+        renderChat();
+      }
+    });
+    document.getElementById('chat-key-input').addEventListener('keydown', e => {
+      if(e.key === 'Enter') document.getElementById('chat-key-save').click();
+    });
+  } else {
+    renderChat();
+  }
+}
+
+function renderChat(){
+  chatContainer.innerHTML = `
+    <div class="chat-header">
+      <h3>🧠 Professeur LLM Man</h3>
+      <span class="chat-model-badge">Nemotron 3 Ultra</span>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-welcome">
+        <h3>👋 Bienvenue !</h3>
+        <p>Je suis ton professeur IA expert en test des LLMs et Agents.</p>
+        <p>Pose-moi toutes tes questions : concepts, stratégies de test, frameworks, exercices...</p>
+        <p style="margin-top:.5rem;font-size:.78rem;color:var(--text3)">⚠️ Informations éducatives — toujours vérifier les sources officielles.</p>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <textarea id="chat-input" rows="1" placeholder="Pose ta question sur le testing LLM/Agent…"></textarea>
+      <button id="chat-send">➤</button>
+    </div>
+  `;
+  setupChatEvents();
+}
+
+function setupChatEvents(){
+  const input = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const messages = document.getElementById('chat-messages');
+
+  async function sendMessage(){
+    const text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+
+    // Remove welcome
+    const welcome = messages.querySelector('.chat-welcome');
+    if(welcome) welcome.style.display = 'none';
+
+    // Add user msg
+    const userDiv = document.createElement('div');
+    userDiv.className = 'chat-msg user';
+    userDiv.innerHTML = '<div class="chat-bubble">' + esc(text) + '</div>';
+    messages.appendChild(userDiv);
+    messages.scrollTop = messages.scrollHeight;
+
+    // Loading
+    const loadDiv = document.createElement('div');
+    loadDiv.className = 'chat-msg bot';
+    loadDiv.innerHTML = '<div class="chat-bubble">🤔 Réflexion…</div>';
+    messages.appendChild(loadDiv);
+
+    try {
+      const resp = await fetch(API_ENDPOINT, {
+        method:'POST',
+        headers:{'Authorization':'Bearer '+chatApiKey,'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model: DEFAULT_CHAT_MODEL,
+          messages: [
+            {role:'system',content:`Tu es un professeur expert en test des LLMs et Agents IA. Tu réponds en français, de manière pédagogique, avec des exemples concrets. Tu es spécialisé en QA pour l'IA : stratégies de test, évaluation, frameworks (DeepEval, PromptFoo, RAGAS), agents, RAG, sécurité, red teaming, hallucinations. Tu donnes des explications claires, structurées et adaptées au niveau de l'étudiant. Tu proposes des exercices et des mises en situation quand c'est pertinent. Tu cites des sources et des outils réels. Tu ne donnes pas de conseils médicaux, juridiques ou financiers.`},
+            {role:'user',content:text}
+          ],
+          temperature:0.4,
+          max_tokens:2048,
+          top_p:0.9
+        })
+      });
+
+      if(!resp.ok){
+        const errData = await resp.json().catch(()=>({}));
+        throw new Error(errData.error?.message || 'Erreur HTTP '+resp.status);
+      }
+
+      const data = await resp.json();
+      const reply = data.choices?.[0]?.message?.content || 'Pas de réponse.';
+
+      // Remove loading
+      loadDiv.remove();
+
+      // Format reply
+      const botDiv = document.createElement('div');
+      botDiv.className = 'chat-msg bot';
+      botDiv.innerHTML = '<div class="chat-bubble">' + formatChatReply(reply) + '</div>';
+      messages.appendChild(botDiv);
+      messages.scrollTop = messages.scrollHeight;
+
+    } catch(err){
+      loadDiv.remove();
+      const errDiv = document.createElement('div');
+      errDiv.className = 'chat-msg bot';
+      errDiv.innerHTML = '<div class="chat-bubble" style="color:var(--red)">❌ Erreur : ' + esc(err.message) + '</div>';
+      messages.appendChild(errDiv);
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  input.addEventListener('input', function(){
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+}
+
+function formatChatReply(text){
+  let h = esc(text);
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  h = h.replace(/\n/g, '<br>');
+  h = h.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  h = h.replace(/<br>\s*[-•]\s+/g, '<br>• ');
+  h = h.replace(/<br>\s*\d+\.\s+/g, '<br>');
+  return h;
+}
+
+initChat();
+
+// ===== FORUM =====
+const FORUM_STORAGE = 'llm-man-forum';
+const FORUM_USER = 'llm-man-user';
+
+function loadForum(){
+  try{return JSON.parse(localStorage.getItem(FORUM_STORAGE))||[]}catch(e){return []}
+}
+function saveForum(posts){localStorage.setItem(FORUM_STORAGE, JSON.stringify(posts))}
+
+function renderForum(){
+  const container = document.getElementById('forum-container');
+  const posts = loadForum();
+  const userName = localStorage.getItem(FORUM_USER) || '';
+
+  container.innerHTML = `
+    <div class="forum-form" style="margin-bottom:1.5rem">
+      <input type="text" id="forum-name" placeholder="Ton pseudo" value="${esc(userName)}" maxlength="30" style="margin-bottom:.5rem" />
+      <textarea id="forum-text" placeholder="Pose ta question ou partage ton expérience sur le testing LLM/Agent…"></textarea>
+      <button class="btn btn-sm btn-primary" id="forum-post-btn">📝 Publier</button>
+    </div>
+    <div id="forum-posts">
+      ${posts.length === 0 ? '<p style="color:var(--text3);text-align:center;padding:2rem">Aucune discussion pour le moment. Sois le premier à poster !</p>' : ''}
+      ${posts.map((p,i) => `
+        <div class="forum-post">
+          <h4>${esc(p.author || 'Anonyme')}</h4>
+          <div class="meta">${new Date(p.date).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          <p>${esc(p.text)}</p>
+          <div style="margin-top:.4rem">
+            <button class="btn btn-sm btn-ghost delete-post" data-idx="${i}" style="font-size:.72rem">🗑️ Supprimer</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('forum-post-btn').addEventListener('click', () => {
+    const name = document.getElementById('forum-name').value.trim() || 'Anonyme';
+    const text = document.getElementById('forum-text').value.trim();
+    if(!text) return;
+    localStorage.setItem(FORUM_USER, name);
+    const posts = loadForum();
+    posts.unshift({author:name,text,date:Date.now()});
+    saveForum(posts);
+    renderForum();
+  });
+
+  container.querySelectorAll('.delete-post').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const posts = loadForum();
+      posts.splice(idx,1);
+      saveForum(posts);
+      renderForum();
+    });
+  });
+}
+renderForum();
+
+// ===== OUTILS INTERACTIFS =====
+const OUTILS = [
+  {id:'prompt-playground',title:'🎯 Prompt Playground',desc:'Teste et compare différentes versions de prompts. Évalue leur clarté, structure et potentiel.',
+   html:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+     <div>
+       <label style="font-size:.78rem;color:var(--text2);display:block;margin-bottom:.3rem">Prompt Original</label>
+       <textarea id="pp-original" placeholder="Version 1 de ton prompt..." rows="5"></textarea>
+     </div>
+     <div>
+       <label style="font-size:.78rem;color:var(--text2);display:block;margin-bottom:.3rem">Prompt Amélioré</label>
+       <textarea id="pp-improved" placeholder="Version 2 de ton prompt..." rows="5"></textarea>
+     </div>
+   </div>
+   <button class="btn btn-sm btn-primary" id="pp-analyze" style="margin-top:.5rem">🔍 Analyser les prompts</button>
+   <div id="pp-result" class="tool-output" style="margin-top:.5rem"></div>`},
+  {id:'eval-matrix',title:'📊 Matrice d\'Évaluation',desc:'Évalue un LLM sur plusieurs critères QA : qualité, rapidité, sécurité, cohérence.',
+   html:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.7rem">
+     <input type="text" id="emat-model" placeholder="Nom du modèle à évaluer" value="GPT-4o" />
+     <select id="emat-task" style="padding:.55rem .7rem;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:.84rem">
+       <option>Génération de texte</option>
+       <option>RAG / Recherche</option>
+       <option>Agent autonome</option>
+       <option>Code</option>
+       <option>Résumé</option>
+     </select>
+   </div>
+   ${['Cohérence','Rapidité','Sécurité','Hallucination','Format'].map(c => `
+     <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem">
+       <span style="font-size:.8rem;min-width:110px;color:var(--text2)">${c}</span>
+       <input type="range" min="0" max="10" value="${7-Math.floor(Math.random()*3)}" class="eval-slider" style="flex:1" />
+       <span class="eval-val" style="font-size:.78rem;min-width:20px;color:var(--accent);font-weight:600">7</span>
+     </div>
+   `).join('')}
+   <button class="btn btn-sm btn-primary" id="emat-calc" style="margin-top:.5rem">📊 Calculer le score</button>
+   <div id="emat-result" class="tool-output" style="margin-top:.5rem"></div>`},
+  {id:'hallucination-check',title:'🔍 Détecteur d\'Hallucination',desc:'Analyse une réponse LLM pour identifier les risques d\'hallucination.',
+   html:`<textarea id="hc-response" placeholder="Colle ici la réponse du LLM à analyser..." rows="5"></textarea>
+   <div style="display:flex;gap:.5rem;margin:.5rem 0">
+     <input type="text" id="hc-context" placeholder="Contexte fourni (optionnel)" style="flex:1" />
+   </div>
+   <button class="btn btn-sm btn-primary" id="hc-check">🔍 Analyser</button>
+   <div id="hc-result" class="tool-output" style="margin-top:.5rem"></div>`}
+];
+
+function renderOutils(){
+  const container = document.getElementById('outils-container');
+  container.innerHTML = OUTILS.map(o => `
+    <div class="tool-card">
+      <h3>${o.title}</h3>
+      <p>${o.desc}</p>
+      ${o.html}
+    </div>
+  `).join('');
+
+  // Prompt Playground
+  const ppBtn = document.getElementById('pp-analyze');
+  if(ppBtn){
+    ppBtn.addEventListener('click', () => {
+      const orig = document.getElementById('pp-original').value.trim();
+      const impr = document.getElementById('pp-improved').value.trim();
+      if(!orig && !impr) {document.getElementById('pp-result').textContent = '⚠️ Écris au moins un prompt pour analyse.'; return}
+      let analysis = [];
+      if(orig) analysis.push('📝 **Prompt Original**\n• Longueur : '+orig.length+' caractères\n• Structure : '+(orig.includes('\n')?'Multi-ligne ✓':'Une ligne — ajouter des sections')+'\n• Verbe d\'action : '+(orig.match(/^(génère|crée|traduis|analyse|résume|explique|liste|donne|écris|trouve|compare)/i)?'✓ présent':'❌ Commence par un verbe d\'action clair')+'\n• Format spécifié : '+(orig.includes('format')||orig.includes('JSON')||orig.includes('liste')?'✓':'Ajoute le format de sortie souhaité'));
+      if(impr) analysis.push('📝 **Prompt Amélioré**\n• Longueur : '+impr.length+' caractères\n• Structure : '+(impr.includes('\n')?'Multi-ligne ✓':'Une ligne — ajouter des sections')+'\n• Verbe d\'action : '+(impr.match(/^(génère|crée|traduis|analyse|résume|explique|liste|donne|écris|trouve|compare)/i)?'✓ présent':'❌ Commence par un verbe d\'action clair')+'\n• Format spécifié : '+(impr.includes('format')||impr.includes('JSON')||impr.includes('liste')?'✓':'Ajoute le format de sortie souhaité'));
+      if(orig && impr){
+        const diffLen = Math.abs(orig.length - impr.length);
+        analysis.push('\n📊 **Comparaison**\n• Différence de taille : '+diffLen+' caractères'+(diffLen < 20 ? ' — très proches' : ' — écart significatif')+'\n• Clarté relative : '+(impr.length > orig.length ? 'Version améliorée plus détaillée ✓' : 'Version améliorée plus concise ✓'));
+      }
+      document.getElementById('pp-result').innerHTML = analysis.join('\n\n').replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    });
+  }
+
+  // Eval sliders
+  document.querySelectorAll('.eval-slider').forEach(slider => {
+    const val = slider.parentElement.querySelector('.eval-val');
+    slider.addEventListener('input', () => {val.textContent = slider.value});
+  });
+  const ematBtn = document.getElementById('emat-calc');
+  if(ematBtn){
+    ematBtn.addEventListener('click', () => {
+      const model = document.getElementById('emat-model').value || 'Modèle inconnu';
+      const task = document.getElementById('emat-task').value;
+      const scores = [];
+      document.querySelectorAll('.eval-slider').forEach(s => scores.push(parseInt(s.value)));
+      const avg = (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
+      const grade = avg >= 8 ? 'Excellent' : avg >= 6 ? 'Bon' : avg >= 4 ? 'Moyen' : 'À améliorer';
+      document.getElementById('emat-result').innerHTML = `
+📊 **Évaluation : ${esc(model)}** (${esc(task)})
+• Score global : <strong>${avg}/10</strong> — ${grade}
+• Détail : Cohérence ${scores[0]}/10 | Rapidité ${scores[1]}/10 | Sécurité ${scores[2]}/10 | Hallucination ${scores[3]}/10 | Format ${scores[4]}/10
+• Recommandation : ${avg < 6 ? '🔴 Ce modèle nécessite des tests supplémentaires avant déploiement.' : avg < 8 ? '🟡 Modèle acceptable avec surveillance.' : '🟢 Modèle prêt pour la production.'}
+      `.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    });
+  }
+
+  // Hallucination checker
+  const hcBtn = document.getElementById('hc-check');
+  if(hcBtn){
+    hcBtn.addEventListener('click', () => {
+      const resp = document.getElementById('hc-response').value.trim();
+      const ctx = document.getElementById('hc-context').value.trim();
+      if(!resp) {document.getElementById('hc-result').textContent = '⚠️ Colle une réponse LLM à analyser.'; return}
+      let score = 0;
+      let flags = [];
+      if(resp.length < 20) {score += 30; flags.push('Réponse très courte — risque élevé d\'hallucination par manque de précision')}
+      if(resp.includes('je pense') || resp.includes('peut-être') || resp.includes('probablement')) {score += 10; flags.push('Langage d\'incertitude détecté')}
+      if(resp.includes('selon mes connaissances') || resp.includes('à ma connaissance')) {score += 5; flags.push('Mise en garde de fiabilité')}
+      if(!resp.includes('.') && !resp.includes('\n')) {score += 15; flags.push('Phrase unique sans ponctuation forte')}
+      if(ctx && !resp.toLowerCase().includes(ctx.substring(0,20).toLowerCase())) {score += 20; flags.push('La réponse ne mentionne pas le contexte fourni')}
+      const hasNumbers = resp.match(/\d{4}/g);
+      if(hasNumbers && hasNumbers.length > 3) {score += 15; flags.push('Nombreuses dates/chiffres — vérifier leur exactitude')}
+      const risk = score >= 50 ? '🔴 Risque ÉLEVÉ d\'hallucination' : score >= 25 ? '🟡 Risque MODÉRÉ — à vérifier' : '🟢 Risque FAIBLE — réponse probablement fiable';
+      document.getElementById('hc-result').innerHTML = `
+📋 **Analyse d\'hallucination**
+• Score de risque : <strong>${score}/100</strong>
+• Verdict : ${risk}
+${flags.length ? '• Indicateurs :<br>' + flags.map(f => '  ⚠️ ' + f).join('<br>') : '  ✅ Aucun indicateur majeur détecté'}
+• ${ctx ? 'Contexte fourni : ✓' : '⚠️ Ajouter un contexte améliore la détection'}
+      `.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    });
+  }
+}
+renderOutils();
+</script>
+</body>
+</html>
