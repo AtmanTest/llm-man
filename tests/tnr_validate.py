@@ -100,7 +100,26 @@ if len(nav_order) >= 2:
     except ValueError:
         errors.append("[NAV] Missing accueil or news in nav")
 
-# ── 10. Stats ──
+# ── 10. Ticker blue color + position ──
+if "color: var(--blue)" not in content:
+    errors.append("[TICKER] News items not blue (missing color: var(--blue))")
+if "background: var(--blue)" not in content:
+    errors.append("[TICKER] Ticker dots not blue (missing background: var(--blue))")
+if "position: sticky" not in content and ".news-ticker-wrap" in content:
+    ticker_css = re.search(r'\.news-ticker-wrap\{[^}]+\}', content)
+    if ticker_css and "sticky" not in ticker_css.group():
+        errors.append("[TICKER] Ticker not sticky (missing position: sticky)")
+if "animation: ticker-scroll 70s" not in content:
+    warnings.append("[TICKER] Animation speed not 70s (check if changed intentionally)")
+if 'data-nav="accueil"' in content and '<main>' in content:
+    nav_idx = content.find('</nav>')
+    main_idx = content.find('<main>')
+    ticker_idx = content.find('id="news-ticker"')
+    if nav_idx > 0 and main_idx > 0 and ticker_idx > 0:
+        if not (nav_idx < ticker_idx < main_idx):
+            errors.append("[TICKER] Ticker not positioned between </nav> and <main>")
+
+# ── 11. Stats ──
 question_count = len(re.findall(r"\{q:'", content))
 print(f"📊 Questions totales: {question_count}")
 print(f"📄 Fichier: {len(content):,} octets, {content.count(chr(10))} lignes")
