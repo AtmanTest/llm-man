@@ -394,14 +394,16 @@ main{padding-top:var(--nav-h);min-height:100vh}
 
 /* ===== NEWS TICKER BANNER ===== */
 .news-ticker-wrap{
-  margin: 0 -1.2rem 1.5rem;
-  width: calc(100% + 2.4rem);
+  margin: 0;
+  width: 100%;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   border-top: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 999;
   overflow: hidden;
-  position: relative;
-  height: 48px;
+  height: 42px;
   display: flex;
   align-items: center;
 }
@@ -426,7 +428,7 @@ main{padding-top:var(--nav-h);min-height:100vh}
   display: flex;
   align-items: center;
   white-space: nowrap;
-  animation: ticker-scroll 35s linear infinite;
+  animation: ticker-scroll 70s linear infinite;
   padding-left: 2rem;
 }
 .news-ticker-track:hover{animation-play-state:paused}
@@ -436,23 +438,23 @@ main{padding-top:var(--nav-h);min-height:100vh}
   gap: .5rem;
   padding: 0 1.5rem 0 0;
   font-size: .82rem;
-  color: var(--text);
+  color: var(--blue);
   text-decoration: none;
   transition: color .15s;
 }
-.news-ticker-item:hover{color:var(--accent)}
+.news-ticker-item:hover{color:var(--accent2)}
 .news-ticker-item .ticker-dot{
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--blue);
   display: inline-block;
   margin-right: .15rem;
   flex-shrink: 0;
 }
 .news-ticker-item .ticker-source{
   font-size: .68rem;
-  color: var(--text3);
-  background: var(--bg2);
+  color: #60a5fa;
+  background: rgba(59,130,246,.12);
   padding: 1px 6px;
   border-radius: 4px;
 }
@@ -524,6 +526,13 @@ footer{
   </div>
 </nav>
 
+<div class="news-ticker-wrap" id="news-ticker">
+  <div class="news-ticker-label">📰 FLASH IA</div>
+  <div class="news-ticker-track" id="ticker-track">
+    <span class="news-ticker-empty">📡 Chargement des actualités...</span>
+  </div>
+</div>
+
 <main>
 <!-- ===== ACCUEIL ===== -->
 <section id="sec-accueil" class="section active">
@@ -541,12 +550,6 @@ footer{
       <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">80+</div><div style="font-size:.75rem;color:var(--text3)">Concepts</div></div>
       <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">200+</div><div style="font-size:.75rem;color:var(--text3)">Questions</div></div>
       <div style="text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">∞</div><div style="font-size:.75rem;color:var(--text3)">Chat Prof</div></div>
-    </div>
-  </div>
-  <div class="news-ticker-wrap" id="news-ticker">
-    <div class="news-ticker-label">📰 FLASH IA</div>
-    <div class="news-ticker-track" id="ticker-track">
-      <span class="news-ticker-empty">📡 Chargement des actualités...</span>
     </div>
   </div>
 </section>
