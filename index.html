@@ -64,7 +64,7 @@ nav{
 #theme-toggle:hover{color:var(--accent);background:var(--accent-bg)}
 
 /* ===== MAIN ===== */
-main{padding-top:var(--nav-h);min-height:100vh}
+main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
 .section{display:none;padding:2rem 1.2rem;max-width:var(--max-w);margin:0 auto}
 .section.active{display:block}
 .section-header{margin-bottom:2rem}
@@ -400,8 +400,8 @@ main{padding-top:var(--nav-h);min-height:100vh}
   border-bottom: 1px solid var(--border);
   border-top: 1px solid var(--border);
   position: sticky;
-  top: 0;
-  z-index: 999;
+  top: var(--nav-h);
+  z-index: 49;
   overflow: hidden;
   height: 42px;
   display: flex;
