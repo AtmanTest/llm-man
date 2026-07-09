@@ -37,7 +37,8 @@ def get_prop(css, prop):
 # 1.  DUPLICATE FUNCTIONS
 # ═══════════════════════════════════════════════
 for fn in ["esc", "renderExams", "renderTicker", "loadNews", "renderNews",
-           "renderOutils", "renderCours", "startExam", "finishExam"]:
+           "renderOutils", "renderCours", "startExam", "finishExam",
+           "renderChat", "sendChatMsg", "renderForum", "postForumMsg"]:
     count = len(re.findall(rf"function {fn}\(\s*\)", content))
     if count > 1:
         errors.append(f"[DUP] function {fn}() defined {count}x")
@@ -243,6 +244,12 @@ required_functions = [
     ("startExam", "startExam()"),
     ("renderCours", "renderCours()"),
     ("renderOutils", "renderOutils()"),
+    ("renderChat", "renderChat()"),
+    ("sendChatMsg", "sendChatMsg()"),
+    ("saveNvidiaKey", "saveNvidiaKey()"),
+    ("renderForum", "renderForum()"),
+    ("postForumMsg", "postForumMsg()"),
+    ("likeForumPost", "likeForumPost()"),
 ]
 for fn_name, fn_sig in required_functions:
     if f"function {fn_name}(" not in content:

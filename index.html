@@ -1918,6 +1918,221 @@ ${flags.length ? '• Indicateurs :<br>' + flags.map(f => '  ⚠️ ' + f).join(
     });
   }
 }
+// ===== CHAT PROF =====
+function renderChat(){
+  const cc = document.getElementById('chat-container');
+  if(!cc) return;
+  const savedKey = localStorage.getItem('llm_nvidia_key');
+  const savedMsgs = JSON.parse(localStorage.getItem('llm_chat_msgs') || '[]');
+
+  let html = `<div class="chat-ui" style="display:flex;flex-direction:column;height:65vh;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden">`;
+
+  if(!savedKey){
+    html += `<div class="chat-setup" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:2rem;text-align:center">
+      <h3>🔑 Clé API NVIDIA</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.6rem">Pour utiliser le chat, tu as besoin d'une clé NVIDIA API</p>
+      <input type="password" id="nvidia-key-input" placeholder="nvapi-..." style="width:100%;max-width:360px;padding:.6rem .9rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.85rem;margin-bottom:.6rem">
+      <button class="btn btn-primary" onclick="saveNvidiaKey()">✅ Valider la clé</button>
+      <p style="font-size:.72rem;color:var(--text3);margin-top:.5rem">Obtiens ta clé sur build.nvidia.com</p>
+    </div>`;
+  } else {
+    html += `<div class="chat-header" style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;border-bottom:1px solid var(--border);background:var(--bg2)">
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <span style="font-size:1.1rem">🤖</span>
+        <h3 style="font-size:.85rem;font-weight:600">Chat Professeur LLM Man</h3>
+        <span class="chat-model-badge" style="font-size:.65rem;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px">NVIDIA Nemotron</span>
+      </div>
+      <button class="btn btn-sm btn-ghost" onclick="clearChat()" title="Effacer la conversation" style="font-size:.72rem">🗑 Effacer</button>
+    </div>
+    <div class="chat-messages" id="chat-msgs" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem">
+      ${savedMsgs.length === 0 ? `<div class="chat-welcome" style="text-align:center;padding:2rem 1rem;color:var(--text2)">
+        <h3 style="font-size:1.1rem;margin-bottom:.5rem;color:var(--text)">Bienvenue au Chat Professeur !</h3>
+        <p style="font-size:.85rem;margin-bottom:.3rem">Pose-moi toutes tes questions sur le testing des LLMs et Agents IA.</p>
+        <p style="font-size:.78rem">Exemples : "Comment tester un RAG ?", "Explique la faithfulness", "Qu'est-ce qu'une hallucination ?"</p>
+      </div>` : savedMsgs.map(m => `
+        <div class="chat-msg ${m.role}" style="display:flex;margin-bottom:.25rem;${m.role === 'user' ? 'justify-content:flex-end' : 'justify-content:flex-start'}">
+          <div class="chat-bubble" style="max-width:80%;padding:.5rem .9rem;border-radius:12px;font-size:.85rem;line-height:1.5;${m.role === 'user' ? 'background:var(--accent);color:#fff;border-bottom-right-radius:4px' : 'background:var(--bg3);color:var(--text);border-bottom-left-radius:4px'}">${m.msg}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="chat-input-area" style="display:flex;gap:.5rem;padding:.6rem 1rem;border-top:1px solid var(--border);background:var(--bg2)">
+      <textarea id="chat-input" rows="1" placeholder="Pose ta question..." style="flex:1;padding:.5rem .7rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.85rem;resize:none;min-height:38px;max-height:120px;font-family:var(--font)"></textarea>
+      <button class="btn btn-primary" id="chat-send-btn" onclick="sendChatMsg()" style="padding:.5rem 1rem;font-size:.85rem">Envoyer</button>
+    </div>`;
+  }
+
+  html += `</div>`;
+  cc.innerHTML = html;
+
+  // Scroll to bottom
+  const msgs = document.getElementById('chat-msgs');
+  if(msgs) msgs.scrollTop = msgs.scrollHeight;
+
+  // Auto-resize textarea + Enter to send
+  const inp = document.getElementById('chat-input');
+  if(inp){
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendChatMsg(); }
+      setTimeout(() => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 120) + 'px'; }, 0);
+    });
+  }
+}
+
+function saveNvidiaKey(){
+  const val = document.getElementById('nvidia-key-input').value.trim();
+  if(!val.startsWith('nvapi-')){
+    alert('⚠️ La clé doit commencer par "nvapi-". Obtiens-la sur build.nvidia.com');
+    return;
+  }
+  localStorage.setItem('llm_nvidia_key', val);
+  renderChat();
+}
+
+function clearChat(){
+  if(!confirm('Effacer toute la conversation ?')) return;
+  localStorage.setItem('llm_chat_msgs', '[]');
+  renderChat();
+}
+
+async function sendChatMsg(){
+  const inp = document.getElementById('chat-input');
+  const btn = document.getElementById('chat-send-btn');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  btn.disabled = true;
+  btn.textContent = '⏳';
+
+  // Save user message
+  const msgs = JSON.parse(localStorage.getItem('llm_chat_msgs') || '[]');
+  msgs.push({role:'user', msg: esc(msg)});
+  localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
+  renderChat();
+  showTyping();
+
+  try {
+    const key = localStorage.getItem('llm_nvidia_key');
+    const res = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body: JSON.stringify({
+        model: DEFAULT_CHAT_MODEL,
+        messages: [
+          {role:'system',content:'Tu es un professeur expert en test des LLMs, agents IA et qualité logicielle. Réponds en français de façon claire, concise et pédagogique. N\'hésite pas à donner des exemples concrets et des bonnes pratiques. Si on te pose une question hors-sujet, redirige poliment vers le testing LLM.'},
+          ...msgs.map(m => ({role:m.role, content: m.msg}))
+        ],
+        temperature: 0.3, max_tokens: 2048
+      })
+    });
+    if(!res.ok){
+      const err = await res.text();
+      throw new Error('Erreur API: '+res.status+' '+err.substring(0,200));
+    }
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || '⚠️ Pas de réponse reçue.';
+    const formatted = reply.replace(/```(\w*)/g,'<pre><code>').replace(/```/g,'</code></pre>').replace(/\n/g,'<br>');
+
+    msgs.push({role:'assistant', msg: formatted});
+    localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
+  } catch(e){
+    msgs.push({role:'assistant', msg: '❌ Erreur: '+esc(e.message)});
+    localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
+  }
+  removeTyping();
+  renderChat();
+  btn.disabled = false;
+  btn.textContent = 'Envoyer';
+}
+
+function showTyping(){
+  const container = document.getElementById('chat-msgs');
+  if(!container) return;
+  const div = document.createElement('div');
+  div.id = 'typing-indicator';
+  div.className = 'chat-msg bot';
+  div.style.cssText = 'display:flex;margin-bottom:.25rem;justify-content:flex-start';
+  div.innerHTML = '<div class="chat-bubble" style="max-width:80%;padding:.5rem .9rem;border-radius:12px;font-size:.85rem;background:var(--bg3);color:var(--text);border-bottom-left-radius:4px"><span class="typing-dots">🤔 Réflexion en cours<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span></span></div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTyping(){
+  const t = document.getElementById('typing-indicator');
+  if(t) t.remove();
+}
+
+// ===== FORUM =====
+function renderForum(){
+  const container = document.getElementById('forum-container');
+  if(!container) return;
+  const posts = JSON.parse(localStorage.getItem('llm_forum_posts') || '[]');
+
+  container.innerHTML = `
+    <div class="forum-form" style="background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.2rem;margin-bottom:1.2rem">
+      <h3 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">📝 Nouveau sujet</h3>
+      <input type="text" id="forum-title" placeholder="Titre du sujet" style="width:100%;padding:.5rem .7rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.82rem;margin-bottom:.5rem">
+      <textarea id="forum-content" rows="3" placeholder="Écris ton message..." style="width:100%;padding:.5rem .7rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.82rem;resize:vertical;font-family:var(--font);margin-bottom:.5rem"></textarea>
+      <input type="text" id="forum-author" placeholder="Ton pseudo (optionnel)" style="width:100%;max-width:240px;padding:.4rem .6rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.78rem;margin-bottom:.5rem">
+      <div style="display:flex;gap:.5rem">
+        <button class="btn btn-primary btn-sm" onclick="postForumMsg()">📤 Publier</button>
+        <span id="forum-status" style="font-size:.78rem;color:var(--text3);display:flex;align-items:center"></span>
+      </div>
+    </div>
+    <div class="forum-posts">
+      ${posts.length === 0 ? '<p style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">💭 Aucun sujet pour l\'instant. Sois le premier à poster !</p>' : posts.map((p,i) => `
+        <div class="forum-post" style="background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1rem;margin-bottom:.7rem">
+          <h4 style="font-size:.88rem;font-weight:600;margin-bottom:.25rem">${esc(p.title)}</h4>
+          <div class="meta" style="font-size:.72rem;color:var(--text3);margin-bottom:.3rem">👤 ${esc(p.author || 'Anonyme')} · ${p.date}</div>
+          <p style="font-size:.82rem;color:var(--text2)">${esc(p.content)}</p>
+          <div style="margin-top:.5rem;display:flex;gap:.5rem;align-items:center">
+            <button class="btn btn-sm btn-ghost" onclick="likeForumPost(${i})" style="font-size:.72rem">👍 ${p.likes || 0}</button>
+            <span style="font-size:.72rem;color:var(--text3)">💬 ${p.replies || 0} réponses</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // Enter to submit
+  const ft = document.getElementById('forum-title');
+  if(ft) ft.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();postForumMsg();}});
+}
+
+function postForumMsg(){
+  const title = document.getElementById('forum-title').value.trim();
+  const content = document.getElementById('forum-content').value.trim();
+  const author = document.getElementById('forum-author').value.trim() || 'Anonyme';
+  const status = document.getElementById('forum-status');
+  if(!title){ status.textContent = '⚠️ Titre requis'; return; }
+  if(!content){ status.textContent = '⚠️ Message requis'; return; }
+
+  const posts = JSON.parse(localStorage.getItem('llm_forum_posts') || '[]');
+  posts.unshift({
+    title, content, author,
+    date: new Date().toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    likes: 0, replies: 0
+  });
+  localStorage.setItem('llm_forum_posts', JSON.stringify(posts));
+  document.getElementById('forum-title').value = '';
+  document.getElementById('forum-content').value = '';
+  document.getElementById('forum-author').value = '';
+  status.textContent = '✅ Publié !';
+  setTimeout(() => status.textContent = '', 2000);
+  renderForum();
+}
+
+function likeForumPost(idx){
+  const posts = JSON.parse(localStorage.getItem('llm_forum_posts') || '[]');
+  if(posts[idx]){
+    posts[idx].likes = (posts[idx].likes || 0) + 1;
+    localStorage.setItem('llm_forum_posts', JSON.stringify(posts));
+    renderForum();
+  }
+}
+
+// Init
+renderChat();
+renderForum();
 renderOutils();
 renderExams();
 </script>
