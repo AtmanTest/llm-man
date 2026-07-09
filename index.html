@@ -835,36 +835,77 @@ function renderGlossary(filter=''){
 renderGlossary();
 document.getElementById('glossary-search').addEventListener('input', e => renderGlossary(e.target.value.toLowerCase()));
 
-// ===== EXAMENS / QUIZ =====
+// ===== EXAMENS / QUIZ (ISTQB Syllabus) =====
 const EXAMS = [
-  {id:'quiz1',title:'🔰 Quiz Débutant — Bases des LLMs',questions:[
-    {q:'Que signifie LLM ?',options:['Large Language Model','Long Learning Machine','Low Level Module','Linear Linguistic Model'],correct:0},
-    {q:'Quel mécanisme est au cœur de l\'architecture Transformer ?',options:['Convolution','Attention','Recurrence','Reinforcement'],correct:1},
-    {q:'À quoi sert la température dans un LLM ?',options:['Mesurer la température du GPU','Contrôler le caractère aléatoire','Définir la taille du contexte','Ajuster la vitesse'],correct:1},
-    {q:'Qu\'est-ce qu\'un token ?',options:['Un jeton de sécurité','Une unité de texte (~0.75 mot)','Un paramètre du modèle','Un type d\'attaque'],correct:1},
-    {q:'Quel est le principal défaut des LLMs ?',options:['Ils sont trop lents','Les hallucinations','Le coût GPU','Tout ce qui précède'],correct:3},
-    {q:'Qu\'est-ce que le few-shot learning ?',options:['Apprendre avec peu de données','Donner des exemples dans le prompt','Utiliser un petit modèle','Faire un fine-tuning rapide'],correct:1},
-    {q:'Quel est le rôle du RAG ?',options:['Générer des images','Ajouter un contexte externe à la requête','Réduire la taille du modèle','Crypter les données'],correct:1},
-    {q:'Quelle métrique mesure la fidélité au contexte ?',options:['BLEU','ROUGE','Faithfulness','Perplexité'],correct:2},
+  {id:'quiz1',title:'📋 CTFL Foundation — Bases du Test Logiciel',source:'ISTQB Certified Tester Foundation Level v4.0',
+   desc:'Prérequis au CT-AI. Fondamentaux du test logiciel selon le syllabus ISTQB.',
+   questions:[
+    {q:'Selon ISTQB, qu\'est-ce qu\'un test logiciel ?',options:['La vérification que le code compile','L\'activité qui consiste à évaluer la qualité du produit et à identifier les défauts','La rédaction de documentation technique','Le déploiement en production'],correct:1},
+    {q:'Quel est l\'objectif principal des tests ?',options:['Prouver qu\'il n\'y a pas de bugs','Trouver des défauts et donner confiance dans la qualité','Augmenter le nombre de fonctionnalités','Remplacer la revue de code'],correct:1},
+    {q:'Qu\'est-ce qu\'un cas de test (test case) ?',options:['Un bug dans le logiciel','Un ensemble de conditions d\'entrée, de prérequis et de résultats attendus','Une spécification fonctionnelle','Un rapport de test'],correct:1},
+    {q:'Quel est le principe de test dit "Exhaustive testing is impossible" ?',options:['On peut tout tester','Tester tout est impossible, il faut prioriser par risque','Les tests doivent être exhaustifs','Tous les chemins doivent être testés'],correct:1},
+    {q:'Qu\'est-ce que le Pesticide Paradox en test ?',options:['Les tests tuent les bugs','Répéter les mêmes tests ne trouve plus de nouveaux défauts','Les pesticides protègent le code','Les tests doivent être chimiques'],correct:1},
+    {q:'Qu\'est-ce qu\'un niveau de test (test level) ?',options:['La difficulté du test','Un groupe d\'activités de test organisées par stade du cycle de vie (composant, intégration, système, acceptation)','Le nombre de testeurs nécessaires','La version du logiciel testé'],correct:1},
+    {q:'Quelle est la différence entre validation et vérification ?',options:['C\'est la même chose','Vérification : est-ce qu\'on construit le bon produit ? Validation : est-ce qu\'on le construit bien ?','Vérification: est-ce qu\'on le construit bien ? Validation: est-ce qu\'on construit le bon produit ?','Vérification est automatique, validation est manuelle'],correct:2},
+    {q:'Qu\'est-ce qu\'une technique de test boîte noire (black-box) ?',options:['Tester sans connaître le code source, basé sur les spécifications','Tester en connaissant le code source','Tester l\'interface utilisateur uniquement','Tester la sécurité'],correct:0},
+    {q:'Qu\'est-ce que l\'analyse de valeurs limites (Boundary Value Analysis) ?',options:['Tester uniquement les valeurs normales','Technique de test basée sur les limites des classes d\'équivalence','Analyser la limite du budget','Mesurer la couverture de code'],correct:1},
+    {q:'Qu\'est-ce qu\'une revue de code (review) ?',options:['Un test automatisé','Une technique de test statique où le code est examiné par des pairs','Un déploiement en production','Un test de performance'],correct:1},
+    {q:'Que signifie le niveau de sévérité (severity) d\'un défaut ?',options:['La probabilité de trouver le défaut','L\'impact du défaut sur le système','La date à laquelle le défaut a été trouvé','Le nom du testeur'],correct:1},
+    {q:'Qu\'est-ce que le test exploratoire ?',options:['Un test planifié à l\'avance','Un test sans script où le testeur explore librement l\'application','Un test automatisé','Un test de charge'],correct:1},
   ]},
-  {id:'quiz2',title:'📊 Quiz Intermédiaire — Testing & Évaluation',questions:[
-    {q:'Qu\'est-ce qu\'une hallucination LLM ?',options:['Une erreur de syntaxe','Une information fausse générée avec confiance','Un timeout de requête','Un bug du tokenizer'],correct:1},
-    {q:'Que teste le red teaming ?',options:['La rapidité du modèle','Les vulnérabilités de sécurité','La qualité du code','Le coût des API'],correct:1},
-    {q:'À quoi sert SelfCheckGPT ?',options:['Auditer le code du modèle','Détecter les hallucinations','Optimiser les prompts','Générer des embeddings'],correct:1},
-    {q:'Qu\'est-ce que la technique Chain-of-Thought ?',options:['Chaîner plusieurs modèles','Raisonner étape par étape','Connecter des API','Augmenter la fenêtre de contexte'],correct:1},
-    {q:'Quel outil est spécialisé dans l\'évaluation RAG ?',options:['LangChain','RAGAS','TensorFlow','Docker'],correct:1},
-    {q:'Que teste-t-on avec un benchmark MMLU ?',options:['La rapidité d\'inférence','Les connaissances générales','La qualité du code','La sécurité'],correct:1},
-    {q:'Qu\'est-ce qu\'un agent loop ?',options:['Un agent rapide','Une boucle répétitive sans progression','Un type d\'architecture','Un pattern de sécurité'],correct:1},
+  {id:'quiz2',title:'🤖 CT-AI — Test des Systèmes d\'IA',source:'ISTQB Certified Tester AI Testing v2.0',
+   desc:'Syllabus officiel ISTQB pour le test des systèmes basés sur l\'IA, ML et LLMs.',
+   questions:[
+    {q:'Selon le syllabus ISTQB CT-AI, qu\'est-ce qui distingue un système basé sur l\'IA d\'un système logiciel traditionnel ?',options:['Il est plus simple à tester','Il a un comportement probabiliste et non-déterministe','Il ne contient jamais de bugs','Il n\'a pas besoin de maintenance'],correct:1},
+    {q:'Qu\'est-ce qu\'une caractéristique de qualité spécifique aux systèmes d\'IA selon le CT-AI ?',options:['La vitesse d\'exécution','La robustesse face aux données adverses (adversarial robustness)','La taille du code source','Le nombre de développeurs'],correct:1},
+    {q:'Dans le contexte du test des systèmes ML, qu\'est-ce que la métrique de précision (precision) ?',options:['Le nombre total de prédictions correctes','Parmi les éléments prédits positifs, combien sont réellement positifs','Le nombre de faux positifs','Le temps d\'entraînement'],correct:1},
+    {q:'Qu\'est-ce que le rappel (recall) en classification ML ?',options:['Le nombre de vrais négatifs','Parmi les éléments réellement positifs, combien ont été correctement identifiés','La capacité à rappeler les données d\'entraînement','Le temps de réponse du modèle'],correct:1},
+    {q:'Qu\'est-ce que la matrice de confusion (confusion matrix) ?',options:['Un tableau de bord de projet','Une table qui croise les prédictions du modèle avec les valeurs réelles (VP, FP, VN, FN)','Un outil de gestion des défauts','Une technique de test structurel'],correct:1},
+    {q:'Qu\'est-ce que le sur-apprentissage (overfitting) dans un modèle ML ?',options:['Le modèle apprend trop lentement','Le modèle apprend parfaitement les données d\'entraînement mais généralise mal sur de nouvelles données','Le modèle a trop de paramètres','Le modèle est trop rapide'],correct:1},
+    {q:'Qu\'est-ce que le sous-apprentissage (underfitting) ?',options:['Le modèle n\'a pas assez de données','Le modèle n\'apprend pas assez bien les motifs dans les données d\'entraînement','Le modèle est trop simple','Le modèle n\'a pas été testé'],correct:1},
+    {q:'Selon ISTQB CT-AI, qu\'est-ce qu\'un test de données (data testing) ?',options:['Tester la base de données SQL','Valider la qualité, la complétude et la représentativité des données d\'entraînement','Tester les API de données','Générer des données de test'],correct:1},
+    {q:'Qu\'est-ce que le biais (bias) dans un système d\'IA ?',options:['Un câblage incorrect','Une erreur systématique qui favorise certains groupes ou résultats de manière injuste','Un défaut de performance','Un bug dans le code'],correct:1},
+    {q:'Selon ISTQB, comment tester un réseau de neurones ?',options:['On ne peut pas tester les réseaux de neurones','En combinant tests de données, tests du modèle (métriques), tests de comportement et surveillance de la dérive','Avec des tests unitaires standards','En regardant les poids du réseau'],correct:1},
+    {q:'Qu\'est-ce qu\'un test de dérive (drift testing) dans l\'IA ?',options:['Tester si le modèle dérive hors de son domaine','Surveiller et tester l\'évolution des performances du modèle dans le temps (data drift, concept drift)','Un test de performance réseau','Déplacer les données de test'],correct:1},
+    {q:'Qu\'est-ce que l\'IA explicable (XAI) et pourquoi est-ce important pour le test ?',options:['C\'est une technique de test','Permet de comprendre et valider les décisions du modèle, crucial pour la confiance et la détection de biais','C\'est un type d\'IA plus rapide','C\'est un framework de test'],correct:1},
+    {q:'Qu\'est-ce qu\'un adversarial example dans le contexte IA ?',options:['Un test de concurrence','Une entrée modifiée intentionnellement pour tromper le modèle','Un exemple de code mal écrit','Un cas de test rédigé par un concurrent'],correct:1},
+    {q:'Qu\'est-ce que le F1-score ?',options:['La moyenne simple de précision et rappel','La moyenne harmonique de précision et rappel','Le nombre de faux négatifs','Le taux d\'erreur global'],correct:1},
   ]},
-  {id:'quiz3',title:'🎯 Quiz Avancé — Agents & Sécurité',questions:[
-    {q:'Qu\'est-ce qu\'un jailbreak dans le contexte LLM ?',options:['Mettre à jour le firmware','Contourner les garde-fous du modèle','Optimiser les performances','Déboguer le code'],correct:1},
-    {q:'Quelle technique de fine-tuning est la plus économique ?',options:['Full fine-tuning','LoRA/QLoRA','RLHF','Pre-training'],correct:1},
-    {q:'Quel pattern d\'agent alterne raisonnement et action ?',options:['Plan-and-Execute','ReAct','Chain-of-Thought','RAG'],correct:1},
-    {q:'Qu\'est-ce que le catastrophic forgetting ?',options:['Perdre ses clés','Un modèle fine-tuné qui oublie ses capacités générales','Un bug mémoire','Un type d\'attaque'],correct:1},
-    {q:'À quoi sert Llama Guard ?',options:['Classifier des images','Filtrer les contenus dangereux','Générer du code','Traduire des textes'],correct:1},
-    {q:'Qu\'est-ce qu\'un handoff dans un système multi-agent ?',options:['Une poignée de main','Un transfert de contrôle entre agents','Un type de prompt','Un mécanisme d\'attention'],correct:1},
-    {q:'Quel outil permet de tracer et monitorer les LLMs en production ?',options:['GitHub','Langfuse','Docker','VS Code'],correct:1},
-    {q:'Que vérifie la métrique faithfulness ?',options:['La rapidité','Si le modèle reste fidèle au contexte','La complexité du modèle','Le nombre de paramètres'],correct:1},
+  {id:'quiz3',title:'🧠 CT-GenAI — Test des LLMs & Génération',source:'ISTQB Certified Tester Testing with Generative AI',
+   desc:'Syllabus officiel pour le test des systèmes GenAI, LLMs et agents conversationnels.',
+   questions:[
+    {q:'Selon ISTQB CT-GenAI, quelle est la particularité du test des LLMs par rapport au test logiciel traditionnel ?',options:['C\'est exactement la même chose','Les LLMs ont un comportement non-déterministe et probabiliste, ce qui nécessite des approches statistiques plutôt que déterministes','Les LLMs n\'ont pas besoin de tests','Le test est plus simple car le modèle répond toujours'],correct:1},
+    {q:'Qu\'est-ce qu\'une hallucination dans un LLM ?',options:['Une erreur de syntaxe','Un contenu généré qui semble plausible mais qui est factuellement incorrect ou inventé','Un rêve du modèle','Un bug dans l\'API'],correct:1},
+    {q:'Comment tester les hallucinations selon les bonnes pratiques ISTQB ?',options:['On ne peut pas tester les hallucinations','En utilisant des jeux de données de vérité terrain, des métriques de faithfulness, et des évaluations humaines','En redémarrant le serveur','En réduisant la température à 0'],correct:1},
+    {q:'Qu\'est-ce que la faithfulness (fidélité) dans le contexte d\'un LLM ?',options:['La loyauté du modèle envers son créateur','La mesure dans laquelle la réponse du LLM reste fidèle au contexte ou aux sources fournies','La rapidité de réponse','La taille du modèle'],correct:1},
+    {q:'Qu\'est-ce que le prompt engineering dans une optique de test ?',options:['Une technique de développement','Une méthode pour créer des prompts de test qui évaluent systématiquement le comportement du LLM','Un type de programmation','Une technique de déploiement'],correct:1},
+    {q:'Qu\'est-ce qu\'un test de prompt injection ?',options:['Tester la vitesse d\'exécution du prompt','Tester si le LLM peut être détourné par des instructions cachées dans l\'entrée utilisateur','Optimiser la longueur du prompt','Tester la grammaire du prompt'],correct:1},
+    {q:'Comment évaluer la qualité des réponses d\'un LLM en production ?',options:['On ne peut pas, c\'est subjectif','Avec un framework comme DeepEval (hallucination, relevancy, faithfulness, toxicity) combiné à une évaluation humaine','En comptant le nombre de tokens','En mesurant le temps de réponse'],correct:1},
+    {q:'Qu\'est-ce que le RAG (Retrieval-Augmented Generation) et pourquoi nécessite-t-il des tests spécifiques ?',options:['C\'est un type de LLM','Une architecture qui combine recherche documentaire et génération ; nécessite de tester à la fois la pertinence des documents récupérés et la qualité de la génération','Un framework de test','Un modèle de langage'],correct:1},
+    {q:'Qu\'est-ce que la métrique RAGAS faithfulness ?',options:['La température du modèle','Une métrique qui vérifie si les affirmations de la réponse peuvent être déduites du contexte fourni','La vitesse de recherche','Le nombre de documents récupérés'],correct:1},
+    {q:'Comment tester un agent IA autonome selon ISTQB ?',options:['Comme une API classique','En testant chaque étape du cycle agent (perception, raisonnement, action, boucle) avec une attention particulière aux boucles infinies et aux appels d\'outils incorrects','En regardant la sortie finale uniquement','Avec des tests unitaires seulement'],correct:1},
+    {q:'Qu\'est-ce que le jailbreak d\'un LLM ?',options:['Mettre à jour le modèle','Contourner les garde-fous de sécurité du modèle pour obtenir des réponses interdites','Changer la configuration du serveur','Optimiser le prompt'],correct:1},
+    {q:'Qu\'est-ce que le red teaming pour les LLMs ?',options:['Peindre le serveur en rouge','Une attaque simulée systématique pour identifier les vulnérabilités du LLM (injections, jailbreaks, fuites)','Un test de charge','Un déploiement en production'],correct:1},
+    {q:'Quel est le rôle des guardrails dans un système LLM en production ?',options:['Accélérer les réponses','Filtrer les entrées et sorties du LLM pour bloquer les contenus dangereux, les fuites de données et les violations de politique','Générer plus de tokens','Réduire les coûts'],correct:1},
+    {q:'Comment tester la robustesse d\'un LLM face aux variations de prompts ?',options:['En utilisant toujours le même prompt','En créant un dataset de prompts variants (synonymes, reformulations, fautes) et en vérifiant la cohérence des réponses','En ignorant les variations','En utilisant un seul modèle'],correct:1},
+  ]},
+  {id:'quiz4',title:'🏆 Exam Blanc — Test LLMs & Agents',source:'ISTQB CT-AI + GenAI + Pratique QA',
+   desc:'Examen blanc complet couvrant l\'intégralité des sujets : test des LLMs, agents, RAG, sécurité, déploiement.',
+   questions:[
+    {q:'Dans un pipeline RAG, quel est l\'impact d\'un chunking mal configuré ?',options:['Aucun impact','Des chunks trop petits perdent le contexte, des chunks trop grands mélangent les sujets — qualité de la réponse dégradée','Le modèle plante','Le temps de réponse est réduit'],correct:1},
+    {q:'Qu\'est-ce qu\'un agent loop et comment le détecter en test ?',options:['Un agent rapide','Un pattern où l\'agent répète la même action sans progression ; se détecte par monitoring des appels d\'outils et timeout','Un type d\'architecture','Un benchmark de performance'],correct:1},
+    {q:'Quelle métrique est la plus appropriée pour évaluer un système de résumé automatique ?',options:['Temps de réponse','ROUGE (rappel des n-grammes) + évaluation humaine de la cohérence','Nombre de tokens','Taille du modèle'],correct:1},
+    {q:'Comment tester un système de chatbot avant déploiement ?',options:['Avec un seul utilisateur bêta','En combinant tests de conversation (scénarios réels), tests de sécurité (injections), tests de performance (latence), et évaluation de la qualité (hallucinations, pertinence)','En regardant le code','En demandant au développeur'],correct:1},
+    {q:'Qu\'est-ce que le concept drift et comment le tester ?',options:['Un bug dans le code','L\'évolution des données en production qui rend le modèle obsolète ; se teste par monitoring continu des métriques de performance et alerting','Un type de modèle','Un framework de test'],correct:1},
+    {q:'Qu\'est-ce qu\'un faux positif (false positive) dans un classifieur ?',options:['Un élément correctement identifié','Un élément prédit comme positif alors qu\'il est négatif','Un élément non classifié','Une erreur de données'],correct:1},
+    {q:'Quel outil open-source permet de faire du tracing et monitoring LLM en production ?',options:['GitHub','Langfuse','Docker','Postman'],correct:1},
+    {q:'Qu\'est-ce que la couverture de code (code coverage) dans le contexte du test d\'un agent IA ?',options:['Impossible à mesurer','Peut être mesurée au niveau du code de l\'agent, mais ne reflète pas la couverture des comportements possibles de l\'IA','Le nombre de lignes de code de l\'agent','Le nombre de fonctions appelées'],correct:1},
+    {q:'Comment tester la mémoire d\'un agent conversationnel ?',options:['On ne peut pas','En vérifiant que l\'agent se souvient des informations partagées plus tôt dans la conversation et les utilise correctement','En redémarrant la session','En regardant les logs'],correct:1},
+    {q:'Selon ISTQB, qu\'est-ce qu\'un orcle de test (test oracle) pour un système d\'IA ?',options:['Un outil de gestion de projet','Un mécanisme pour déterminer si un résultat de test est acceptable, souvent probabiliste ou basé sur un seuil pour l\'IA','Une base de données de test','Un type de dataset'],correct:1},
+    {q:'Qu\'est-ce que le test A/B pour les LLMs ?',options:['Deux développeurs testent le même modèle','Comparer deux versions du même modèle (ou deux prompts) sur les mêmes entrées pour mesurer la différence de qualité','Un test de performance A/B réseau','Un test de sécurité'],correct:1},
+    {q:'Qu\'est-ce qu\'un test de non-régression (TNR) dans le contexte des LLMs ?',options:['Tester que le modèle n\'a pas changé','Exécuter un benchmark standardisé avant/après chaque mise à jour pour détecter les dégradations de qualité','Tester que le code n\'a pas changé','Un test de performance'],correct:1},
+    {q:'Qu\'est-ce que la perplexité (perplexity) dans l\'évaluation LLM ?',options:['La confusion du modèle','Une métrique qui mesure à quel point le modèle est "surpris" par un texte donné ; plus bas = meilleur','Le nombre de paramètres','Le temps d\'inférence'],correct:1},
+    {q:'Qu\'est-ce que le test de robustesse aux attaques adversariales pour un LLM ?',options:['Tester la robustesse du serveur','Tester la réponse du modèle face à des entrées intentionnellement modifiées (typos, encodages, homoglyphes)','Tester la rapidité','Tester le réseau'],correct:1},
   ]},
 ];
 
@@ -875,8 +916,10 @@ function renderExams(){
   container.innerHTML = EXAMS.map(e => `
     <div class="quiz-card" data-quiz="${e.id}">
       <h3>${e.title}</h3>
-      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.6rem">${e.questions.length} questions</p>
-      <button class="btn btn-sm btn-primary start-quiz" data-quiz="${e.id}">▶️ Commencer</button>
+      <p style="font-size:.78rem;color:var(--accent);margin-bottom:.2rem;font-weight:500">📖 ${esc(e.source)}</p>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.6rem">${esc(e.desc)}</p>
+      <p style="font-size:.78rem;color:var(--text3);margin-bottom:.6rem">${e.questions.length} questions — Certification officielle</p>
+      <button class="btn btn-sm btn-primary start-quiz" data-quiz="${e.id}">▶️ Commencer l'examen</button>
     </div>
   `).join('');
 
