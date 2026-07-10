@@ -65,14 +65,14 @@ nav{
 
 /* ===== MAIN ===== */
 main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
-.section{display:none;padding:2rem 1.2rem;max-width:var(--max-w);margin:0 auto}
+.section{display:none;padding:2rem 1.2rem;max-width:var(--max-w);margin:0 auto;position:relative;overflow:hidden}
 .section.active{display:block}
 .section-header{margin-bottom:2rem}
 .section-header h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;margin-bottom:.4rem;letter-spacing:-.02em}
 .section-header p{color:var(--text2);font-size:.95rem}
 
 /* ===== HERO ===== */
-.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:3rem 1.2rem}
+.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:3rem 1.2rem;position:relative;overflow:hidden}
 .hero-badge{
   display:inline-block;font-size:.7rem;font-weight:600;text-transform:uppercase;
   letter-spacing:.06em;color:var(--accent);background:var(--accent-bg);
@@ -85,6 +85,22 @@ main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
 .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:clamp(.95rem,2vw,1.15rem);color:var(--text2);max-width:650px;margin:0 auto 2rem;line-height:1.7}
 .hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
+
+/* ===== BACKGROUND IMAGES ===== */
+.hero::before,#sec-cours::before,#sec-examens::before,#sec-outils::before,#sec-chat::before,.section-header::before{
+  content:'';position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;pointer-events:none;z-index:0;transition:opacity .4s;
+}
+.hero::before{background-image:url(images/hero-bg.png);opacity:.1}
+[data-theme="light"] .hero::before{opacity:.06}
+#sec-cours::before{background-image:url(images/cours-bg.png);opacity:.06}
+#sec-examens::before{background-image:url(images/examens-bg.png);opacity:.05}
+#sec-outils::before{background-image:url(images/outils-bg.png);opacity:.05}
+#sec-chat::before{background-image:url(images/chat-bg.png);opacity:.05}
+[data-theme="light"] #sec-cours::before,[data-theme="light"] #sec-examens::before,
+[data-theme="light"] #sec-outils::before,[data-theme="light"] #sec-chat::before{opacity:.03}
+.hero>*,.section>*{position:relative;z-index:1}
+
 .btn{
   display:inline-flex;align-items:center;gap:.45rem;
   padding:.65rem 1.4rem;border-radius:var(--radius-sm);
