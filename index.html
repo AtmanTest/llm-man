@@ -520,6 +520,56 @@ main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
   white-space:pre-wrap;margin-top:.5rem;min-height:40px;color:var(--text2);
 }
 
+/* ===== PRICING ===== */
+.pricing-controls{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:1.2rem;flex-wrap:wrap;
+}
+.pricing-filters{display:flex;gap:.35rem}
+.pricing-filter{
+  padding:.35rem .8rem;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);font-size:.78rem;font-weight:500;
+  cursor:pointer;transition:all .15s;
+}
+.pricing-filter:hover{border-color:var(--accent);color:var(--accent)}
+.pricing-filter.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);font-weight:600}
+.pricing-search{
+  padding:.4rem .7rem;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:.78rem;width:180px;
+  margin-left:auto;transition:border-color .15s;
+}
+.pricing-search:focus{outline:none;border-color:var(--accent)}
+.pricing-summary{
+  display:flex;gap:.75rem;margin-bottom:.8rem;flex-wrap:wrap;
+}
+.pricing-summary-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:.5rem .8rem;flex:1;min-width:120px;
+}
+.pricing-summary-item .ps-label{font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.03em}
+.pricing-summary-item .ps-value{font-size:1.05rem;font-weight:700;color:var(--accent);margin-top:.1rem}
+.pricing-table-wrap{overflow-x:auto;margin-bottom:1rem;border-radius:var(--radius);border:1px solid var(--border)}
+.pricing-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:750px}
+.pricing-table th{
+  background:var(--bg2);padding:.55rem .65rem;text-align:left;
+  font-weight:600;color:var(--text2);white-space:nowrap;
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;
+}
+.pricing-sub{display:block;font-size:.62rem;font-weight:400;color:var(--text3)}
+.pricing-table td{
+  padding:.45rem .65rem;border-bottom:1px solid var(--border);
+  color:var(--text);vertical-align:middle;
+}
+.pricing-table tr:hover td{background:var(--bg2)}
+.pricing-table .pricing-null{color:var(--text3)}
+.pricing-status-icon{font-size:.85rem}
+.pricing-vendor{font-size:.65rem;color:var(--text3)}
+.pricing-method{font-size:.78rem;color:var(--text2);line-height:1.7;max-width:650px}
+.pricing-method details{border:1px solid var(--border);border-radius:var(--radius-sm);padding:.35rem .6rem;background:var(--surface)}
+.pricing-method summary{cursor:pointer;font-weight:600;color:var(--text)}
+.pricing-method a{color:var(--accent)}
+.pricing-loading{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:.9rem}
+
 /* ===== FOOTER ===== */
 footer{
   text-align:center;padding:2rem 1.2rem;border-top:1px solid var(--border);
@@ -544,6 +594,7 @@ footer{
     <div class="nav-links">
       <a href="#" data-nav="accueil" class="active">Accueil</a>
       <a href="#" data-nav="news">News</a>
+      <a href="#" data-nav="pricing">⚡ Prix</a>
       <a href="#" data-nav="cours">Cours</a>
       <a href="#" data-nav="chat">Chat Prof</a>
       <a href="#" data-nav="examens">Examens</a>
@@ -661,6 +712,50 @@ footer{
   </div>
   <input type="text" class="glossary-search" id="glossary-search" placeholder="🔍 Rechercher un terme…">
   <div class="glossary-list" id="glossary-list"></div>
+</section>
+<section id="sec-pricing" class="section">
+  <div class="section-header">
+    <h1>⚡ Puissance & Prix des LLMs</h1>
+    <p>Comparatif des meilleurs modèles IA sur qualité, prix, vitesse et contexte. <span id="pricing-date" style="color:var(--text3);font-size:.85rem"></span></p>
+  </div>
+  <div class="pricing-controls">
+    <div class="pricing-filters">
+      <button class="pricing-filter active" data-pf="all">Tous</button>
+      <button class="pricing-filter" data-pf="frontier">🔒 Frontier</button>
+      <button class="pricing-filter" data-pf="open-weight">🔓 Open-weight</button>
+    </div>
+    <input type="text" class="pricing-search" id="pricing-search" placeholder="🔍 Filtrer par nom…">
+  </div>
+  <div class="pricing-summary" id="pricing-summary"></div>
+  <div class="pricing-table-wrap">
+    <table class="pricing-table" id="pricing-table">
+      <thead>
+        <tr>
+          <th>Modèle</th>
+          <th>Éditeur</th>
+          <th>Statut</th>
+          <th>Multi</th>
+          <th>Context</th>
+          <th>Input<span class="pricing-sub">/1M tok</span></th>
+          <th>Output<span class="pricing-sub">/1M tok</span></th>
+          <th>Blended<span class="pricing-sub">/1M tok</span></th>
+          <th>Speed<span class="pricing-sub">tok/s</span></th>
+          <th>Best for</th>
+        </tr>
+      </thead>
+      <tbody id="pricing-tbody"></tbody>
+    </table>
+  </div>
+  <div class="pricing-method" id="pricing-method">
+    <details>
+      <summary>📐 Méthodologie</summary>
+      <p><strong>Blended price</strong> = (input + output × 3) ÷ 4 — pondération 1:3 input/output standard</p>
+      <p><strong>Value Score</strong> = quality ÷ blended — quand quality_score disponible</p>
+      <p><strong>Sources :</strong> <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter API</a> (prix temps réel), <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noopener">Artificial Analysis</a>, <a href="https://llm-stats.com/ai-trends" target="_blank" rel="noopener">LLM Stats</a></p>
+      <p><strong>Statut :</strong> 🔒 Frontier = fermé, 🔓 Open-weight = poids ouverts, 💻 Local = exécutable localement</p>
+      <p><strong>Devise :</strong> USD | <strong>Mise à jour :</strong> Quotidienne via GitHub Actions</p>
+    </details>
+  </div>
 </section>
 </main>
 
@@ -2168,6 +2263,119 @@ renderChat();
 renderForum();
 renderOutils();
 renderExams();
+
+// ===== PRICING =====
+let pricingData = null;
+let pricingFilter = 'all';
+
+async function loadPricing(){
+  const tbody = document.getElementById('pricing-tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="10" class="pricing-loading">📡 Chargement des données...</td></tr>';
+  try{
+    const resp = await fetch('data/llm-models.latest.json?_=' + Date.now());
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    pricingData = await resp.json();
+    renderPricing();
+  }catch(e){
+    tbody.innerHTML = '<tr><td colspan="10" class="pricing-loading">❌ Données non disponibles</td></tr>';
+    console.warn('Pricing load error:', e.message);
+  }
+}
+
+function renderPricing(){
+  if(!pricingData || !pricingData.models){
+    document.getElementById('pricing-tbody').innerHTML = '<tr><td colspan="10" class="pricing-loading">Aucune donnée</td></tr>';
+    return;
+  }
+  
+  // Update date
+  const dateEl = document.getElementById('pricing-date');
+  if(dateEl) dateEl.textContent = '— Mise à jour : ' + (pricingData.updatedAt || '').split('T')[0];
+  
+  let models = pricingData.models;
+  
+  // Apply filter
+  if(pricingFilter !== 'all'){
+    models = models.filter(m => m.status === pricingFilter);
+  }
+  
+  // Apply search
+  const searchInput = document.getElementById('pricing-search');
+  if(searchInput && searchInput.value.trim()){
+    const q = searchInput.value.trim().toLowerCase();
+    models = models.filter(m => m.name.toLowerCase().includes(q) || m.vendor.toLowerCase().includes(q));
+  }
+  
+  // Summary
+  renderPricingSummary(models);
+  
+  // Table
+  const tbody = document.getElementById('pricing-tbody');
+  if(models.length === 0){
+    tbody.innerHTML = '<tr><td colspan="10" class="pricing-loading">Aucun modèle trouvé</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = models.map(m => {
+    const statusIcon = m.status === 'frontier' ? '🔒' : m.status === 'open-weight' ? '🔓' : '💻';
+    const multiIcon = m.multimodal === true ? '✅' : m.multimodal === false ? '❌' : '<span class="pricing-null">—</span>';
+    const ctx = m.context_window_tokens ? (m.context_window_tokens / 1000).toFixed(0) + 'K' : '<span class="pricing-null">—</span>';
+    const inp = m.pricing.input_usd_per_1m != null ? '$' + m.pricing.input_usd_per_1m.toFixed(2) : '<span class="pricing-null">—</span>';
+    const outp = m.pricing.output_usd_per_1m != null ? '$' + m.pricing.output_usd_per_1m.toFixed(2) : '<span class="pricing-null">—</span>';
+    const blend = m.pricing.blended_usd_per_1m != null ? '$' + m.pricing.blended_usd_per_1m.toFixed(2) : '<span class="pricing-null">—</span>';
+    const speed = m.speed_tokens_per_s != null ? m.speed_tokens_per_s : '<span class="pricing-null">—</span>';
+    const best = m.best_for || '<span class="pricing-null">—</span>';
+    return `<tr>
+      <td><strong>${m.name}</strong><div class="pricing-vendor">${m.vendor}</div></td>
+      <td><span class="pricing-status-icon">${statusIcon}</span></td>
+      <td>${multiIcon}</td>
+      <td>${ctx}</td>
+      <td>${inp}</td>
+      <td>${outp}</td>
+      <td>${blend}</td>
+      <td>${speed}</td>
+      <td>${best}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPricingSummary(models){
+  const container = document.getElementById('pricing-summary');
+  if(!container) return;
+  const total = pricingData.models.length;
+  const frontier = pricingData.models.filter(m => m.status === 'frontier').length;
+  const openWeight = pricingData.models.filter(m => m.status === 'open-weight').length;
+  const filtered = models.length;
+  container.innerHTML = `
+    <div class="pricing-summary-item"><div class="ps-label">Modèles</div><div class="ps-value">${total}</div></div>
+    <div class="pricing-summary-item"><div class="ps-label">🔒 Frontier</div><div class="ps-value">${frontier}</div></div>
+    <div class="pricing-summary-item"><div class="ps-label">🔓 Open-weight</div><div class="ps-value">${openWeight}</div></div>
+    ${filtered !== total ? `<div class="pricing-summary-item"><div class="ps-label">Filtrés</div><div class="ps-value">${filtered}</div></div>` : ''}
+  `;
+}
+
+// Pricing event handlers
+document.addEventListener('DOMContentLoaded', () => {
+  // Filter buttons
+  document.querySelectorAll('.pricing-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pricing-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      pricingFilter = btn.dataset.pf;
+      renderPricing();
+    });
+  });
+  
+  // Search
+  const searchInput = document.getElementById('pricing-search');
+  if(searchInput){
+    searchInput.addEventListener('input', () => renderPricing());
+  }
+  
+  // Load pricing data
+  loadPricing();
+});
 </script>
 </body>
 </html>

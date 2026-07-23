@@ -1,0 +1,24 @@
+name: ⚡ LLM Pricing — Mise à jour quotidienne
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Quotidien à 6h UTC
+  workflow_dispatch:       # Déclenchement manuel
+permissions:
+  contents: write
+jobs:
+  update-pricing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Collecter et normaliser les données LLM
+        run: node scripts/update-llm-models.mjs
+      - name: Commit & Push si changé
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "⚡ auto: mise à jour dataset Puissance & Prix LLM"
+          commit_user_name: "LLM Man Bot"
+          commit_user_email: "bot@llm-man.dev"
+          file_pattern: "data/*"
