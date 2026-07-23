@@ -1,12 +1,13 @@
 /**
  * LLM Man — Mise à jour dataset Puissance & Prix des LLMs
  * 
- * Collecte les données depuis les sources prioritaires,
- * normalise, calcule blended_price et value_score,
+ * Collecte TOUS les modèles depuis OpenRouter API,
+ * normalise les prix, calcule blended_price,
  * génère data/llm-models.latest.json et data/llm-models.latest.md
  * 
  * Usage : node scripts/update-llm-models.mjs
  * Node 20+ requis (native fetch)
+ * Zéro dépendance, zéro token LLM consommé
  */
 
 import fs from 'fs';
@@ -19,260 +20,34 @@ const DATA_DIR = path.join(ROOT, 'data');
 const JSON_FILE = path.join(DATA_DIR, 'llm-models.latest.json');
 const MD_FILE = path.join(DATA_DIR, 'llm-models.latest.md');
 
-// ===== CONFIG =====
-const FETCH_TIMEOUT = 15000;
 const USER_AGENT = 'LLM-Man-Dataset/1.0 (+https://github.com/AtmanTest/llm-man)';
-
-// ===== SOURCES PRIORITAIRES =====
-const SOURCES = {
-  artificialAnalysis: 'https://artificialanalysis.ai/leaderboards/models',
-  llmStats: 'https://llm-stats.com/api/models',  // May not exist as API
-  benchLM: 'https://benchlm.ai/stats',
-};
-
-// ===== SCHEMA PAR DÉFAUT =====
-function emptyModel(name, vendor) {
-  return {
-    name,
-    vendor,
-    status: null,           // frontier | open-weight | local
-    quality_score: null,    // Artificial Analysis Intelligence Index
-    quality_score_label: 'Artificial Analysis Intelligence Index',
-    benchmarks: {
-      gpqa_diamond: null,
-      aime_2025: null,
-      livecodebench: null,
-      mmlu_pro: null,
-    },
-    pricing: {
-      input_usd_per_1m: null,
-      output_usd_per_1m: null,
-      blended_usd_per_1m: null,
-    },
-    speed_tokens_per_s: null,
-    context_window_tokens: null,
-    multimodal: null,
-    updated_at: new Date().toISOString().split('T')[0],
-    best_for: null,
-    source: { primary: null, secondary: [] },
-    value_score: null,
-  };
-}
 
 // ===== HELPERS =====
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function fetchWithTimeout(url, options = {}) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-  try {
-    const resp = await fetch(url, {
-      ...options,
-      signal: controller.signal,
-      headers: { 'User-Agent': USER_AGENT, ...(options.headers || {}) },
-    });
-    return resp;
-  } finally {
-    clearTimeout(id);
+function extractVendor(modelId) {
+  if (!modelId) return 'Inconnu';
+  const parts = modelId.split('/');
+  if (parts.length >= 2) {
+    const vendor = parts[0];
+    // Capitalize nicely
+    return vendor.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
+  return modelId;
 }
 
-// ===== COLLECTE DEPUIS ARTIFICIAL ANALYSIS =====
-async function collectFromAA() {
-  console.log('[AA] Fetching Artificial Analysis...');
-  const models = [];
-  try {
-    // AA has an API at /api/models or we scrape the leaderboard page
-    // Their public API endpoint
-    const resp = await fetch('https://artificialanalysis.ai/api/models?limit=100', {
-      headers: { 'User-Agent': USER_AGENT },
-      signal: AbortSignal.timeout(20000),
-    });
-    
-    if (!resp.ok) {
-      console.log(`[AA] API returned ${resp.status}, trying HTML scrape...`);
-      // Fallback: scrape the leaderboard page
-      return await scrapeAAHTML();
-    }
-    
-    const data = await resp.json();
-    if (!Array.isArray(data)) {
-      console.log('[AA] Unexpected API response format, trying HTML scrape...');
-      return await scrapeAAHTML();
-    }
-    
-    for (const m of data) {
-      const model = emptyModel(m.name || m.model_name, m.vendor || m.provider);
-      model.quality_score = m.intelligence_score ?? m.quality_score ?? null;
-      model.speed_tokens_per_s = m.speed ?? m.tokens_per_second ?? null;
-      model.context_window_tokens = m.context_length ?? m.context_window ?? null;
-      model.multimodal = m.multimodal ?? null;
-      if (m.input_price_per_1m_tokens != null) {
-        model.pricing.input_usd_per_1m = m.input_price_per_1m_tokens;
-      }
-      if (m.output_price_per_1m_tokens != null) {
-        model.pricing.output_usd_per_1m = m.output_price_per_1m_tokens;
-      }
-      // Determine status
-      if (m.open_source || m.open_weight) model.status = 'open-weight';
-      else if (m.is_frontier || m.frontier) model.status = 'frontier';
-      else model.status = 'local';
-      
-      model.benchmarks.gpqa_diamond = m.gpqa_diamond ?? m.gpqa ?? null;
-      model.benchmarks.mmlu_pro = m.mmlu_pro ?? null;
-      model.source.primary = SOURCES.artificialAnalysis;
-      model.updated_at = new Date().toISOString().split('T')[0];
-      models.push(model);
-    }
-    
-    console.log(`[AA] Got ${models.length} models from API`);
-  } catch (e) {
-    console.log(`[AA] API error: ${e.message}, scraping HTML...`);
-    return await scrapeAAHTML();
+function extractModelName(modelId, displayName) {
+  if (displayName && displayName !== modelId) return displayName;
+  if (!modelId) return 'Inconnu';
+  const parts = modelId.split('/');
+  if (parts.length >= 2) {
+    // Return the part after the vendor
+    return parts.slice(1).join('/');
   }
-  return models;
+  return modelId;
 }
 
-// Fallback HTML scrape
-async function scrapeAAHTML() {
-  try {
-    console.log('[AA] Scraping HTML leaderboard...');
-    const resp = await fetch('https://artificialanalysis.ai/leaderboards/models', {
-      headers: { 'User-Agent': USER_AGENT },
-      signal: AbortSignal.timeout(20000),
-    });
-    const html = await resp.text();
-    
-    // Try to find JSON data embedded in the page
-    // AA embeds data in __NEXT_DATA__ or similar
-    const jsonMatch = html.match(/__NEXT_DATA__\s*=\s*({[^<]+})/);
-    if (jsonMatch) {
-      try {
-        const nextData = JSON.parse(jsonMatch[1]);
-        const props = nextData?.props?.pageProps;
-        if (props?.models) {
-          const models = [];
-          for (const m of props.models) {
-            const model = emptyModel(m.name, m.vendor || m.provider);
-            model.quality_score = m.intelligence || m.qualityScore || null;
-            model.speed_tokens_per_s = m.speed || null;
-            model.context_window_tokens = m.contextLength || null;
-            model.pricing.input_usd_per_1m = m.inputPrice || null;
-            model.pricing.output_usd_per_1m = m.outputPrice || null;
-            model.multimodal = m.multimodal || null;
-            model.source.primary = SOURCES.artificialAnalysis;
-            model.updated_at = new Date().toISOString().split('T')[0];
-            if (m.isOpenSource) model.status = 'open-weight';
-            else if (m.isClosed) model.status = 'frontier';
-            else model.status = 'local';
-            models.push(model);
-          }
-          console.log(`[AA] Extracted ${models.length} models from embedded data`);
-          return models;
-        }
-      } catch (e) {
-        console.log(`[AA] Parse error: ${e.message}`);
-      }
-    }
-    
-    console.log('[AA] No structured data found in HTML, returning empty');
-    return [];
-  } catch (e) {
-    console.log(`[AA] Scrape failed: ${e.message}`);
-    return [];
-  }
-}
-
-// ===== COLLECTE DEPUIS LLM STATS =====
-async function collectFromLLMStats() {
-  console.log('[LLMS] Fetching LLM Stats...');
-  const models = [];
-  try {
-    // LLM Stats API endpoint
-    const resp = await fetch('https://llm-stats.com/api/models?limit=50', {
-      headers: { 'User-Agent': USER_AGENT },
-      signal: AbortSignal.timeout(20000),
-    });
-    
-    if (!resp.ok) {
-      console.log(`[LLMS] HTTP ${resp.status}, scraping HTML...`);
-      return await scrapeLLMStatsHTML();
-    }
-    
-    const data = await resp.json();
-    const items = Array.isArray(data) ? data : (data.models || data.data || []);
-    
-    for (const m of items) {
-      const model = emptyModel(m.name || m.model, m.vendor || m.provider || m.creator);
-      model.quality_score = m.quality_score || m.intelligence || m.aiIndex || null;
-      model.speed_tokens_per_s = m.speed || m.tokens_per_second || null;
-      model.context_window_tokens = m.context_length || m.context_window || null;
-      model.multimodal = m.multimodal ?? null;
-      model.pricing.input_usd_per_1m = m.input_price || m.inputPrice || null;
-      model.pricing.output_usd_per_1m = m.output_price || m.outputPrice || null;
-      model.benchmarks.gpqa_diamond = m.gpqa_diamond || m.gpqa || null;
-      model.benchmarks.aime_2025 = m.aime_2025 || m.aime || null;
-      model.benchmarks.livecodebench = m.livecodebench || m.lcb || null;
-      model.benchmarks.mmlu_pro = m.mmlu_pro || m.mmluPro || null;
-      model.status = m.status || (m.open_source ? 'open-weight' : (m.is_frontier ? 'frontier' : 'local'));
-      model.source.primary = model.source.primary || SOURCES.llmStats;
-      model.source.secondary.push(SOURCES.llmStats);
-      models.push(model);
-    }
-    
-    console.log(`[LLMS] Got ${models.length} models`);
-  } catch (e) {
-    console.log(`[LLMS] Failed: ${e.message}, scraping HTML...`);
-    return await scrapeLLMStatsHTML();
-  }
-  return models;
-}
-
-async function scrapeLLMStatsHTML() {
-  try {
-    const resp = await fetch('https://llm-stats.com/ai-trends', {
-      headers: { 'User-Agent': USER_AGENT },
-      signal: AbortSignal.timeout(20000),
-    });
-    const html = await resp.text();
-    // Try embedded JSON
-    const jsonMatch = html.match(/window\.__DATA__\s*=\s*({[^<]+})/);
-    if (jsonMatch) {
-      try {
-        const data = JSON.parse(jsonMatch[1]);
-        console.log('[LLMS] Found embedded data');
-        // Process embedded data...
-      } catch (e) {}
-    }
-    console.log('[LLMS] HTML scrape returned no structured data');
-    return [];
-  } catch (e) {
-    console.log(`[LLMS] Scrape failed: ${e.message}`);
-    return [];
-  }
-}
-
-// ===== COLLECTE DEPUIS BENCHLM =====
-async function collectFromBenchLM() {
-  console.log('[BENCH] Fetching BenchLM...');
-  try {
-    const resp = await fetch('https://benchlm.ai/api/stats', {
-      headers: { 'User-Agent': USER_AGENT },
-      signal: AbortSignal.timeout(20000),
-    });
-    if (resp.ok) {
-      const data = await resp.json();
-      console.log('[BENCH] Got data');
-      return data;
-    }
-  } catch (e) {
-    console.log(`[BENCH] Failed: ${e.message}`);
-  }
-  console.log('[BENCH] No data');
-  return null;
-}
-
-// ===== COLLECTE DEPUIS OPENROUTER (source principale pricing) =====
+// ===== COLLECTE DEPUIS OPENROUTER =====
 async function collectFromOpenRouter() {
   console.log('[OR] Fetching OpenRouter models...');
   try {
@@ -280,7 +55,10 @@ async function collectFromOpenRouter() {
       headers: { 'User-Agent': USER_AGENT },
       signal: AbortSignal.timeout(15000),
     });
-    if (!resp.ok) return [];
+    if (!resp.ok) {
+      console.log(`[OR] HTTP ${resp.status}, aborting`);
+      return [];
+    }
     const data = await resp.json();
     const models = (data.data || data.models || []);
     console.log(`[OR] Got ${models.length} models`);
@@ -291,237 +69,168 @@ async function collectFromOpenRouter() {
   }
 }
 
-// ===== MODEL MAPPING =====
-// Maps known model names to OpenRouter ID patterns + known data
-const MODEL_DEFS = [
-  {
-    name: 'GPT-4o', vendor: 'OpenAI', status: 'frontier', multimodal: true,
-    orId: 'openai/gpt-4o', knownPricing: { input: 2.50, output: 10.00 },
-    knownContext: 128000,
-  },
-  {
-    name: 'Claude 3.5 Sonnet', vendor: 'Anthropic', status: 'frontier', multimodal: true,
-    orId: 'anthropic/claude-3.5-sonnet', knownPricing: { input: 3.00, output: 15.00 },
-    knownContext: 200000,
-  },
-  {
-    name: 'Claude 3 Opus', vendor: 'Anthropic', status: 'frontier', multimodal: true,
-    orId: 'anthropic/claude-3-opus', knownPricing: { input: 15.00, output: 75.00 },
-    knownContext: 200000,
-  },
-  {
-    name: 'Gemini 2.0 Pro', vendor: 'Google', status: 'frontier', multimodal: true,
-    orId: 'google/gemini-2.0-pro', knownPricing: { input: 1.50, output: 7.50 },
-    knownContext: 1048576,
-  },
-  {
-    name: 'Gemini 2.0 Flash', vendor: 'Google', status: 'frontier', multimodal: true,
-    orId: 'google/gemini-2.0-flash', knownPricing: { input: 0.10, output: 0.40 },
-    knownContext: 1048576,
-  },
-  {
-    name: 'Llama 3.1 405B', vendor: 'Meta', status: 'open-weight', multimodal: false,
-    orId: 'meta-llama/llama-3.1-405b', knownPricing: { input: 1.00, output: 1.00 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Llama 3.1 70B', vendor: 'Meta', status: 'open-weight', multimodal: false,
-    orId: 'meta-llama/llama-3.1-70b', knownPricing: { input: 0.59, output: 0.79 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Llama 3.1 8B', vendor: 'Meta', status: 'open-weight', multimodal: false,
-    orId: 'meta-llama/llama-3.1-8b', knownPricing: { input: 0.06, output: 0.06 },
-    knownContext: 131072,
-  },
-  {
-    name: 'DeepSeek V3', vendor: 'DeepSeek', status: 'open-weight', multimodal: false,
-    orId: 'deepseek/deepseek-chat', knownPricing: { input: 0.27, output: 1.12 },
-    knownContext: 65536,
-  },
-  {
-    name: 'DeepSeek R1', vendor: 'DeepSeek', status: 'open-weight', multimodal: false,
-    orId: 'deepseek/deepseek-r1', knownPricing: { input: 0.70, output: 2.50 },
-    knownContext: 65536,
-  },
-  {
-    name: 'Qwen 2.5 72B', vendor: 'Alibaba', status: 'open-weight', multimodal: false,
-    orId: 'qwen/qwen-2.5-72b', knownPricing: { input: 0.35, output: 0.40 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Qwen 2.5 32B', vendor: 'Alibaba', status: 'open-weight', multimodal: false,
-    orId: 'qwen/qwen-2.5-32b', knownPricing: { input: 0.16, output: 0.16 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Mistral Large 2', vendor: 'Mistral', status: 'open-weight', multimodal: false,
-    orId: 'mistralai/mistral-large', knownPricing: { input: 2.00, output: 6.00 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Mixtral 8x22B', vendor: 'Mistral', status: 'open-weight', multimodal: false,
-    orId: 'mistralai/mixtral-8x22b', knownPricing: { input: 0.90, output: 0.90 },
-    knownContext: 65536,
-  },
-  {
-    name: 'Nemotron 4 340B', vendor: 'NVIDIA', status: 'open-weight', multimodal: false,
-    orId: 'nvidia/nemotron-4-340b', knownPricing: { input: 1.00, output: 1.00 },
-    knownContext: 4096,
-  },
-  {
-    name: 'Grok 2', vendor: 'xAI', status: 'frontier', multimodal: true,
-    orId: 'x-ai/grok-2', knownPricing: { input: 2.00, output: 10.00 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Gemma 2 27B', vendor: 'Google', status: 'open-weight', multimodal: false,
-    orId: 'google/gemma-2-27b', knownPricing: { input: 0.27, output: 0.27 },
-    knownContext: 8192,
-  },
-  {
-    name: 'Phi 3.5', vendor: 'Microsoft', status: 'open-weight', multimodal: false,
-    orId: 'microsoft/phi-3.5', knownPricing: { input: 0.06, output: 0.06 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Command R+', vendor: 'Cohere', status: 'open-weight', multimodal: false,
-    orId: 'cohere/command-r-plus', knownPricing: { input: 2.50, output: 10.00 },
-    knownContext: 131072,
-  },
-  {
-    name: 'Yi 1.5 34B', vendor: '01.AI', status: 'open-weight', multimodal: false,
-    orId: '01-ai/yi-1.5-34b', knownPricing: { input: 0.16, output: 0.16 },
-    knownContext: 4096,
-  },
-];
-
-// ===== MERGE & NORMALISATION =====
-function mergeModelData(orModels) {
-  console.log('[MERGE] Merging OpenRouter pricing data...');
+// ===== TRAITEMENT =====
+function processModels(orModels) {
+  console.log('[PROCESS] Processing models...');
   
-  // Build lookup: OpenRouter ID → pricing
-  const orMap = new Map();
+  const processed = [];
+  const seen = new Set();
+  
   for (const m of orModels) {
-    const id = (m.id || '').toLowerCase();
+    const id = m.id || '';
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    
     const pricing = m.pricing || {};
-    orMap.set(id, pricing);
-    // Also index by name
-    if (m.name) orMap.set(m.name.toLowerCase(), pricing);
-  }
-
-  const merged = [];
-
-  for (const def of MODEL_DEFS) {
-    const model = emptyModel(def.name, def.vendor);
-    model.status = def.status;
-    model.multimodal = def.multimodal;
-    model.context_window_tokens = def.knownContext;
-    model.source.primary = 'https://openrouter.ai/models/' + def.orId;
+    const promptPrice = parseFloat(pricing.prompt);
+    const completionPrice = parseFloat(pricing.completion);
     
-    // Try to get pricing from OpenRouter
-    let inputPrice = null;
-    let outputPrice = null;
-    
-    // Try exact match
-    const orPricing = orMap.get(def.orId);
-    if (orPricing) {
-      inputPrice = orPricing.prompt != null ? parseFloat(orPricing.prompt) * 1_000_000 : null;
-      outputPrice = orPricing.completion != null ? parseFloat(orPricing.completion) * 1_000_000 : null;
+    // Skip models where both prices are 0 or undefined (free models)
+    if ((!promptPrice || promptPrice <= 0) && (!completionPrice || completionPrice <= 0)) {
+      continue;
     }
     
-    // Try substring match
-    if (inputPrice == null || outputPrice == null) {
-      for (const [id, pricing] of orMap) {
-        if (id.includes(def.orId) || def.orId.includes(id)) {
-          const ip = pricing.prompt != null ? parseFloat(pricing.prompt) * 1_000_000 : null;
-          const op = pricing.completion != null ? parseFloat(pricing.completion) * 1_000_000 : null;
-          if (inputPrice == null && ip != null) inputPrice = ip;
-          if (outputPrice == null && op != null) outputPrice = op;
-          if (inputPrice != null && outputPrice != null) break;
-        }
-      }
+    const inputUsd = promptPrice > 0 ? promptPrice * 1_000_000 : null;
+    const outputUsd = completionPrice > 0 ? completionPrice * 1_000_000 : null;
+    
+    // Calculate blended if both exist
+    let blended = null;
+    if (inputUsd != null && outputUsd != null) {
+      blended = parseFloat(((inputUsd + outputUsd * 3) / 4).toFixed(6));
+    } else if (inputUsd != null) {
+      blended = inputUsd;
+    } else if (outputUsd != null) {
+      blended = outputUsd;
     }
     
-    // Fallback to known pricing if OpenRouter didn't match
-    if (inputPrice == null) inputPrice = def.knownPricing?.input ?? null;
-    if (outputPrice == null) outputPrice = def.knownPricing?.output ?? null;
+    // Extract name and vendor
+    const vendor = extractVendor(id);
+    const name = extractModelName(id, m.name);
     
-    model.pricing.input_usd_per_1m = inputPrice;
-    model.pricing.output_usd_per_1m = outputPrice;
+    // Determine context window
+    let context = m.context_length || null;
+    if (context == null && m.metadata?.context_length) context = m.metadata.context_length;
+    if (context == null && m.top_provider?.context_length) context = m.top_provider.context_length;
+    if (context != null) context = Math.round(context);
     
-    // Calculate blended price
-    if (inputPrice != null && outputPrice != null) {
-      model.pricing.blended_usd_per_1m = (inputPrice + outputPrice * 3) / 4;
-    }
+    // Architecture info
+    const architecture = m.architecture || m.metadata?.architecture || {};
+    const modalities = m.modalities || m.metadata?.modalities || null;
     
-    // Try to find speed from OpenRouter metadata
-    // (OpenRouter doesn't provide speed data in the models endpoint)
-    model.speed_tokens_per_s = null;
-    
-    // Assign best_for based on known strengths
-    if (def.name.includes('GPT-4o') || def.name.includes('Claude 3.5')) {
-      model.best_for = 'Général & polyvalence';
-    } else if (def.name.includes('DeepSeek')) {
-      model.best_for = 'Code & raisonnement';
-    } else if (def.name.includes('Gemma') || def.name.includes('Phi') || def.name.includes('Yi')) {
-      model.best_for = 'Léger & local';
-    } else if (model.pricing.blended_usd_per_1m != null && model.pricing.blended_usd_per_1m < 1) {
-      model.best_for = 'Faible coût';
-    } else if (model.pricing.blended_usd_per_1m != null && model.pricing.blended_usd_per_1m > 10) {
-      model.best_for = 'Haute capacité';
+    // Determine multimodal
+    let multimodal = null;
+    if (modalities && Array.isArray(modalities)) {
+      multimodal = modalities.some(mod => 
+        typeof mod === 'string' && (mod.toLowerCase().includes('image') || mod.toLowerCase().includes('vision'))
+      );
+    } else if (architecture?.modality) {
+      multimodal = architecture.modality === 'multimodal';
     } else {
-      model.best_for = 'Bon équilibre';
+      // Check if model ID suggests vision
+      multimodal = id.toLowerCase().includes('vision') || id.toLowerCase().includes('multimodal');
+      if (!multimodal) multimodal = null; // uncertain
     }
     
-    // Value score requires quality_score which we don't have yet
-    // Setting to null for now
-    model.value_score = null;
+    // Describe the model
+    let bestFor = null;
+    if (blended != null) {
+      if (blended < 0.1) bestFor = '💰 Ultra low-cost';
+      else if (blended < 0.5) bestFor = '👍 Bon marché';
+      else if (blended < 2) bestFor = '💰 Abordable';
+      else if (blended < 10) bestFor = '🔋 Milieu de gamme';
+      else if (blended < 50) bestFor = '⚡ Premium';
+      else bestFor = '👑 Très haut de gamme';
+    }
     
-    model.updated_at = new Date().toISOString().split('T')[0];
-    merged.push(model);
+    // Determine status based on naming conventions
+    let status = 'open-weight'; // default guess
+    const idLower = id.toLowerCase();
+    if (idLower.includes('gpt-4') || idLower.includes('gpt-4o') || 
+        idLower.includes('claude-3.5') || idLower.includes('claude-3-opus') ||
+        idLower.includes('gemini-2.0') || idLower.includes('grok') ||
+        idLower.includes('gemini-exp')) {
+      if (!idLower.includes('free')) status = 'frontier';
+    }
+    if (idLower.includes('gguf') || idLower.includes('local') || idLower.includes('7b') || 
+        idLower.includes('8b') || idLower.includes('13b') || idLower.includes('30b') ||
+        idLower.includes('70b') || idLower.includes('120b') || idLower.includes('180b')) {
+      status = status === 'frontier' ? 'frontier' : 'open-weight';
+    }
+    
+    processed.push({
+      id: id,
+      name: name,
+      vendor: vendor,
+      status: status,
+      multimodal: multimodal,
+      context_window_tokens: context,
+      pricing: {
+        input_usd_per_1m: inputUsd != null ? parseFloat(inputUsd.toFixed(6)) : null,
+        output_usd_per_1m: outputUsd != null ? parseFloat(outputUsd.toFixed(6)) : null,
+        blended_usd_per_1m: blended,
+      },
+      best_for: bestFor,
+      updated_at: new Date().toISOString().split('T')[0],
+      source: 'https://openrouter.ai/api/v1/models',
+    });
   }
-
-  return merged;
+  
+  // Sort: alphabetically by vendor then name
+  processed.sort((a, b) => {
+    const v = a.vendor.localeCompare(b.vendor);
+    if (v !== 0) return v;
+    return a.name.localeCompare(b.name);
+  });
+  
+  console.log(`[PROCESS] ${processed.length} models with pricing`);
+  return processed;
 }
 
 // ===== GÉNÉRATION MARKDOWN =====
-function generateMarkdown(models) {
-  const date = new Date().toISOString().split('T')[0];
+function generateMarkdown(models, date) {
   let md = `# 📊 Puissance et Prix des LLMs — ${date}\n\n`;
-  md += `> Mise à jour automatique quotidienne. Sources : Artificial Analysis, LLM Stats, BenchLM, OpenRouter.\n\n`;
+  md += `> Mise à jour automatique quotidienne. Source : OpenRouter API. ${models.length} modèles.\n\n`;
   
-  // Résumé top 3
-  const bestGeneral = models.find(m => m.best_for === 'Puissance maximale' || m.quality_score > 80) || models[0];
-  const bestCode = models.filter(m => m.benchmarks.livecodebench != null).sort((a,b) => (b.benchmarks.livecodebench ?? 0) - (a.benchmarks.livecodebench ?? 0))[0] || models[0];
-  const bestBudget = models.filter(m => m.value_score != null).sort((a,b) => (b.value_score ?? 0) - (a.value_score ?? 0))[0] || models[0];
+  // Stats
+  const withContext = models.filter(m => m.context_window_tokens != null).length;
+  const withInput = models.filter(m => m.pricing.input_usd_per_1m != null).length;
+  const withOutput = models.filter(m => m.pricing.output_usd_per_1m != null).length;
   
-  md += `## 🏆 Top 3 par usage\n\n`;
-  md += `| Usage | Modèle | Score |\n`;
-  md += `|-------|--------|-------|\n`;
-  md += `| **Général** | ${bestGeneral.name} (${bestGeneral.vendor}) | Quality: ${bestGeneral.quality_score ?? '—'} |\n`;
-  md += `| **Code** | ${bestCode.name} (${bestCode.vendor}) | LiveCodeBench: ${bestCode.benchmarks.livecodebench ?? '—'} |\n`;
-  md += `| **Budget** | ${bestBudget.name} (${bestBudget.vendor}) | Value: ${bestBudget.value_score ?? '—'} |\n\n`;
+  md += `**Statistiques :** ${models.length} modèles | Prix input: ${withInput} | Prix output: ${withOutput} | Contexte connu: ${withContext}\n\n`;
   
-  md += `## Tableau complet\n\n`;
-  md += `| Modèle | Éditeur | Status | Quality | GPQA | AIME | LCB | MMLU-P | Input | Output | Blended | Speed | Context | Multi | Value | Best for |\n`;
-  md += `|--------|---------|--------|---------|------|------|-----|--------|-------|--------|---------|-------|---------|-------|-------|----------|\n`;
+  // Top 5 cheapest with good context
+  const topCheap = models
+    .filter(m => m.pricing.blended_usd_per_1m != null && m.context_window_tokens != null && m.context_window_tokens >= 32000)
+    .sort((a, b) => a.pricing.blended_usd_per_1m - b.pricing.blended_usd_per_1m)
+    .slice(0, 5);
+  
+  md += `## 🏆 Top 5 moins chers (context ≥ 32K)\n\n`;
+  md += `| Modèle | Blended/1M | Contexte |\n`;
+  md += `|--------|-----------|---------|\n`;
+  for (const m of topCheap) {
+    md += `| ${m.id} | $${m.pricing.blended_usd_per_1m.toFixed(4)} | ${(m.context_window_tokens / 1000).toFixed(0)}K |\n`;
+  }
+  
+  md += `\n## Tableau complet (${models.length} modèles)\n\n`;
+  md += `| Modèle | Éditeur | Input/1M | Output/1M | Blended/1M | Contexte | Best for |\n`;
+  md += `|--------|---------|----------|-----------|------------|---------|----------|\n`;
   
   for (const m of models) {
-    const statusIcon = m.status === 'frontier' ? '🔒' : m.status === 'open-weight' ? '🔓' : '💻';
-    md += `| ${m.name} | ${m.vendor} | ${statusIcon} | ${m.quality_score ?? '—'} | ${m.benchmarks.gpqa_diamond ?? '—'} | ${m.benchmarks.aime_2025 ?? '—'} | ${m.benchmarks.livecodebench ?? '—'} | ${m.benchmarks.mmlu_pro ?? '—'} | ${m.pricing.input_usd_per_1m != null ? '$' + m.pricing.input_usd_per_1m : '—'} | ${m.pricing.output_usd_per_1m != null ? '$' + m.pricing.output_usd_per_1m : '—'} | ${m.pricing.blended_usd_per_1m != null ? '$' + m.pricing.blended_usd_per_1m.toFixed(2) : '—'} | ${m.speed_tokens_per_s != null ? m.speed_tokens_per_s + ' t/s' : '—'} | ${m.context_window_tokens != null ? (m.context_window_tokens / 1000).toFixed(0) + 'K' : '—'} | ${m.multimodal ? '✅' : '❌'} | ${m.value_score ?? '—'} | ${m.best_for ?? '—'} |\n`;
+    const inp = m.pricing.input_usd_per_1m != null ? '$' + m.pricing.input_usd_per_1m.toFixed(4) : '—';
+    const out = m.pricing.output_usd_per_1m != null ? '$' + m.pricing.output_usd_per_1m.toFixed(4) : '—';
+    const blend = m.pricing.blended_usd_per_1m != null ? '$' + m.pricing.blended_usd_per_1m.toFixed(4) : '—';
+    const ctx = m.context_window_tokens != null ? (m.context_window_tokens / 1000).toFixed(0) + 'K' : '—';
+    const best = m.best_for || '—';
+    md += `| ${m.id} | ${m.vendor} | ${inp} | ${out} | ${blend} | ${ctx} | ${best} |\n`;
   }
   
   md += `\n## Méthodologie\n\n`;
-  md += `- **Quality Score** : Artificial Analysis Intelligence Index (priorité) ou score équivalent\n`;
-  md += `- **Blended Price** = (input_price + output_price × 3) / 4 (ratio 1:3 input/output standard)\n`;
-  md += `- **Value Score** = quality_score / blended_price (plus = meilleur rapport qualité/prix)\n`;
-  md += `- **Sources** : Artificial Analysis, LLM Stats, BenchLM, OpenRouter, pages officielles\n`;
-  md += `- **Statut** : 🔒 Frontier / 🔓 Open-weight / 💻 Local\n`;
-  md += `- **Limites** : Les données sont collectées depuis des sources publiques, peuvent ne pas refléter les derniers benchmarks. Les modèles sans données vérifiables suffisantes sont exclus.\n`;
-  md += `- **Devise** : USD\n`;
-  md += `- **Mise à jour** : Quotidienne via GitHub Actions\n\n`;
-  md += `_Dernière mise à jour : ${date}_\n`;
+  md += `- Source : OpenRouter API (prix temps réel, par token convertis en USD/1M tokens)\n`;
+  md += `- **Blended Price** = (input + output × 3) / 4\n`;
+  md += `- Modèles gratuits (prix = 0) exclus\n`;
+  md += `- Mise à jour : quotidienne via GitHub Actions\n`;
+  md += `- Zéro consommation de tokens LLM — simple collecte HTTP\n`;
+  md += `- ${date}\n`;
   
   return md;
 }
@@ -531,37 +240,39 @@ async function main() {
   console.log('=== LLM Man — Dataset Puissance & Prix ===');
   console.log(`Date: ${new Date().toISOString()}`);
   
-  // Étape 1: Collecte
+  // Collecte
   const orModels = await collectFromOpenRouter();
-  console.log(`\nCollected: OR=${orModels.length} models`);
+  if (orModels.length === 0) {
+    console.error('[FATAL] No models collected, aborting');
+    process.exit(1);
+  }
   
-  // Étape 2: Merge & Normalize
-  const models = mergeModelData(orModels);
-  console.log(`Merged: ${models.length} models`);
+  // Traitement
+  const models = processModels(orModels);
+  console.log(`Processed: ${models.length} models with valid pricing`);
   
-  // Étape 3: Write outputs
+  // Sortie
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
+  
+  const date = new Date().toISOString().split('T')[0];
   
   // JSON compact
   const output = {
     updatedAt: new Date().toISOString(),
     total: models.length,
-    methodology: {
-      blended_price_formula: '(input_price + output_price × 3) / 4',
-      value_score_formula: 'quality_score / blended_price',
-      sources: [SOURCES.artificialAnalysis, SOURCES.llmStats, SOURCES.benchLM, 'https://openrouter.ai/models'],
-      currency: 'USD',
-    },
+    currency: 'USD',
+    source: 'https://openrouter.ai/api/v1/models',
+    methodology: 'Blended = (input + output × 3) / 4. Free models excluded.',
     models,
   };
   
-  fs.writeFileSync(JSON_FILE, JSON.stringify(output, null, 0));
-  console.log(`✓ Wrote ${JSON_FILE} (${(fs.statSync(JSON_FILE).size / 1024).toFixed(1)} KB)`);
+  fs.writeFileSync(JSON_FILE, JSON.stringify(output));
+  console.log(`✓ Wrote ${JSON_FILE} (${(fs.statSync(JSON_FILE).size / 1024).toFixed(1)} KB, ${models.length} models)`);
   
   // Markdown
-  const md = generateMarkdown(models);
+  const md = generateMarkdown(models, date);
   fs.writeFileSync(MD_FILE, md);
   console.log(`✓ Wrote ${MD_FILE} (${(fs.statSync(MD_FILE).size / 1024).toFixed(1)} KB)`);
   
