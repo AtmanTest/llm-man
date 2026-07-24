@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://atmantest.github.io/llm-man/">
 <meta property="og:image" content="https://atmantest.github.io/llm-man/images/llm_hero.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🤖</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 /* ===== RESET & VARIABLES ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -624,6 +625,67 @@ main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
 .pricing-method a{color:var(--accent)}
 .pricing-loading{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:.9rem}
 
+/* ===== RANKING ===== */
+.ranking-controls{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:1.2rem;flex-wrap:wrap;
+}
+.ranking-filters{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.ranking-filters select,.ranking-search-wrap input{
+  padding:.4rem .7rem;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:.78rem;
+  transition:border-color .15s;
+}
+.ranking-filters select:focus,.ranking-search-wrap input:focus{outline:none;border-color:var(--accent)}
+.ranking-search-wrap{margin-left:auto}
+.ranking-search-wrap input{width:200px}
+.ranking-summary{
+  display:flex;gap:.75rem;margin-bottom:.8rem;flex-wrap:wrap;
+}
+.ranking-summary-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:.5rem .8rem;flex:1;min-width:120px;
+}
+.ranking-summary-item .rs-label{font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.03em}
+.ranking-summary-item .rs-value{font-size:1.05rem;font-weight:700;color:var(--accent);margin-top:.1rem}
+.ranking-chart-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1rem;margin-bottom:1rem;
+}
+.ranking-table-wrap{overflow-x:auto;margin-bottom:1rem;border-radius:var(--radius);border:1px solid var(--border)}
+.ranking-table{width:100%;border-collapse:collapse;font-size:.76rem;min-width:900px}
+.ranking-table th{
+  background:var(--bg2);padding:.5rem .55rem;text-align:left;
+  font-weight:600;color:var(--text2);white-space:nowrap;
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;
+  cursor:pointer;user-select:none;transition:color .15s;
+}
+.ranking-table th:hover{color:var(--accent)}
+.ranking-table th .sort-sub{display:block;font-size:.6rem;font-weight:400;color:var(--text3)}
+.ranking-table th.sorted-asc::after{content:' ▲';font-size:.6rem}
+.ranking-table th.sorted-desc::after{content:' ▼';font-size:.6rem}
+.ranking-table td{
+  padding:.4rem .55rem;border-bottom:1px solid var(--border);
+  color:var(--text);vertical-align:middle;
+}
+.ranking-table tr:hover td{background:var(--bg2)}
+.ranking-table .rank-num{font-weight:700;color:var(--accent2);font-size:.85rem}
+.ranking-table .rank-medal{font-size:1rem}
+.ranking-table .model-name{font-weight:600;color:var(--text)}
+.ranking-table .model-provider{font-size:.68rem;color:var(--text3)}
+.ranking-table .score-cell{font-weight:700;font-size:.82rem}
+.ranking-table .score-ci{font-size:.65rem;color:var(--text3);font-weight:400}
+.ranking-table .bench-cell{font-size:.72rem;font-weight:500}
+.ranking-table .bench-null{color:var(--text3);font-size:.65rem}
+.ranking-table .trend-up{color:var(--green)}
+.ranking-table .trend-down{color:var(--red)}
+.ranking-table .trend-flat{color:var(--text3)}
+.ranking-method{font-size:.78rem;color:var(--text2);line-height:1.7;max-width:650px}
+.ranking-method details{border:1px solid var(--border);border-radius:var(--radius-sm);padding:.35rem .6rem;background:var(--surface)}
+.ranking-method summary{cursor:pointer;font-weight:600;color:var(--text)}
+.ranking-method a{color:var(--accent)}
+.ranking-loading{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:.9rem}
+
 /* ===== FOOTER ===== */
 footer{
   text-align:center;padding:2rem 1.2rem;border-top:1px solid var(--border);
@@ -641,6 +703,10 @@ footer{
   .chat-messages{height:calc(100vh - 220px)}
   .pricing-search{width:100%;margin-left:0;margin-top:.5rem}
   .top3-grid{grid-template-columns:1fr}
+  .ranking-search-wrap{margin-left:0;width:100%;margin-top:.5rem}
+  .ranking-search-wrap input{width:100%}
+  .ranking-table{font-size:.7rem;min-width:700px}
+  .ranking-table th,.ranking-table td{padding:.3rem .35rem}
 }
 @media(max-width:480px){
   .pricing-table th,.pricing-table td{padding:.35rem .4rem;font-size:.72rem}
@@ -664,6 +730,7 @@ footer{
       <a href="#" data-nav="outils">Outils</a>
       <a href="#" data-nav="forum">Forum</a>
       <a href="#" data-nav="glossaire">Glossaire</a>
+      <a href="#" data-nav="ranking">🏆 Ranking</a>
       <button id="theme-toggle" title="Changer le thème">🌙</button>
     </div>
   </div>
@@ -818,6 +885,71 @@ footer{
     </details>
   </div>
 </section>
+
+<!-- ===== LLM RANKING ===== -->
+<section id="sec-ranking" class="section">
+  <div class="section-header">
+    <h1>🏆 Classement LLM</h1>
+    <p>Classement agrégé basé sur GPQA Diamond, Arena ELO, SWE-bench, HLE, AIME, LiveBench &amp; MMLU-Pro — mis à jour quotidiennement</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="ranking-controls">
+    <div class="ranking-filters">
+      <select id="rank-provider"><option value="">Tous les fournisseurs</option></select>
+      <input type="date" id="rank-date-from" style="display:none">
+      <input type="date" id="rank-date-to" style="display:none">
+      <select id="rank-benchmark"><option value="">Tous les benchmarks</option></select>
+    </div>
+    <div class="ranking-search-wrap">
+      <input type="text" id="rank-search" placeholder="🔍 Rechercher un modèle…">
+    </div>
+  </div>
+
+  <!-- Summary bar -->
+  <div class="ranking-summary" id="ranking-summary"></div>
+
+  <!-- Chart -->
+  <div class="ranking-chart-wrap">
+    <canvas id="ranking-chart" style="max-height:400px"></canvas>
+  </div>
+
+  <!-- Table -->
+  <div class="ranking-table-wrap">
+    <table class="ranking-table" id="ranking-table">
+      <thead>
+        <tr>
+          <th data-sort="rank" class="sortable">#</th>
+          <th data-sort="display_name" class="sortable">Modèle</th>
+          <th data-sort="provider" class="sortable">Fournisseur</th>
+          <th data-sort="global_score" class="sortable">Score Global <span class="sort-sub">± CI</span></th>
+          <th data-sort="gpqa" class="sortable">GPQA</th>
+          <th data-sort="swe" class="sortable">SWE</th>
+          <th data-sort="arena" class="sortable">Arena</th>
+          <th data-sort="hle" class="sortable">HLE</th>
+          <th data-sort="aime" class="sortable">AIME</th>
+          <th data-sort="livebench" class="sortable">Live</th>
+          <th data-sort="mmlu" class="sortable">MMLU</th>
+          <th data-sort="trend" class="sortable">Tendance</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Methodology -->
+  <div class="ranking-method" id="ranking-method">
+    <details>
+      <summary>📐 Méthodologie</summary>
+      <p><strong>Score Global</strong> = moyenne pondérée des z-scores normalisés (μ=50, σ=15). Les benchmarks avec une meilleure distribution des scores reçoivent un poids plus élevé.</p>
+      <p><strong>Pondération actuelle :</strong> GPQA 25% · Arena ELO 20% · SWE-bench 20% · HLE 15% · AIME 10% · LiveBench 5% · MMLU-Pro 5%</p>
+      <p><strong>Intervalle de confiance :</strong> Bootstrap 95% (1000 rééchantillonnages) pour les modèles avec plusieurs benchmarks.</p>
+      <p><strong>Sources :</strong> <a href="https://github.com/idavidrein/gpqa/" target="_blank" rel="noopener">GPQA</a> · <a href="https://chat.lmsys.org/" target="_blank" rel="noopener">LMSYS Arena</a> · <a href="https://www.swebench.com/" target="_blank" rel="noopener">SWE-bench</a> · <a href="https://lastexam.ai/" target="_blank" rel="noopener">HLE</a> · <a href="https://maa.org/" target="_blank" rel="noopener">AIME</a> · <a href="https://livebench.ai/" target="_blank" rel="noopener">LiveBench</a></p>
+      <p><strong>Mise à jour :</strong> Quotidienne via GitHub Actions. Données des 7 derniers jours.</p>
+    </details>
+  </div>
+</section>
+
 </main>
 
 <footer>🤖 LLM Man — Formation complète sur le test des LLMs & Agents IA. Open source sur GitHub.</footer>
@@ -2475,6 +2607,362 @@ function renderTop3(container, data){
   `;
 }
 
+// ===== LLM RANKING =====
+let rankingData = null;
+let rankingHistory = null;
+let rankingSortField = 'rank';
+let rankingSortDir = 'asc';
+let rankingProviderFilter = '';
+let rankingBenchmarkFilter = '';
+let rankingSearchQuery = '';
+let rankingChartInstance = null;
+
+const RANKING_COLORS = [
+  '#6366f1','#22c55e','#f59e0b','#ef4444','#3b82f6',
+  '#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4',
+  '#a855f7','#84cc16','#e11d48','#0ea5e9','#d946ef',
+  '#10b981','#f43f5e','#64748b'
+];
+
+const RANKING_MEDALS = ['🥇','🥈','🥉'];
+
+async function loadRankingData(){
+  const tbody = document.getElementById('ranking-tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="12" class="ranking-loading">📡 Chargement du classement...</td></tr>';
+  try{
+    const [rankResp, histResp] = await Promise.all([
+      fetch('public/data/llm-ranking.json?_=' + Date.now()),
+      fetch('data/processed/llm-history.jsonl?_=' + Date.now())
+    ]);
+    if(!rankResp.ok) throw new Error('Ranking HTTP '+rankResp.status);
+    rankingData = await rankResp.json();
+    if(histResp.ok){
+      const histText = await histResp.text();
+      rankingHistory = histText.trim().split('\n').filter(Boolean).map(line => JSON.parse(line));
+    }
+    populateRankingFilters();
+    renderRanking();
+  }catch(e){
+    tbody.innerHTML = '<tr><td colspan="12" class="ranking-loading">❌ Données non disponibles</td></tr>';
+    console.warn('Ranking load error:', e.message);
+  }
+}
+
+function populateRankingFilters(){
+  if(!rankingData || !rankingData.rankings) return;
+  // Provider filter
+  const providerSelect = document.getElementById('rank-provider');
+  if(providerSelect){
+    const providers = [...new Set(rankingData.rankings.map(m => m.provider).filter(Boolean))].sort();
+    providerSelect.innerHTML = '<option value="">Tous les fournisseurs</option>' +
+      providers.map(v => `<option value="${v}">${v}</option>`).join('');
+    providerSelect.addEventListener('change', () => {
+      rankingProviderFilter = providerSelect.value;
+      renderRanking();
+    });
+  }
+  // Benchmark filter
+  const benchSelect = document.getElementById('rank-benchmark');
+  if(benchSelect){
+    const benchmarks = ['gpqa_diamond','swe_bench','arena_elo','hle','aime','livebench','mmlu_pro'];
+    const benchLabels = {'gpqa_diamond':'GPQA','swe_bench':'SWE','arena_elo':'Arena','hle':'HLE','aime':'AIME','livebench':'LiveBench','mmlu_pro':'MMLU-Pro'};
+    benchSelect.innerHTML = '<option value="">Tous les benchmarks</option>' +
+      benchmarks.map(b => `<option value="${b}">${benchLabels[b]||b}</option>`).join('');
+    benchSelect.addEventListener('change', () => {
+      rankingBenchmarkFilter = benchSelect.value;
+      renderRanking();
+    });
+  }
+  // Search
+  const searchInput = document.getElementById('rank-search');
+  if(searchInput){
+    searchInput.addEventListener('input', () => {
+      rankingSearchQuery = searchInput.value.trim().toLowerCase();
+      renderRanking();
+    });
+  }
+  // Sort on table headers
+  document.querySelectorAll('.ranking-table th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const field = th.dataset.sort;
+      if(rankingSortField === field){
+        rankingSortDir = rankingSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        rankingSortField = field;
+        rankingSortDir = 'asc';
+      }
+      renderRanking();
+    });
+  });
+}
+
+function getBenchmarkScore(model, benchKey){
+  if(!model.benchmarks || !model.benchmarks[benchKey]) return null;
+  const b = model.benchmarks[benchKey];
+  if(benchKey === 'arena_elo') return b.raw_score;
+  return b.raw_score;
+}
+
+function getTrendClass(score, history, modelId){
+  if(!history || history.length < 2) return 'trend-flat';
+  const recent = history.slice(-7).filter(h => {
+    const found = h.top_models.find(m => m.model_id === modelId);
+    return found != null;
+  });
+  if(recent.length < 2) return 'trend-flat';
+  const first = recent[0].top_models.find(m => m.model_id === modelId).global_score;
+  const last = recent[recent.length-1].top_models.find(m => m.model_id === modelId).global_score;
+  const diff = last - first;
+  if(diff > 1) return 'trend-up';
+  if(diff < -1) return 'trend-down';
+  return 'trend-flat';
+}
+
+function getTrendArrow(cls){
+  if(cls === 'trend-up') return '↑';
+  if(cls === 'trend-down') return '↓';
+  return '→';
+}
+
+function renderRanking(){
+  if(!rankingData || !rankingData.rankings){
+    document.getElementById('ranking-tbody').innerHTML = '<tr><td colspan="12" class="ranking-loading">Aucune donnée</td></tr>';
+    return;
+  }
+  let models = [...rankingData.rankings];
+  
+  // Provider filter
+  if(rankingProviderFilter){
+    models = models.filter(m => m.provider === rankingProviderFilter);
+  }
+  // Benchmark filter (show models that have this benchmark)
+  if(rankingBenchmarkFilter){
+    models = models.filter(m => m.benchmarks && m.benchmarks[rankingBenchmarkFilter]);
+  }
+  // Search
+  if(rankingSearchQuery){
+    models = models.filter(m =>
+      (m.display_name && m.display_name.toLowerCase().includes(rankingSearchQuery)) ||
+      (m.provider && m.provider.toLowerCase().includes(rankingSearchQuery)) ||
+      (m.model_id && m.model_id.toLowerCase().includes(rankingSearchQuery))
+    );
+  }
+  
+  // Sort
+  models.sort((a, b) => {
+    let va, vb;
+    switch(rankingSortField){
+      case 'rank': va = a.rank; vb = b.rank; break;
+      case 'display_name': va = (a.display_name||'').toLowerCase(); vb = (b.display_name||'').toLowerCase(); break;
+      case 'provider': va = (a.provider||'').toLowerCase(); vb = (b.provider||'').toLowerCase(); break;
+      case 'global_score': va = a.global_score; vb = b.global_score; break;
+      case 'gpqa': va = getBenchmarkScore(a,'gpqa_diamond')||-1; vb = getBenchmarkScore(b,'gpqa_diamond')||-1; break;
+      case 'swe': va = getBenchmarkScore(a,'swe_bench')||-1; vb = getBenchmarkScore(b,'swe_bench')||-1; break;
+      case 'arena': va = getBenchmarkScore(a,'arena_elo')||-1; vb = getBenchmarkScore(b,'arena_elo')||-1; break;
+      case 'hle': va = getBenchmarkScore(a,'hle')||-1; vb = getBenchmarkScore(b,'hle')||-1; break;
+      case 'aime': va = getBenchmarkScore(a,'aime')||-1; vb = getBenchmarkScore(b,'aime')||-1; break;
+      case 'livebench': va = getBenchmarkScore(a,'livebench')||-1; vb = getBenchmarkScore(b,'livebench')||-1; break;
+      case 'mmlu': va = getBenchmarkScore(a,'mmlu_pro')||-1; vb = getBenchmarkScore(b,'mmlu_pro')||-1; break;
+      case 'trend': va = getTrendClass(null, rankingHistory, a.model_id); vb = getTrendClass(null, rankingHistory, b.model_id); break;
+      default: va = a.rank; vb = b.rank;
+    }
+    if(typeof va === 'string' && typeof vb === 'string'){
+      return rankingSortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    return rankingSortDir === 'asc' ? (va - vb) : (vb - va);
+  });
+  
+  // Update sort indicators
+  document.querySelectorAll('.ranking-table th.sortable').forEach(th => {
+    th.classList.remove('sorted-asc','sorted-desc');
+    if(th.dataset.sort === rankingSortField){
+      th.classList.add('sorted-'+rankingSortDir);
+    }
+  });
+  
+  // Summary
+  renderRankingSummary(models);
+  
+  // Table body
+  const tbody = document.getElementById('ranking-tbody');
+  if(models.length === 0){
+    tbody.innerHTML = '<tr><td colspan="12" class="ranking-loading">Aucun modèle trouvé</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = models.map((m, i) => {
+    const rank = m.rank || (i + 1);
+    const ci = m.confidence_interval;
+    const ciStr = ci ? `${ci.low.toFixed(1)}–${ci.high.toFixed(1)}` : '—';
+    const trendCls = getTrendClass(null, rankingHistory, m.model_id);
+    const trendArrow = getTrendArrow(trendCls);
+    const medals = RANKING_MEDALS;
+    const rankDisplay = rank <= 3 ? `<span class="rank-medal">${medals[rank-1]}</span>` : `<span class="rank-num">#${rank}</span>`;
+    
+    const gpqa = getBenchmarkScore(m,'gpqa_diamond');
+    const swe = getBenchmarkScore(m,'swe_bench');
+    const arena = getBenchmarkScore(m,'arena_elo');
+    const hle = getBenchmarkScore(m,'hle');
+    const aime = getBenchmarkScore(m,'aime');
+    const live = getBenchmarkScore(m,'livebench');
+    const mmlu = getBenchmarkScore(m,'mmlu_pro');
+    
+    return `<tr>
+      <td>${rankDisplay}</td>
+      <td><span class="model-name">${esc(m.display_name)}</span></td>
+      <td><span class="model-provider">${esc(m.provider||'—')}</span></td>
+      <td><span class="score-cell">${m.global_score.toFixed(1)}</span> <span class="score-ci">±${ciStr}</span></td>
+      <td>${gpqa != null ? `<span class="bench-cell">${gpqa.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${swe != null ? `<span class="bench-cell">${swe.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${arena != null ? `<span class="bench-cell">${arena}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${hle != null ? `<span class="bench-cell">${hle.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${aime != null ? `<span class="bench-cell">${aime.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${live != null ? `<span class="bench-cell">${live.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td>${mmlu != null ? `<span class="bench-cell">${mmlu.toFixed(1)}</span>` : '<span class="bench-null">—</span>'}</td>
+      <td><span class="${trendCls}" title="Tendance 7 jours">${trendArrow}</span></td>
+    </tr>`;
+  }).join('');
+  
+  // Render chart
+  renderRankingChart();
+}
+
+function renderRankingSummary(models){
+  const container = document.getElementById('ranking-summary');
+  if(!container || !rankingData) return;
+  const total = rankingData.rankings.length;
+  const filtered = models.length;
+  const avgScore = models.length > 0 ? (models.reduce((s,m) => s + m.global_score, 0) / models.length).toFixed(1) : '—';
+  const topModel = models.length > 0 ? models[0].display_name : '—';
+  container.innerHTML = `
+    <div class="ranking-summary-item"><div class="rs-label">Total modèles</div><div class="rs-value">${total}</div></div>
+    <div class="ranking-summary-item"><div class="rs-label">Score moy.</div><div class="rs-value">${avgScore}</div></div>
+    <div class="ranking-summary-item"><div class="rs-label">Meilleur</div><div class="rs-value" style="font-size:.85rem">${esc(topModel)}</div></div>
+    <div class="ranking-summary-item"><div class="rs-label">Benchmarks</div><div class="rs-value">${rankingData.metadata.benchmark_count||'—'}</div></div>
+    ${filtered !== total ? `<div class="ranking-summary-item"><div class="rs-label">Filtrés</div><div class="rs-value">${filtered}</div></div>` : ''}
+  `;
+}
+
+function renderRankingChart(){
+  const canvas = document.getElementById('ranking-chart');
+  if(!canvas || !rankingHistory || rankingHistory.length < 2) return;
+  
+  // Destroy existing chart
+  if(rankingChartInstance){
+    rankingChartInstance.destroy();
+    rankingChartInstance = null;
+  }
+  
+  // Pick top 6 models for the chart (most data points)
+  const topModelIds = rankingData.rankings.slice(0, 6).map(m => m.model_id);
+  const labels = rankingHistory.map(h => h.date);
+  
+  const datasets = topModelIds.map((mid, i) => {
+    const color = RANKING_COLORS[i % RANKING_COLORS.length];
+    const data = rankingHistory.map(h => {
+      const found = h.top_models.find(m => m.model_id === mid);
+      return found ? found.global_score : null;
+    });
+    const model = rankingData.rankings.find(m => m.model_id === mid);
+    return {
+      label: model ? model.display_name : mid,
+      data: data,
+      borderColor: color,
+      backgroundColor: color + '20',
+      fill: false,
+      tension: 0.3,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      spanGaps: false
+    };
+  });
+  
+  const ctx = canvas.getContext('2d');
+  rankingChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text2').trim() || '#94a3b8',
+            font: { size: 11 },
+            padding: 16,
+            boxWidth: 14,
+            usePointStyle: true
+          }
+        },
+        tooltip: {
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#1e293b',
+          titleColor: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#e2e8f0',
+          bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--text2').trim() || '#94a3b8',
+          borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#2d3a4e',
+          borderWidth: 1,
+          padding: 10,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text3').trim() || '#64748b',
+            font: { size: 10 },
+            maxTicksLimit: 10,
+            maxRotation: 30
+          },
+          grid: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#2d3a4e',
+            drawBorder: false
+          }
+        },
+        y: {
+          ticks: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text3').trim() || '#64748b',
+            font: { size: 10 }
+          },
+          grid: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#2d3a4e',
+            drawBorder: false
+          },
+          beginAtZero: false
+        }
+      }
+    }
+  });
+}
+
+// Re-render chart when theme changes via MutationObserver
+const themeObserver = new MutationObserver(() => {
+  if(rankingChartInstance && document.getElementById('sec-ranking').classList.contains('active')){
+    setTimeout(() => {
+      if(rankingChartInstance){
+        rankingChartInstance.destroy();
+        rankingChartInstance = null;
+      }
+      renderRankingChart();
+    }, 100);
+  }
+});
+themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+// Chart refresh on section switch
+document.querySelectorAll('[data-nav]').forEach(el => {
+  el.addEventListener('click', e => {
+    const target = el.dataset.nav;
+    if(target === 'ranking' && rankingHistory && rankingHistory.length >= 2){
+      setTimeout(renderRankingChart, 150);
+    }
+  });
+});
+
 // ===== PRICING =====
 let pricingData = null;
 let pricingVendor = '';
@@ -2598,6 +3086,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   loadTop3();
   loadPricing();
+  loadRankingData();
 });
 </script>
 </body>
