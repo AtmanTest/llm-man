@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+<script>document.documentElement.setAttribute('data-theme', localStorage.getItem('llm-man-theme')||'dark');</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>LLM Man — Maîtrisez le test des LLMs & Agents</title>
+<meta property="og:title" content="LLM Man — Maîtrisez le test des LLMs & Agents">
+<meta property="og:description" content="Plateforme éducative open-source sur le test des LLMs et Agents IA. Cours, examens, outils, forum, actualités et comparateur de prix IA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://atmantest.github.io/llm-man/">
+<meta property="og:image" content="https://atmantest.github.io/llm-man/images/llm_hero.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🤖</text></svg>">
 <style>
 /* ===== RESET & VARIABLES ===== */
@@ -12,6 +18,7 @@
   --bg:#0a0e1a; --bg2:#111827; --bg3:#1a2235; --bg4:#1f2937;
   --surface:#1e293b; --surface2:#263348;
   --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --card-bg:var(--surface); --text1:var(--text);
   --accent:#6366f1; --accent2:#818cf8; --accent-bg:rgba(99,102,241,.12);
   --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --blue:#3b82f6;
   --border:#2d3a4e; --radius:12px; --radius-sm:8px;
@@ -24,6 +31,7 @@
   --bg:#f8fafc; --bg2:#f1f5f9; --bg3:#e2e8f0; --bg4:#cbd5e1;
   --surface:#ffffff; --surface2:#f1f5f9;
   --text:#0f172a; --text2:#475569; --text3:#94a3b8;
+  --card-bg:var(--surface); --text1:var(--text);
   --accent:#4f46e5; --accent2:#6366f1; --accent-bg:rgba(79,70,229,.08);
   --border:#e2e8f0; --shadow:0 4px 24px rgba(0,0,0,.06);
 }
@@ -33,6 +41,8 @@ body{
   color:var(--text);background:var(--bg);
   -webkit-font-smoothing:antialiased;
 }
+.skip-link{position:absolute;left:-9999px;z-index:999;font-size:.85rem;text-decoration:none}
+.skip-link:focus{left:0;top:0;background:var(--accent);color:#fff;padding:8px 16px;outline:none}
 
 /* ===== NAV ===== */
 nav{
@@ -238,6 +248,11 @@ main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
 }
 .chat-input-area button:hover{background:var(--accent2)}
 .chat-input-area button:disabled{opacity:.4;cursor:not-allowed}
+
+/* Typing indicator */
+.typing-dots{display:inline-flex;align-items:center;gap:2px;padding:4px 0}
+.dot-1,.dot-2,.dot-3{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.4s infinite both}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
 .chat-welcome{text-align:center;padding:2rem 1rem;color:var(--text2)}
 .chat-welcome h3{font-size:1.1rem;margin-bottom:.5rem;color:var(--text)}
 .chat-welcome p{font-size:.85rem;margin-bottom:.3rem}
@@ -583,11 +598,19 @@ footer{
   .card-grid{grid-template-columns:1fr}
   .glossary-list{grid-template-columns:1fr}
   .hero h1{font-size:clamp(1.5rem,8vw,2.5rem)}
+  .exam-card{padding:1rem}
+  .chat-messages{height:calc(100vh - 220px)}
+  .pricing-search{width:100%;margin-left:0;margin-top:.5rem}
+}
+@media(max-width:480px){
+  .pricing-table th,.pricing-table td{padding:.35rem .4rem;font-size:.72rem}
+  .exam-card{padding:.8rem}
 }
 </style>
 </head>
 <body>
 
+<a href="#main" class="skip-link">Aller au contenu</a>
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-brand" data-nav="accueil">🤖 <span>LLM Man</span></a>
@@ -605,6 +628,8 @@ footer{
     </div>
   </div>
 </nav>
+
+<div id="offline-banner" style="display:none;background:var(--red);color:#fff;text-align:center;padding:6px 1rem;font-size:.82rem;font-weight:600;position:fixed;top:var(--nav-h);left:0;right:0;z-index:99">🔴 Connexion perdue — Vérifie ta connexion internet</div>
 
 <div class="news-ticker-wrap" id="news-ticker">
   <div class="news-ticker-label">📰 FLASH IA</div>
@@ -638,7 +663,8 @@ footer{
 <section id="sec-cours" class="section">
   <div class="section-header">
     <h1>📚 Formation Complète</h1>
-    <div class="section-illu-wrap"><img class="section-illu" src="images/llm_formation.png" alt="Illustration formation"></div>
+    <div class="cours-progress" id="cours-progress" style="font-size:.8rem;color:var(--text2);margin-top:.3rem"></div>
+    <div class="section-illu-wrap"><img loading="lazy" class="section-illu" src="images/llm_formation.png" alt="Illustration formation"></div>
     <p>Zéro à Héros — Parcours structuré du débutant à l'expert en test des LLMs et Agents</p>
   </div>
   <div id="cours-container"></div>
@@ -657,7 +683,7 @@ footer{
 <section id="sec-examens" class="section">
   <div class="section-header">
     <h1>📝 Examens & Quiz</h1>
-    <div class="section-illu-wrap"><img class="section-illu" src="images/llm_examens.png" alt="Illustration examens"></div>
+    <div class="section-illu-wrap"><img loading="lazy" class="section-illu" src="images/llm_examens.png" alt="Illustration examens"></div>
     <p>Teste tes connaissances avec des QCM, mises en situation et exams blancs</p>
   </div>
   <div id="examens-container"></div>
@@ -686,7 +712,7 @@ footer{
   <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem">
     <div>
       <h1>📰 Actualités LLM & Agents</h1>
-      <div class="section-illu-wrap"><img class="section-illu" src="images/llm_news.png" alt="Illustration actualités"></div>
+      <div class="section-illu-wrap"><img loading="lazy" class="section-illu" src="images/llm_news.png" alt="Illustration actualités"></div>
       <p>Toute l'actualité du testing LLM, des agents IA et de l'évaluation — mise à jour automatique toutes les heures</p>
     </div>
     <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
@@ -707,7 +733,7 @@ footer{
 <section id="sec-glossaire" class="section">
   <div class="section-header">
     <h1>📖 Glossaire</h1>
-    <div class="section-illu-wrap"><img class="section-illu" src="images/llm_glossaire.png" alt="Illustration glossaire"></div>
+    <div class="section-illu-wrap"><img loading="lazy" class="section-illu" src="images/llm_glossaire.png" alt="Illustration glossaire"></div>
     <p>200+ termes et concepts du testing LLM/Agent</p>
   </div>
   <input type="text" class="glossary-search" id="glossary-search" placeholder="🔍 Rechercher un terme…">
@@ -795,6 +821,14 @@ themeToggle.addEventListener('click', () => {
 
 // ===== ESCAPE HTML =====
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function fisherYatesShuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 // ===== COURS CONTENT — Formation Complète ISTQB & QA LLM =====
 // ===== COURS CONTENT — Formation Complète ISTQB & QA LLM =====
@@ -1461,6 +1495,10 @@ function renderCours(){
   cc.innerHTML = COURS.map((ch, i) => {
     const isCompleted = savedExc >= i + 1;
     const pct = ch.lessons && ch.lessons.length ? Math.round(savedLessons[ch.id] || 0) : 0;
+    // Update progress
+    const completedChapters = Math.min(savedExc || 0, COURS.length);
+    const progressEl = document.getElementById('cours-progress');
+    if(progressEl) progressEl.textContent = `📊 ${completedChapters}/${COURS.length} chapitres complétés`;
     return `
       <div class="chapter ${i === 0 ? 'open' : ''}">
         <div class="chapter-header" data-index="${i}">
@@ -1579,7 +1617,16 @@ function renderGlossary(filter=''){
   `).join('');
 }
 renderGlossary();
-document.getElementById('glossary-search').addEventListener('input', e => renderGlossary(e.target.value.toLowerCase()));
+// Debounced glossary search (300ms)
+function debounce(fn, ms){
+  let timer;
+  return function(...args){
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+const debouncedGlossary = debounce(val => renderGlossary(val), 300);
+document.getElementById('glossary-search').addEventListener('input', e => debouncedGlossary(e.target.value.toLowerCase()));
 
 // ===== EXAMENS / QUIZ (ISTQB Syllabus) =====
 const EXAMS = [
@@ -1659,6 +1706,30 @@ const EXAMS = [
   ]},
 ];
 
+// === Merge external questions into exams ===
+function transformExternalQs(arr){
+  return arr.map(item => ({
+    q: item[0],
+    options: item[1],
+    correct: item[2]
+  }));
+}
+const examExternalMap = {
+  'quiz1': 'QUESTIONS_CTFL',
+  'quiz2': 'QUESTIONS_CTAI',
+  'quiz3': 'QUESTIONS_CTGENAI'
+};
+EXAMS.forEach(exam => {
+  const varName = examExternalMap[exam.id];
+  if(varName && typeof window[varName] !== 'undefined' && Array.isArray(window[varName])){
+    const externalQs = transformExternalQs(window[varName]);
+    exam.questions = [...exam.questions, ...externalQs];
+  }
+  if(exam.questions.length < 40){
+    console.warn(exam.id + ': only ' + exam.questions.length + ' questions');
+  }
+});
+
 let currentExam = null;
 let examState = null;
 
@@ -1668,7 +1739,7 @@ function renderExams(){
     <div class="exam-card" onclick="startExam('${e.id}')">
       <h3>${e.title}</h3>
       <p class="exam-source">${e.source}</p>
-      <p class="exam-desc">${e.note}</p>
+      <p class="exam-desc">${e.desc}</p>
       <div class="exam-meta">
         <span>⏱ ${e.time} min</span>
         <span>📝 ${e.questions.length} questions</span>
@@ -1689,7 +1760,7 @@ function startExam(id){
     return;
   }
   // Shuffle and take 40
-  actualQs = [...actualQs].sort(()=>Math.random()-0.5).slice(0,40);
+  actualQs = fisherYatesShuffle(actualQs).slice(0,40);
   examState = {
     questions: actualQs,
     index: 0,
@@ -1914,8 +1985,14 @@ function renderTicker(){
 loadNews();
 
 document.getElementById('news-refresh')?.addEventListener('click', () => {
+  const btn = document.getElementById('news-refresh');
+  if(btn){ btn.disabled = true; btn.textContent = '⟳'; }
   document.getElementById('news-container').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text3)"><div style="font-size:2rem;margin-bottom:.5rem">🔄</div><p>Rafraîchissement...</p></div>';
-  loadNews();
+  loadNews().then(() => {
+    if(btn){ btn.disabled = false; btn.textContent = '🔄'; }
+  }).catch(() => {
+    if(btn){ btn.disabled = false; btn.textContent = '🔄'; }
+  });
 });
 
 // ===== OUTILS INTERACTIFS =====
@@ -2065,17 +2142,25 @@ function renderChat(){
         <span class="chat-model-badge" style="font-size:.65rem;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px">NVIDIA Nemotron</span>
       </div>
       <button class="btn btn-sm btn-ghost" onclick="clearChat()" title="Effacer la conversation" style="font-size:.72rem">🗑 Effacer</button>
+      <button class="btn btn-sm btn-ghost" onclick="resetChat()" title="Nouvelle conversation" style="font-size:.72rem">🆕 Nouvelle conversation</button>
     </div>
-    <div class="chat-messages" id="chat-msgs" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem">
+    <div class="chat-messages" id="chat-msgs" aria-live="polite" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem">
       ${savedMsgs.length === 0 ? `<div class="chat-welcome" style="text-align:center;padding:2rem 1rem;color:var(--text2)">
         <h3 style="font-size:1.1rem;margin-bottom:.5rem;color:var(--text)">Bienvenue au Chat Professeur !</h3>
         <p style="font-size:.85rem;margin-bottom:.3rem">Pose-moi toutes tes questions sur le testing des LLMs et Agents IA.</p>
         <p style="font-size:.78rem">Exemples : "Comment tester un RAG ?", "Explique la faithfulness", "Qu'est-ce qu'une hallucination ?"</p>
-      </div>` : savedMsgs.map(m => `
+      </div>` : savedMsgs.map(m => {
+        // Render: esc() raw text, then apply formatting for bot messages
+        const safe = esc(m.msg);
+        const display = m.role === 'assistant' 
+          ? safe.replace(/```(\w*)/g,'<pre><code>').replace(/```/g,'</code></pre>').replace(/
+/g,'<br>')
+          : safe;
+        return `
         <div class="chat-msg ${m.role}" style="display:flex;margin-bottom:.25rem;${m.role === 'user' ? 'justify-content:flex-end' : 'justify-content:flex-start'}">
-          <div class="chat-bubble" style="max-width:80%;padding:.5rem .9rem;border-radius:12px;font-size:.85rem;line-height:1.5;${m.role === 'user' ? 'background:var(--accent);color:#fff;border-bottom-right-radius:4px' : 'background:var(--bg3);color:var(--text);border-bottom-left-radius:4px'}">${m.msg}</div>
-        </div>
-      `).join('')}
+          <div class="chat-bubble" style="max-width:80%;padding:.5rem .9rem;border-radius:12px;font-size:.85rem;line-height:1.5;${m.role === 'user' ? 'background:var(--accent);color:#fff;border-bottom-right-radius:4px' : 'background:var(--bg3);color:var(--text);border-bottom-left-radius:4px'}">${display}</div>
+        </div>`;
+      }).join('')}
     </div>
     <div class="chat-input-area" style="display:flex;gap:.5rem;padding:.6rem 1rem;border-top:1px solid var(--border);background:var(--bg2)">
       <textarea id="chat-input" rows="1" placeholder="Pose ta question..." style="flex:1;padding:.5rem .7rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.85rem;resize:none;min-height:38px;max-height:120px;font-family:var(--font)"></textarea>
@@ -2115,6 +2200,10 @@ function clearChat(){
   localStorage.setItem('llm_chat_msgs', '[]');
   renderChat();
 }
+function resetChat(){
+  localStorage.setItem('llm_chat_msgs', '[]');
+  renderChat();
+}
 
 async function sendChatMsg(){
   const inp = document.getElementById('chat-input');
@@ -2125,10 +2214,11 @@ async function sendChatMsg(){
   btn.disabled = true;
   btn.textContent = '⏳';
 
-  // Save user message
-  const msgs = JSON.parse(localStorage.getItem('llm_chat_msgs') || '[]');
-  msgs.push({role:'user', msg: esc(msg)});
-  localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
+  // Save user message (raw text, no html escaping)
+  let msgs = JSON.parse(localStorage.getItem('llm_chat_msgs') || '[]');
+  msgs.push({role:'user', msg: msg});
+  if(msgs.length > 20) msgs = msgs.slice(-20);
+    localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
   renderChat();
   showTyping();
 
@@ -2152,12 +2242,13 @@ async function sendChatMsg(){
     }
     const data = await res.json();
     const reply = data.choices?.[0]?.message?.content || '⚠️ Pas de réponse reçue.';
-    const formatted = reply.replace(/```(\w*)/g,'<pre><code>').replace(/```/g,'</code></pre>').replace(/\n/g,'<br>');
-
-    msgs.push({role:'assistant', msg: formatted});
+    // Store raw reply (no HTML formatting yet)
+    msgs.push({role:'assistant', msg: reply});
+    if(msgs.length > 20) msgs = msgs.slice(-20);
     localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
   } catch(e){
     msgs.push({role:'assistant', msg: '❌ Erreur: '+esc(e.message)});
+    if(msgs.length > 20) msgs = msgs.slice(-20);
     localStorage.setItem('llm_chat_msgs', JSON.stringify(msgs));
   }
   removeTyping();
@@ -2184,10 +2275,21 @@ function removeTyping(){
 }
 
 // ===== FORUM =====
+let forumPage = 1;
+const FORUM_PER_PAGE = 10;
+
+function getForumPostsForPage(posts, page){
+  const start = (page - 1) * FORUM_PER_PAGE;
+  return posts.slice(start, start + FORUM_PER_PAGE);
+}
+
 function renderForum(){
   const container = document.getElementById('forum-container');
   if(!container) return;
   const posts = JSON.parse(localStorage.getItem('llm_forum_posts') || '[]');
+  const totalPages = Math.max(1, Math.ceil(posts.length / FORUM_PER_PAGE));
+  if(forumPage > totalPages) forumPage = totalPages;
+  const pagePosts = getForumPostsForPage(posts, forumPage);
 
   container.innerHTML = `
     <div class="forum-form" style="background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1.2rem;margin-bottom:1.2rem">
@@ -2201,23 +2303,36 @@ function renderForum(){
       </div>
     </div>
     <div class="forum-posts">
-      ${posts.length === 0 ? '<p style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">💭 Aucun sujet pour l\'instant. Sois le premier à poster !</p>' : posts.map((p,i) => `
+      ${posts.length === 0 ? '<p style="text-align:center;padding:2rem;color:var(--text3);font-size:.85rem">💭 Aucun sujet pour l\'instant. Sois le premier à poster !</p>' : pagePosts.map((p,i) => {
+        const realIdx = posts.indexOf(p);
+        return `
         <div class="forum-post" style="background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:1rem;margin-bottom:.7rem">
           <h4 style="font-size:.88rem;font-weight:600;margin-bottom:.25rem">${esc(p.title)}</h4>
           <div class="meta" style="font-size:.72rem;color:var(--text3);margin-bottom:.3rem">👤 ${esc(p.author || 'Anonyme')} · ${p.date}</div>
           <p style="font-size:.82rem;color:var(--text2)">${esc(p.content)}</p>
           <div style="margin-top:.5rem;display:flex;gap:.5rem;align-items:center">
-            <button class="btn btn-sm btn-ghost" onclick="likeForumPost(${i})" style="font-size:.72rem">👍 ${p.likes || 0}</button>
+            <button class="btn btn-sm btn-ghost" onclick="likeForumPost(${realIdx})" style="font-size:.72rem">👍 ${p.likes || 0}</button>
             <span style="font-size:.72rem;color:var(--text3)">💬 ${p.replies || 0} réponses</span>
           </div>
-        </div>
-      `).join('')}
+        </div>`;
+      }).join('')}
     </div>
+    ${totalPages > 1 ? `
+    <div class="forum-pagination" style="display:flex;align-items:center;justify-content:center;gap:.8rem;margin-top:1rem;padding:.6rem 0">
+      <button class="btn btn-sm btn-secondary" onclick="forumPageChange(-1)" ${forumPage <= 1 ? 'disabled' : ''}>◀ Précédent</button>
+      <span style="font-size:.82rem;color:var(--text2)">Page ${forumPage}/${totalPages}</span>
+      <button class="btn btn-sm btn-secondary" onclick="forumPageChange(1)" ${forumPage >= totalPages ? 'disabled' : ''}>Suivant ▶</button>
+    </div>` : ''}
   `;
 
   // Enter to submit
   const ft = document.getElementById('forum-title');
   if(ft) ft.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();postForumMsg();}});
+}
+
+function forumPageChange(delta){
+  forumPage += delta;
+  renderForum();
 }
 
 function postForumMsg(){
@@ -2244,6 +2359,10 @@ function postForumMsg(){
 }
 
 function likeForumPost(idx){
+  const liked = JSON.parse(sessionStorage.getItem('llm_forum_liked') || '[]');
+  if(liked.includes(idx)) return;
+  liked.push(idx);
+  sessionStorage.setItem('llm_forum_liked', JSON.stringify(liked));
   const posts = JSON.parse(localStorage.getItem('llm_forum_posts') || '[]');
   if(posts[idx]){
     posts[idx].likes = (posts[idx].likes || 0) + 1;
@@ -2251,6 +2370,24 @@ function likeForumPost(idx){
     renderForum();
   }
 }
+
+// Offline detection
+window.addEventListener('offline', () => {
+  const banner = document.getElementById('offline-banner');
+  if(banner) banner.style.display = 'block';
+});
+window.addEventListener('online', () => {
+  const banner = document.getElementById('offline-banner');
+  if(banner) banner.style.display = 'none';
+});
+
+// Beforeunload — warn if exam in progress
+window.addEventListener('beforeunload', e => {
+  if(currentExam && !examState.finished) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
 
 // Init
 renderChat();
