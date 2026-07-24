@@ -1,0 +1,1591 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-24T12:33:44.899Z",
+  "metadata": {
+    "source_count": 7,
+    "benchmark_count": 7,
+    "model_count": 18,
+    "run_duration_ms": 34161,
+    "pipeline_version": "1.0.0",
+    "date": "2026-07-24"
+  },
+  "rankings": [
+    {
+      "rank": 1,
+      "model_id": "claude-4-sonnet",
+      "display_name": "Claude 4 Sonnet",
+      "provider": "anthropic",
+      "family": "claude-4",
+      "global_score": 76.7,
+      "global_z": 1.78,
+      "confidence_interval": {
+        "low": 52.1,
+        "high": 55.4,
+        "mean": 53.8
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1295,
+          "z_score": 1.685983984368612,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1295,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 86.4,
+          "z_score": 1.6625237419031738,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 86.4,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 55.3,
+          "z_score": 2.005754602726379,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 55.3,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 68.2,
+          "z_score": 1.7461537883537177,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 68.2,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 72.1,
+          "z_score": 1.8464173086647915,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 72.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 91.5,
+          "z_score": 1.7064951548106504,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 91.5,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1295,
+          "z_score": 1.685983984368612,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 86.4,
+          "z_score": 1.6625237419031738,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 55.3,
+          "z_score": 2.005754602726379,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 68.2,
+          "z_score": 1.7461537883537177,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 72.1,
+          "z_score": 1.8464173086647915,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 91.5,
+          "z_score": 1.7064951548106504,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "model_id": "o1",
+      "display_name": "o1",
+      "provider": "openai",
+      "family": "o-series",
+      "global_score": 67.5,
+      "global_z": 1.16,
+      "confidence_interval": {
+        "low": 52.6,
+        "high": 52.6,
+        "mean": 52.6
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 83,
+          "z_score": 1.1645151255459918,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 83,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 83,
+          "z_score": 1.1645151255459918,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 3,
+      "model_id": "gemini-2.5-flash",
+      "display_name": "Gemini 2.5 Flash",
+      "provider": "google",
+      "family": "gemini-2.5",
+      "global_score": 63.7,
+      "global_z": 0.91,
+      "confidence_interval": {
+        "low": 52.1,
+        "high": 52.1,
+        "mean": 52.1
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 80,
+          "z_score": 0.9139021143094082,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 80,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 80,
+          "z_score": 0.9139021143094082,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 4,
+      "model_id": "gemini-2.5-pro",
+      "display_name": "Gemini 2.5 Pro",
+      "provider": "google",
+      "family": "gemini-2.5",
+      "global_score": 59.5,
+      "global_z": 0.64,
+      "confidence_interval": {
+        "low": 50.8,
+        "high": 52,
+        "mean": 51.4
+      },
+      "benchmark_count": 7,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1282,
+          "z_score": 0.8588975014708022,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1282,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 83.1,
+          "z_score": 0.7149713501448859,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 83.1,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 45.8,
+          "z_score": 0.510097716862909,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 45.8,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 64.5,
+          "z_score": 0.8488247582274996,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 64.5,
+          "date": "2026-07-24"
+        },
+        "hle": {
+          "raw_score": 72,
+          "z_score": 0.24560075101185178,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 72,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 60.8,
+          "z_score": 0.6974902388458409,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 60.8,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 89.2,
+          "z_score": 0.6896716169701085,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 89.2,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1282,
+          "z_score": 0.8588975014708022,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 83.1,
+          "z_score": 0.7149713501448859,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 45.8,
+          "z_score": 0.510097716862909,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 64.5,
+          "z_score": 0.8488247582274996,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "hle": {
+          "score": 72,
+          "z_score": 0.24560075101185178,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 60.8,
+          "z_score": 0.6974902388458409,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 89.2,
+          "z_score": 0.6896716169701085,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 5,
+      "model_id": "gpt-4.5",
+      "display_name": "GPT-4.5",
+      "provider": "openai",
+      "family": "gpt-4",
+      "global_score": 59.4,
+      "global_z": 0.63,
+      "confidence_interval": {
+        "low": 50.5,
+        "high": 52.4,
+        "mean": 51.3
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1275,
+          "z_score": 0.4135432414489048,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1275,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 84.2,
+          "z_score": 1.03082214739765,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 84.2,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 42.1,
+          "z_score": -0.07242128078917869,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 42.1,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 65.1,
+          "z_score": 0.9943375739236416,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 65.1,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 64.2,
+          "z_score": 1.0431851094108355,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 64.2,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 90.1,
+          "z_score": 1.087559088299013,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 90.1,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1275,
+          "z_score": 0.4135432414489048,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 84.2,
+          "z_score": 1.03082214739765,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 42.1,
+          "z_score": -0.07242128078917869,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 65.1,
+          "z_score": 0.9943375739236416,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 64.2,
+          "z_score": 1.0431851094108355,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 90.1,
+          "z_score": 1.087559088299013,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 6,
+      "model_id": "gpt-4o",
+      "display_name": "GPT-4o",
+      "provider": "openai",
+      "family": "gpt-4",
+      "global_score": 58.6,
+      "global_z": 0.57,
+      "confidence_interval": {
+        "low": 49.8,
+        "high": 52.5,
+        "mean": 51.2
+      },
+      "benchmark_count": 7,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1288,
+          "z_score": 1.2406297243467144,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1288,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 82.6,
+          "z_score": 0.5714028059390852,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 82.6,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 38.2,
+          "z_score": -0.6864277918278662,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 38.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 62.4,
+          "z_score": 0.3395299032909974,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 62.4,
+          "date": "2026-07-24"
+        },
+        "hle": {
+          "raw_score": 89,
+          "z_score": 1.665741148019159,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 89,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 56.6,
+          "z_score": 0.27045539873614277,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 56.6,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 88.7,
+          "z_score": 0.46862302178738174,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 88.7,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1288,
+          "z_score": 1.2406297243467144,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 82.6,
+          "z_score": 0.5714028059390852,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 38.2,
+          "z_score": -0.6864277918278662,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 62.4,
+          "z_score": 0.3395299032909974,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "hle": {
+          "score": 89,
+          "z_score": 1.665741148019159,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 56.6,
+          "z_score": 0.27045539873614277,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 88.7,
+          "z_score": 0.46862302178738174,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 7,
+      "model_id": "deepseek-r1",
+      "display_name": "DeepSeek R1",
+      "provider": "deepseek",
+      "family": "deepseek-r1",
+      "global_score": 54.9,
+      "global_z": 0.33,
+      "confidence_interval": {
+        "low": 50.7,
+        "high": 50.7,
+        "mean": 50.7
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 73,
+          "z_score": 0.3291384214240463,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 73,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 73,
+          "z_score": 0.3291384214240463,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 8,
+      "model_id": "claude-3.5-sonnet",
+      "display_name": "Claude 3.5 Sonnet",
+      "provider": "anthropic",
+      "family": "claude-3",
+      "global_score": 51.6,
+      "global_z": 0.11,
+      "confidence_interval": {
+        "low": 49.3,
+        "high": 51.5,
+        "mean": 50.2
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1270,
+          "z_score": 0.09543305571897803,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1270,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 79.8,
+          "z_score": -0.23258104161339777,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 79.8,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 49.6,
+          "z_score": 1.1083604712082977,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 49.6,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 58.7,
+          "z_score": -0.557799126835219,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 58.7,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 48.4,
+          "z_score": -0.5632792890970785,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 48.4,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 87.3,
+          "z_score": -0.15031304472425572,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 87.3,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1270,
+          "z_score": 0.09543305571897803,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 79.8,
+          "z_score": -0.23258104161339777,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 49.6,
+          "z_score": 1.1083604712082977,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 58.7,
+          "z_score": -0.557799126835219,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 48.4,
+          "z_score": -0.5632792890970785,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 87.3,
+          "z_score": -0.15031304472425572,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 9,
+      "model_id": "grok-3",
+      "display_name": "Grok 3",
+      "provider": "xai",
+      "family": "grok-3",
+      "global_score": 47.8,
+      "global_z": -0.14,
+      "confidence_interval": {
+        "low": 49.1,
+        "high": 50.2,
+        "mean": 49.7
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1260,
+          "z_score": -0.5407873157408755,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1260,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 80.9,
+          "z_score": 0.08326975563936619,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 80.9,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 40.3,
+          "z_score": -0.3558089012685737,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 40.3,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 61.8,
+          "z_score": 0.1940170875948537,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 61.8,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 55.9,
+          "z_score": 0.19928292538452608,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 55.9,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 87.9,
+          "z_score": 0.11494526949502018,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 87.9,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1260,
+          "z_score": -0.5407873157408755,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 80.9,
+          "z_score": 0.08326975563936619,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 40.3,
+          "z_score": -0.3558089012685737,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 61.8,
+          "z_score": 0.1940170875948537,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 55.9,
+          "z_score": 0.19928292538452608,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 87.9,
+          "z_score": 0.11494526949502018,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 10,
+      "model_id": "qwen-3",
+      "display_name": "Qwen 3",
+      "provider": "alibaba",
+      "family": "qwen-3",
+      "global_score": 46,
+      "global_z": -0.27,
+      "confidence_interval": {
+        "low": 48.5,
+        "high": 50.1,
+        "mean": 49.4
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1255,
+          "z_score": -0.8588975014708022,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1255,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 80.1,
+          "z_score": -0.14643991508991816,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 80.1,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 44.1,
+          "z_score": 0.242453853076815,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 44.1,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 59.7,
+          "z_score": -0.31527776734164675,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 59.7,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 50.4,
+          "z_score": -0.35992936523531727,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 50.4,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 86.9,
+          "z_score": -0.3271519208704334,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 86.9,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1255,
+          "z_score": -0.8588975014708022,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 80.1,
+          "z_score": -0.14643991508991816,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 44.1,
+          "z_score": 0.242453853076815,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 59.7,
+          "z_score": -0.31527776734164675,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 50.4,
+          "z_score": -0.35992936523531727,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 86.9,
+          "z_score": -0.3271519208704334,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 11,
+      "model_id": "deepseek-v3",
+      "display_name": "DeepSeek V3",
+      "provider": "deepseek",
+      "family": "deepseek-v3",
+      "global_score": 45.5,
+      "global_z": -0.3,
+      "confidence_interval": {
+        "low": 48.7,
+        "high": 49.8,
+        "mean": 49.4
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1265,
+          "z_score": -0.22267713001094874,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1265,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 78.5,
+          "z_score": -0.6058592565484787,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 78.5,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 42.5,
+          "z_score": -0.009446254015980168,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 42.5,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 60.1,
+          "z_score": -0.21826922354421818,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 60.1,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 52.3,
+          "z_score": -0.16674693756664424,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 52.3,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 86.4,
+          "z_score": -0.5482005160531601,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 86.4,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1265,
+          "z_score": -0.22267713001094874,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 78.5,
+          "z_score": -0.6058592565484787,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 42.5,
+          "z_score": -0.009446254015980168,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 60.1,
+          "z_score": -0.21826922354421818,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 52.3,
+          "z_score": -0.16674693756664424,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 86.4,
+          "z_score": -0.5482005160531601,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 12,
+      "model_id": "GPT-5-mini",
+      "display_name": "GPT-5-mini",
+      "provider": "openai",
+      "global_score": 44.9,
+      "global_z": -0.34,
+      "confidence_interval": {
+        "low": 49.2,
+        "high": 49.2,
+        "mean": 49.2
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 65,
+          "z_score": -0.33916294187351004,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 65,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 65,
+          "z_score": -0.33916294187351004,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 13,
+      "model_id": "Claude 4.5 Sonnet",
+      "display_name": "Claude 4.5 Sonnet",
+      "provider": "anthropic",
+      "global_score": 44.9,
+      "global_z": -0.34,
+      "confidence_interval": {
+        "low": 49.2,
+        "high": 49.2,
+        "mean": 49.2
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 65,
+          "z_score": -0.33916294187351004,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 65,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 65,
+          "z_score": -0.33916294187351004,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 14,
+      "model_id": "Gemini 3 Pro",
+      "display_name": "Gemini 3 Pro",
+      "provider": "google",
+      "global_score": 35.1,
+      "global_z": -0.99,
+      "confidence_interval": {
+        "low": 47.8,
+        "high": 47.8,
+        "mean": 47.8
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 57.2,
+          "z_score": -0.9907567710886273,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 57.2,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 57.2,
+          "z_score": -0.9907567710886273,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 15,
+      "model_id": "Grok 4",
+      "display_name": "Grok 4",
+      "provider": "xai",
+      "global_score": 34.1,
+      "global_z": -1.06,
+      "confidence_interval": {
+        "low": 47.6,
+        "high": 47.6,
+        "mean": 47.6
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 56.4,
+          "z_score": -1.0575869074183832,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 56.4,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 56.4,
+          "z_score": -1.0575869074183832,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 16,
+      "model_id": "llama-4",
+      "display_name": "Llama 4",
+      "provider": "meta",
+      "family": "llama-4",
+      "global_score": 31.3,
+      "global_z": -1.25,
+      "confidence_interval": {
+        "low": 46.2,
+        "high": 48.4,
+        "mean": 47.4
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1250,
+          "z_score": -1.1770076872007291,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1250,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 76.2,
+          "z_score": -1.266274559895161,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 76.2,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 35,
+          "z_score": -1.1902280060134565,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 35,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 55.3,
+          "z_score": -1.3823717491133662,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 55.3,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 40.5,
+          "z_score": -1.3665114883510352,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 40.5,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 84.8,
+          "z_score": -1.2555560206378895,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 84.8,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1250,
+          "z_score": -1.1770076872007291,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 76.2,
+          "z_score": -1.266274559895161,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 35,
+          "z_score": -1.1902280060134565,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 55.3,
+          "z_score": -1.3823717491133662,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 40.5,
+          "z_score": -1.3665114883510352,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 84.8,
+          "z_score": -1.2555560206378895,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 17,
+      "model_id": "gpt-5",
+      "display_name": "GPT-5",
+      "provider": "openai",
+      "family": "gpt-5",
+      "global_score": 26.1,
+      "global_z": -1.59,
+      "confidence_interval": {
+        "low": 46.4,
+        "high": 46.4,
+        "mean": 46.4
+      },
+      "benchmark_count": 1,
+      "benchmarks": {
+        "hle": {
+          "raw_score": 50,
+          "z_score": -1.5922279980564282,
+          "weight": 0.15,
+          "effective_weight": 0.15,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 50,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "hle": {
+          "score": 50,
+          "z_score": -1.5922279980564282,
+          "weight": 0.15,
+          "date": "2026-07-24"
+        }
+      }
+    },
+    {
+      "rank": 18,
+      "model_id": "mistral-large",
+      "display_name": "Mistral Large",
+      "provider": "mistral",
+      "family": "mistral-large",
+      "global_score": 25.4,
+      "global_z": -1.64,
+      "confidence_interval": {
+        "low": 45,
+        "high": 48.2,
+        "mean": 46.5
+      },
+      "benchmark_count": 6,
+      "benchmarks": {
+        "arena_elo": {
+          "raw_score": 1245,
+          "z_score": -1.4951178729306558,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 1245,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "raw_score": 74.3,
+          "z_score": -1.8118350278772053,
+          "weight": 0.25,
+          "effective_weight": 0.25,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 74.3,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "raw_score": 32.7,
+          "z_score": -1.5523344099593488,
+          "weight": 0.2,
+          "effective_weight": 0.2,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 32.7,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "raw_score": 54.2,
+          "z_score": -1.6491452445562944,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 54.2,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "raw_score": 38.2,
+          "z_score": -1.6003639007920603,
+          "weight": 0.1,
+          "effective_weight": 0.1,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 38.2,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "raw_score": 83.6,
+          "z_score": -1.7860726490764351,
+          "weight": 0.05,
+          "effective_weight": 0.05,
+          "freshness_penalty": 1,
+          "source_trust": 1,
+          "score": 83.6,
+          "date": "2026-07-24"
+        }
+      },
+      "score_breakdown": {
+        "arena_elo": {
+          "score": 1245,
+          "z_score": -1.4951178729306558,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "gpqa_diamond": {
+          "score": 74.3,
+          "z_score": -1.8118350278772053,
+          "weight": 0.25,
+          "date": "2026-07-24"
+        },
+        "swe_bench": {
+          "score": 32.7,
+          "z_score": -1.5523344099593488,
+          "weight": 0.2,
+          "date": "2026-07-24"
+        },
+        "livebench": {
+          "score": 54.2,
+          "z_score": -1.6491452445562944,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        },
+        "aime": {
+          "score": 38.2,
+          "z_score": -1.6003639007920603,
+          "weight": 0.1,
+          "date": "2026-07-24"
+        },
+        "mmlu_pro": {
+          "score": 83.6,
+          "z_score": -1.7860726490764351,
+          "weight": 0.05,
+          "date": "2026-07-24"
+        }
+      }
+    }
+  ],
+  "benchmarks_meta": {
+    "arena_elo": {
+      "model_count": 10,
+      "avg_score": 1268.5,
+      "std_dev": 15.72,
+      "weight": 0.2
+    },
+    "gpqa_diamond": {
+      "model_count": 10,
+      "avg_score": 80.61,
+      "std_dev": 3.48,
+      "weight": 0.25
+    },
+    "swe_bench": {
+      "model_count": 10,
+      "avg_score": 42.56,
+      "std_dev": 6.35,
+      "weight": 0.2
+    },
+    "livebench": {
+      "model_count": 10,
+      "avg_score": 61,
+      "std_dev": 4.12,
+      "weight": 0.05
+    },
+    "aime": {
+      "model_count": 10,
+      "avg_score": 53.94,
+      "std_dev": 9.84,
+      "weight": 0.1
+    },
+    "mmlu_pro": {
+      "model_count": 10,
+      "avg_score": 87.64,
+      "std_dev": 2.26,
+      "weight": 0.05
+    },
+    "hle": {
+      "model_count": 10,
+      "avg_score": 69.06,
+      "std_dev": 11.97,
+      "weight": 0.15
+    }
+  },
+  "providers": {
+    "anthropic": {
+      "count": 3,
+      "models": [
+        "claude-4-sonnet",
+        "claude-3.5-sonnet",
+        "Claude 4.5 Sonnet"
+      ],
+      "avg_score": 57.73
+    },
+    "openai": {
+      "count": 5,
+      "models": [
+        "o1",
+        "gpt-4.5",
+        "gpt-4o",
+        "GPT-5-mini",
+        "gpt-5"
+      ],
+      "avg_score": 51.3
+    },
+    "google": {
+      "count": 3,
+      "models": [
+        "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "Gemini 3 Pro"
+      ],
+      "avg_score": 52.77
+    },
+    "deepseek": {
+      "count": 2,
+      "models": [
+        "deepseek-r1",
+        "deepseek-v3"
+      ],
+      "avg_score": 50.2
+    },
+    "xai": {
+      "count": 2,
+      "models": [
+        "grok-3",
+        "Grok 4"
+      ],
+      "avg_score": 40.95
+    },
+    "alibaba": {
+      "count": 1,
+      "models": [
+        "qwen-3"
+      ],
+      "avg_score": 46
+    },
+    "meta": {
+      "count": 1,
+      "models": [
+        "llama-4"
+      ],
+      "avg_score": 31.3
+    },
+    "mistral": {
+      "count": 1,
+      "models": [
+        "mistral-large"
+      ],
+      "avg_score": 25.4
+    }
+  },
+  "validation": {
+    "passed": false,
+    "total_issues": 4,
+    "outliers": 0,
+    "stale_sources": 0,
+    "new_models": 4
+  }
+}
