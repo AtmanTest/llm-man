@@ -258,6 +258,24 @@ async function main() {
   
   const date = new Date().toISOString().split('T')[0];
   
+  // === Compute value_score for each model ===
+  // value = context_window_tokens / blended_usd_per_1m (higher = more context per dollar)
+  // Filter to models with both price and context
+  const scorable = models.filter(m =>
+    m.pricing.blended_usd_per_1m != null && m.pricing.blended_usd_per_1m > 0 &&
+    m.context_window_tokens != null && m.context_window_tokens >= 8000
+  );
+  for (const m of scorable) {
+    m.value_score = parseFloat(((m.context_window_tokens || 8000) / m.pricing.blended_usd_per_1m).toFixed(1));
+  }
+  scorable.sort((a, b) => (b.value_score || 0) - (a.value_score || 0));
+  const top3 = scorable.slice(0, 3);
+  
+  console.log(`[TOP3] ${scorable.length} scorable models, top 3:`);
+  for (const t of top3) {
+    console.log(`  ${t.id} — value=${t.value_score} (ctx=${(t.context_window_tokens/1000).toFixed(0)}K, $${t.pricing.blended_usd_per_1m.toFixed(4)}/1M)`);
+  }
+
   // JSON compact
   const output = {
     updatedAt: new Date().toISOString(),
@@ -270,6 +288,24 @@ async function main() {
   
   fs.writeFileSync(JSON_FILE, JSON.stringify(output));
   console.log(`✓ Wrote ${JSON_FILE} (${(fs.statSync(JSON_FILE).size / 1024).toFixed(1)} KB, ${models.length} models)`);
+  
+  // Write top3 separately (lightweight, for fast loading in the top-3 section)
+  const top3Output = {
+    updatedAt: new Date().toISOString(),
+    total: models.length,
+    top: top3.map(t => ({
+      id: t.id,
+      name: t.name,
+      vendor: t.vendor,
+      context_window_tokens: t.context_window_tokens,
+      blended_usd_per_1m: t.pricing.blended_usd_per_1m,
+      value_score: t.value_score,
+      url: 'https://openrouter.ai/models/' + encodeURIComponent(t.id),
+    })),
+  };
+  const TOP3_FILE = path.join(DATA_DIR, 'llm-models.top3.json');
+  fs.writeFileSync(TOP3_FILE, JSON.stringify(top3Output));
+  console.log(`✓ Wrote ${TOP3_FILE} (${(fs.statSync(TOP3_FILE).size / 1024).toFixed(1)} KB, 3 models)`);
   
   // Markdown
   const md = generateMarkdown(models, date);

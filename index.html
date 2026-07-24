@@ -535,6 +535,45 @@ main{padding-top:calc(var(--nav-h) + 42px);min-height:100vh}
   white-space:pre-wrap;margin-top:.5rem;min-height:40px;color:var(--text2);
 }
 
+/* ===== TOP 3 MEILLEUR RAPPORT QUALITÉ/PRIX ===== */
+.top3-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;
+  margin-bottom:1.5rem;
+}
+.top3-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1rem;
+  display:flex;flex-direction:column;gap:.35rem;
+  position:relative;transition:border-color .2s,transform .15s;
+}
+.top3-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.top3-card .top3-rank{
+  position:absolute;top:-8px;right:10px;
+  font-size:2rem;font-weight:800;line-height:1;
+  opacity:.12;color:var(--text);user-select:none;
+}
+.top3-card:nth-child(1){border-color:rgba(245,158,11,.4)}
+.top3-card:nth-child(1) .top3-rank{color:var(--amber);opacity:.2}
+.top3-card:nth-child(2){border-color:rgba(148,163,184,.3)}
+.top3-card:nth-child(3){border-color:rgba(99,102,241,.3)}
+.top3-name{font-size:.88rem;font-weight:700;color:var(--text)}
+.top3-vendor{font-size:.72rem;color:var(--text3)}
+.top3-stats{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.15rem}
+.top3-stat{
+  font-size:.68rem;background:var(--bg2);padding:.2rem .45rem;
+  border-radius:4px;color:var(--text2);font-weight:500;
+}
+.top3-stat strong{color:var(--accent);font-weight:700}
+.top3-link{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.72rem;color:var(--accent2);text-decoration:none;
+  margin-top:.35rem;font-weight:600;align-self:flex-start;
+}
+.top3-link:hover{text-decoration:underline}
+.top3-loading{
+  text-align:center;padding:1.5rem;color:var(--text3);font-size:.85rem;
+}
+
 /* ===== PRICING ===== */
 .pricing-controls{
   display:flex;align-items:center;gap:.75rem;
@@ -601,6 +640,7 @@ footer{
   .exam-card{padding:1rem}
   .chat-messages{height:calc(100vh - 220px)}
   .pricing-search{width:100%;margin-left:0;margin-top:.5rem}
+  .top3-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .pricing-table th,.pricing-table td{padding:.35rem .4rem;font-size:.72rem}
@@ -744,6 +784,7 @@ footer{
     <h1>⚡ Tous les modèles LLM — Prix temps réel</h1>
     <p><span id="pricing-count" style="font-weight:700;color:var(--accent)"></span> modèles collectés depuis OpenRouter API. <span id="pricing-date" style="color:var(--text3);font-size:.85rem"></span></p>
   </div>
+  <div id="top3-container"><div class="top3-loading">📡 Calcul du meilleur rapport qualité/prix...</div></div>
   <div class="pricing-controls">
     <div class="pricing-filters">
       <button class="pricing-filter active" data-pf="all">Tous</button>
@@ -2394,6 +2435,46 @@ renderForum();
 renderOutils();
 renderExams();
 
+// ===== TOP 3 MEILLEUR RAPPORT QUALITÉ/PRIX =====
+async function loadTop3(){
+  const container = document.getElementById('top3-container');
+  if(!container) return;
+  try{
+    const resp = await fetch('data/llm-models.top3.json?_=' + Date.now());
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const data = await resp.json();
+    renderTop3(container, data);
+  }catch(e){
+    container.innerHTML = '<p style="text-align:center;padding:1.5rem;color:var(--text3);font-size:.82rem">❌ Données top 3 non disponibles</p>';
+    console.warn('Top3 load error:', e.message);
+  }
+}
+function renderTop3(container, data){
+  if(!data || !data.top || data.top.length === 0){
+    container.innerHTML = '<p style="text-align:center;padding:1.5rem;color:var(--text3);font-size:.82rem">📊 Pas assez de données pour le classement</p>';
+    return;
+  }
+  const medals = ['🥇','🥈','🥉'];
+  container.innerHTML = `
+    <h2 style="font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--text)">🏆 Top 3 — Meilleur rapport qualité/prix</h2>
+    <div class="top3-grid">
+      ${data.top.map((m, i) => `
+        <div class="top3-card">
+          <div class="top3-rank">#${i+1}</div>
+          <div class="top3-name">${medals[i]} ${esc(m.name || m.id)}</div>
+          <div class="top3-vendor">${esc(m.vendor || '')}</div>
+          <div class="top3-stats">
+            <span class="top3-stat">🧠 <strong>${((m.context_window_tokens||0)/1000).toFixed(0)}K</strong> ctx</span>
+            <span class="top3-stat">💰 <strong>$${(m.blended_usd_per_1m||0).toFixed(4)}</strong>/1M</span>
+            <span class="top3-stat">⭐ <strong>${(m.value_score||0).toLocaleString()}</strong> value</span>
+          </div>
+          <a href="${esc(m.url)}" target="_blank" rel="noopener" class="top3-link">🔗 Voir sur OpenRouter →</a>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
 // ===== PRICING =====
 let pricingData = null;
 let pricingVendor = '';
@@ -2515,6 +2596,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', () => renderPricing());
   }
   
+  loadTop3();
   loadPricing();
 });
 </script>
