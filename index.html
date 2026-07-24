@@ -2153,8 +2153,7 @@ function renderChat(){
         // Render: esc() raw text, then apply formatting for bot messages
         const safe = esc(m.msg);
         const display = m.role === 'assistant' 
-          ? safe.replace(/```(\w*)/g,'<pre><code>').replace(/```/g,'</code></pre>').replace(/
-/g,'<br>')
+          ? safe.replace(/```(\\w*)/g,'<pre><code>').replace(/```/g,'</code></pre>').replace(/\n/g,'<br>')
           : safe;
         return `
         <div class="chat-msg ${m.role}" style="display:flex;margin-bottom:.25rem;${m.role === 'user' ? 'justify-content:flex-end' : 'justify-content:flex-start'}">
