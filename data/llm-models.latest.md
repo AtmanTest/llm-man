@@ -1,4 +1,4 @@
-# 📊 Puissance et Prix des LLMs — 2026-08-04
+# 📊 Puissance et Prix des LLMs — 2026-08-05
 
 > Mise à jour automatique quotidienne. Source : OpenRouter API. 316 modèles.
 
@@ -138,7 +138,7 @@
 | minimax/minimax-m2-her | Minimax | $0.3000 | $1.2000 | $0.9750 | 66K | 💰 Abordable |
 | minimax/minimax-m2.1 | Minimax | $0.3000 | $1.2000 | $0.9750 | 205K | 💰 Abordable |
 | minimax/minimax-m2.5 | Minimax | $0.1500 | $0.9000 | $0.7125 | 205K | 💰 Abordable |
-| minimax/minimax-m2.7 | Minimax | $0.2500 | $1.0000 | $0.8125 | 205K | 💰 Abordable |
+| minimax/minimax-m2.7 | Minimax | $0.2700 | $1.0800 | $0.8775 | 205K | 💰 Abordable |
 | minimax/minimax-m3 | Minimax | $0.3000 | $1.2000 | $0.9750 | 1049K | 💰 Abordable |
 | minimax/minimax-01 | Minimax | $0.2000 | $1.1000 | $0.8750 | 1000K | 💰 Abordable |
 | mistralai/mistral-large | Mistralai | $2.0000 | $6.0000 | $5.0000 | 128K | 🔋 Milieu de gamme |
@@ -154,7 +154,7 @@
 | mistralai/mistral-nemo | Mistralai | $0.0190 | $0.0300 | $0.0272 | 131K | 💰 Ultra low-cost |
 | mistralai/mistral-small-24b-instruct-2501 | Mistralai | $0.0500 | $0.0800 | $0.0725 | 33K | 💰 Ultra low-cost |
 | mistralai/mistral-small-3.1-24b-instruct | Mistralai | $0.3510 | $0.5550 | $0.5040 | 128K | 💰 Abordable |
-| mistralai/mistral-small-3.2-24b-instruct | Mistralai | $0.0750 | $0.2000 | $0.1688 | 256K | 👍 Bon marché |
+| mistralai/mistral-small-3.2-24b-instruct | Mistralai | $0.0938 | $0.2500 | $0.2109 | 256K | 👍 Bon marché |
 | mistralai/mistral-small-2603 | Mistralai | $0.1500 | $0.6000 | $0.4875 | 262K | 👍 Bon marché |
 | mistralai/mixtral-8x22b-instruct | Mistralai | $2.0000 | $6.0000 | $5.0000 | 66K | 🔋 Milieu de gamme |
 | mistralai/mistral-saba | Mistralai | $0.2000 | $0.6000 | $0.5000 | 33K | 💰 Abordable |
@@ -342,4 +342,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-08-04
+- 2026-08-05
