@@ -1,4 +1,4 @@
-# 📊 Puissance et Prix des LLMs — 2026-08-07
+# 📊 Puissance et Prix des LLMs — 2026-08-08
 
 > Mise à jour automatique quotidienne. Source : OpenRouter API. 378 modèles.
 
@@ -87,9 +87,9 @@
 | deepseek/deepseek-chat-v3-0324 | Deepseek | $0.2700 | $1.1200 | $0.9075 | 164K | 💰 Abordable |
 | deepseek/deepseek-chat-v3.1 | Deepseek | $0.2500 | $0.9500 | $0.7750 | 164K | 💰 Abordable |
 | deepseek/deepseek-v3.1-terminus | Deepseek | $0.2700 | $1.0000 | $0.8175 | 164K | 💰 Abordable |
-| deepseek/deepseek-v3.2 | Deepseek | $0.2690 | $0.4000 | $0.3673 | 164K | 👍 Bon marché |
+| deepseek/deepseek-v3.2 | Deepseek | $0.2600 | $0.3800 | $0.3500 | 164K | 👍 Bon marché |
 | deepseek/deepseek-v3.2-exp | Deepseek | $0.2700 | $0.4100 | $0.3750 | 164K | 👍 Bon marché |
-| deepseek/deepseek-v4-flash | Deepseek | $0.0882 | $0.1764 | $0.1543 | 1049K | 👍 Bon marché |
+| deepseek/deepseek-v4-flash | Deepseek | $0.1400 | $0.2800 | $0.2450 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-0731 | Deepseek | $0.0900 | $0.1800 | $0.1575 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-v4-pro | Deepseek | $0.4350 | $0.8700 | $0.7612 | 1049K | 💰 Abordable |
 | deepseek/deepseek-r1 | Deepseek | $0.7000 | $2.5000 | $2.0500 | 164K | 🔋 Milieu de gamme |
@@ -186,7 +186,7 @@
 | moonshotai/kimi-k2-0905 | Moonshotai | $0.6000 | $2.5000 | $2.0250 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2-thinking | Moonshotai | $0.6000 | $2.5000 | $2.0250 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2.5 | Moonshotai | $0.5700 | $2.8500 | $2.2800 | 262K | 🔋 Milieu de gamme |
-| moonshotai/kimi-k2.6 | Moonshotai | $0.5890 | $2.4800 | $2.0072 | 262K | 🔋 Milieu de gamme |
+| moonshotai/kimi-k2.6 | Moonshotai | $0.5795 | $2.4400 | $1.9749 | 262K | 💰 Abordable |
 | moonshotai/kimi-k2.7-code | Moonshotai | $0.7000 | $3.5000 | $2.8000 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2.7-code:batch | Moonshotai | $0.4750 | $2.0000 | $1.6187 | 262K | 💰 Abordable |
 | moonshotai/kimi-k3 | Moonshotai | $3.0000 | $15.0000 | $12.0000 | 1049K | ⚡ Premium |
@@ -199,7 +199,7 @@
 | nousresearch/hermes-4-405b | Nousresearch | $1.0000 | $3.0000 | $2.5000 | 131K | 🔋 Milieu de gamme |
 | nousresearch/hermes-4-70b | Nousresearch | $0.1300 | $0.4000 | $0.3325 | 131K | 👍 Bon marché |
 | nvidia/nemotron-3-nano-30b-a3b | Nvidia | $0.0500 | $0.2000 | $0.1625 | 262K | 👍 Bon marché |
-| nvidia/nemotron-3-super-120b-a12b | Nvidia | $0.3000 | $0.9000 | $0.7500 | 1000K | 💰 Abordable |
+| nvidia/nemotron-3-super-120b-a12b | Nvidia | $0.0850 | $0.4000 | $0.3212 | 1000K | 👍 Bon marché |
 | nvidia/nemotron-3-ultra-550b-a55b | Nvidia | $0.6000 | $3.6000 | $2.8500 | 512K | 🔋 Milieu de gamme |
 | nvidia/nemotron-3-ultra-550b-a55b:batch | Nvidia | $0.3000 | $1.8000 | $1.4250 | 512K | 💰 Abordable |
 | openai/gpt-audio | Openai | $2.5000 | $10.0000 | $8.1250 | 128K | 🔋 Milieu de gamme |
@@ -370,7 +370,7 @@
 | thedrummer/rocinante-12b | Thedrummer | $0.2500 | $0.5000 | $0.4375 | 66K | 👍 Bon marché |
 | thedrummer/skyfall-36b-v2 | Thedrummer | $0.5500 | $0.8000 | $0.7375 | 33K | 💰 Abordable |
 | thedrummer/unslopnemo-12b | Thedrummer | $0.4000 | $0.4000 | $0.4000 | 1024K | 👍 Bon marché |
-| thinkingmachines/inkling | Thinkingmachines | $1.0000 | $4.0500 | $3.2875 | 1049K | 🔋 Milieu de gamme |
+| thinkingmachines/inkling | Thinkingmachines | $0.9500 | $4.0500 | $3.2750 | 1049K | 🔋 Milieu de gamme |
 | thinkingmachines/inkling:batch | Thinkingmachines | $0.5000 | $2.0250 | $1.6438 | 524K | 💰 Abordable |
 | thinkingmachines/inkling-small | Thinkingmachines | $0.4500 | $1.2000 | $1.0125 | 524K | 💰 Abordable |
 | undi95/remm-slerp-l2-13b | Undi95 | $0.4500 | $0.6500 | $0.6000 | 6K | 💰 Abordable |
@@ -393,7 +393,7 @@
 | z-ai/glm-5 | Z Ai | $0.9500 | $2.5500 | $2.1500 | 205K | 🔋 Milieu de gamme |
 | z-ai/glm-5-turbo | Z Ai | $1.2000 | $4.0000 | $3.3000 | 203K | 🔋 Milieu de gamme |
 | z-ai/glm-5.1 | Z Ai | $0.9520 | $2.9920 | $2.4820 | 205K | 🔋 Milieu de gamme |
-| z-ai/glm-5.2 | Z Ai | $0.6846 | $2.1516 | $1.7849 | 1049K | 💰 Abordable |
+| z-ai/glm-5.2 | Z Ai | $0.3024 | $0.9504 | $0.7884 | 1049K | 💰 Abordable |
 | z-ai/glm-5.2:batch | Z Ai | $0.7000 | $2.2000 | $1.8250 | 512K | 💰 Abordable |
 | z-ai/glm-5v-turbo | Z Ai | $1.2000 | $4.0000 | $3.3000 | 203K | 🔋 Milieu de gamme |
 
@@ -404,4 +404,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-08-07
+- 2026-08-08
