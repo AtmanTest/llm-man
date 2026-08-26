@@ -1,8 +1,8 @@
-# 📊 Puissance et Prix des LLMs — 2026-08-25
+# 📊 Puissance et Prix des LLMs — 2026-08-26
 
-> Mise à jour automatique quotidienne. Source : OpenRouter API. 393 modèles.
+> Mise à jour automatique quotidienne. Source : OpenRouter API. 391 modèles.
 
-**Statistiques :** 393 modèles | Prix input: 393 | Prix output: 393 | Contexte connu: 393
+**Statistiques :** 391 modèles | Prix input: 391 | Prix output: 391 | Contexte connu: 391
 
 ## 🏆 Top 5 moins chers (context ≥ 32K)
 
@@ -10,11 +10,11 @@
 |--------|-----------|---------|
 | mistralai/mistral-nemo | $0.0272 | 131K |
 | inclusionai/ling-3.0-flash | $0.0525 | 262K |
-| ~deepseek/deepseek-v4-flash-latest | $0.0650 | 1311K |
+| ~deepseek/deepseek-v4-flash-latest | $0.0638 | 1311K |
 | meta-llama/llama-3.1-8b-instruct | $0.0725 | 131K |
 | mistralai/mistral-small-24b-instruct-2501 | $0.0725 | 33K |
 
-## Tableau complet (393 modèles)
+## Tableau complet (391 modèles)
 
 | Modèle | Éditeur | Input/1M | Output/1M | Blended/1M | Contexte | Best for |
 |--------|---------|----------|-----------|------------|---------|----------|
@@ -22,10 +22,10 @@
 | ~anthropic/claude-sonnet-latest | ~anthropic | $2.0000 | $10.0000 | $8.0000 | 1000K | 🔋 Milieu de gamme |
 | ~anthropic/claude-fable-latest | ~anthropic | $10.0000 | $50.0000 | $40.0000 | 1000K | ⚡ Premium |
 | ~anthropic/claude-opus-latest | ~anthropic | $5.0000 | $25.0000 | $20.0000 | 1000K | ⚡ Premium |
-| ~deepseek/deepseek-v4-flash-latest | ~deepseek | $0.0350 | $0.0750 | $0.0650 | 1311K | 💰 Ultra low-cost |
+| ~deepseek/deepseek-v4-flash-latest | ~deepseek | $0.0300 | $0.0750 | $0.0638 | 1311K | 💰 Ultra low-cost |
 | ~google/gemini-flash-latest | ~google | $0.3750 | $1.8750 | $1.5000 | 1049K | 💰 Abordable |
 | ~google/gemini-pro-latest | ~google | $2.0000 | $12.0000 | $9.5000 | 1049K | 🔋 Milieu de gamme |
-| ~moonshotai/kimi-latest | ~moonshotai | $2.8000 | $14.0000 | $11.2000 | 1049K | ⚡ Premium |
+| ~moonshotai/kimi-latest | ~moonshotai | $2.5500 | $12.7500 | $10.2000 | 1049K | ⚡ Premium |
 | ~openai/gpt-latest | ~openai | $2.0000 | $10.0000 | $8.0000 | 1050K | 🔋 Milieu de gamme |
 | ~openai/gpt-mini-latest | ~openai | $0.7500 | $4.5000 | $3.5625 | 400K | 🔋 Milieu de gamme |
 | ~x-ai/grok-latest | ~x Ai | $2.0000 | $6.0000 | $5.0000 | 500K | 🔋 Milieu de gamme |
@@ -91,9 +91,9 @@
 | deepseek/deepseek-v3.2 | Deepseek | $0.2600 | $0.3800 | $0.3500 | 164K | 👍 Bon marché |
 | deepseek/deepseek-v3.2-exp | Deepseek | $0.2700 | $0.4100 | $0.3750 | 164K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash | Deepseek | $0.0886 | $0.1772 | $0.1551 | 1049K | 👍 Bon marché |
-| deepseek/deepseek-v4-flash-0731 | Deepseek | $0.1400 | $0.2800 | $0.2450 | 1311K | 👍 Bon marché |
+| deepseek/deepseek-v4-flash-0731 | Deepseek | $0.0600 | $0.1200 | $0.1050 | 1311K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-vision-exp | Deepseek | $0.4400 | $1.3200 | $1.1000 | 1049K | 💰 Abordable |
-| deepseek/deepseek-v4-pro | Deepseek | $0.7903 | $1.5806 | $1.3830 | 1049K | 💰 Abordable |
+| deepseek/deepseek-v4-pro | Deepseek | $0.8700 | $1.7400 | $1.5225 | 1049K | 💰 Abordable |
 | deepseek/deepseek-v4-pro-0813 | Deepseek | $1.1220 | $3.3660 | $2.8050 | 1049K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1 | Deepseek | $0.7000 | $2.5000 | $2.0500 | 64K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1-0528 | Deepseek | $0.5000 | $2.1500 | $1.7375 | 164K | 💰 Abordable |
@@ -126,9 +126,8 @@
 | google/gemma-3-12b-it | Google | $0.0500 | $0.1500 | $0.1250 | 131K | 👍 Bon marché |
 | google/gemma-3-27b-it | Google | $0.0800 | $0.4500 | $0.3575 | 262K | 👍 Bon marché |
 | google/gemma-3-4b-it | Google | $0.0500 | $0.1000 | $0.0875 | 131K | 💰 Ultra low-cost |
-| google/gemma-3n-e4b-it | Google | $0.0600 | $0.1200 | $0.1050 | 33K | 👍 Bon marché |
 | google/gemma-4-26b-a4b-it | Google | $0.0700 | $0.3400 | $0.2725 | 262K | 👍 Bon marché |
-| google/gemma-4-31b-it | Google | $0.1000 | $0.3400 | $0.2800 | 262K | 👍 Bon marché |
+| google/gemma-4-31b-it | Google | $0.0900 | $0.3400 | $0.2775 | 262K | 👍 Bon marché |
 | google/gemini-2.5-flash-image | Google | $0.3000 | $2.5000 | $1.9500 | 33K | 💰 Abordable |
 | google/gemini-3.1-flash-image-preview | Google | $0.5000 | $3.0000 | $2.3750 | 66K | 🔋 Milieu de gamme |
 | google/gemini-3.1-flash-image | Google | $0.5000 | $3.0000 | $2.3750 | 131K | 🔋 Milieu de gamme |
@@ -153,10 +152,10 @@
 | meta-llama/llama-3.1-8b-instruct | Meta Llama | $0.0500 | $0.0800 | $0.0725 | 131K | 💰 Ultra low-cost |
 | meta-llama/llama-3.2-1b-instruct | Meta Llama | $0.0270 | $0.2010 | $0.1575 | 60K | 👍 Bon marché |
 | meta-llama/llama-3.2-3b-instruct | Meta Llama | $0.0500 | $0.3300 | $0.2600 | 131K | 👍 Bon marché |
-| meta-llama/llama-3.3-70b-instruct | Meta Llama | $0.1000 | $0.3200 | $0.2650 | 131K | 👍 Bon marché |
+| meta-llama/llama-3.3-70b-instruct | Meta Llama | $0.7100 | $0.7100 | $0.7100 | 131K | 💰 Abordable |
 | meta-llama/llama-4-maverick | Meta Llama | $0.2000 | $0.8000 | $0.6500 | 1049K | 💰 Abordable |
-| meta-llama/llama-4-scout | Meta Llama | $0.1000 | $0.3000 | $0.2500 | 1311K | 👍 Bon marché |
-| meta-llama/llama-guard-4-12b | Meta Llama | $0.1800 | $0.1800 | $0.1800 | 1049K | 👍 Bon marché |
+| meta-llama/llama-4-scout | Meta Llama | $0.1100 | $0.3400 | $0.2825 | 1311K | 👍 Bon marché |
+| meta-llama/llama-guard-4-12b | Meta Llama | $0.1800 | $0.1800 | $0.1800 | 164K | 👍 Bon marché |
 | microsoft/phi-4 | Microsoft | $0.0700 | $0.1400 | $0.1225 | 16K | 👍 Bon marché |
 | microsoft/wizardlm-2-8x22b | Microsoft | $0.6200 | $0.6200 | $0.6200 | 66K | 💰 Abordable |
 | minimax/minimax-m1 | Minimax | $0.5500 | $2.2000 | $1.7875 | 1000K | 💰 Abordable |
@@ -311,10 +310,9 @@
 | poolside/laguna-s-2.1 | Poolside | $0.0900 | $0.1800 | $0.1575 | 1049K | 👍 Bon marché |
 | poolside/laguna-xs-2.1 | Poolside | $0.0600 | $0.1200 | $0.1050 | 262K | 👍 Bon marché |
 | qwen/qwen-plus-2025-07-28 | Qwen | $0.2600 | $0.7800 | $0.6500 | 1000K | 💰 Abordable |
-| qwen/qwen-plus-2025-07-28:thinking | Qwen | $0.2600 | $0.7800 | $0.6500 | 1000K | 💰 Abordable |
 | qwen/qwen-plus | Qwen | $0.2600 | $0.7800 | $0.6500 | 1000K | 💰 Abordable |
 | qwen/qwen-2.5-7b-instruct | Qwen | $0.1000 | $0.2000 | $0.1750 | 33K | 👍 Bon marché |
-| qwen/qwen2.5-vl-72b-instruct | Qwen | $0.8000 | $1.0000 | $0.9500 | 128K | 💰 Abordable |
+| qwen/qwen2.5-vl-72b-instruct | Qwen | $0.2500 | $0.7500 | $0.6250 | 128K | 💰 Abordable |
 | qwen/qwen3-14b | Qwen | $0.1200 | $0.2400 | $0.2100 | 131K | 👍 Bon marché |
 | qwen/qwen3-235b-a22b | Qwen | $0.4550 | $1.8200 | $1.4788 | 131K | 💰 Abordable |
 | qwen/qwen3-235b-a22b-2507 | Qwen | $0.0900 | $0.5500 | $0.4350 | 262K | 👍 Bon marché |
@@ -340,7 +338,7 @@
 | qwen/qwen3-vl-32b-instruct | Qwen | $0.1040 | $0.4160 | $0.3380 | 131K | 👍 Bon marché |
 | qwen/qwen3-vl-8b-instruct | Qwen | $0.1170 | $0.4550 | $0.3705 | 262K | 👍 Bon marché |
 | qwen/qwen3-vl-8b-thinking | Qwen | $0.1800 | $2.1000 | $1.6200 | 131K | 💰 Abordable |
-| qwen/qwen3.5-397b-a17b | Qwen | $0.5000 | $3.6000 | $2.8250 | 262K | 🔋 Milieu de gamme |
+| qwen/qwen3.5-397b-a17b | Qwen | $0.3900 | $2.3400 | $1.8525 | 262K | 💰 Abordable |
 | qwen/qwen3.5-plus-02-15 | Qwen | $0.2600 | $1.5600 | $1.2350 | 1000K | 💰 Abordable |
 | qwen/qwen3.5-plus-20260420 | Qwen | $0.3000 | $1.8000 | $1.4250 | 1000K | 💰 Abordable |
 | qwen/qwen3.5-122b-a10b | Qwen | $0.2600 | $2.0800 | $1.6250 | 262K | 💰 Abordable |
@@ -348,7 +346,7 @@
 | qwen/qwen3.5-35b-a3b | Qwen | $0.2500 | $1.2500 | $1.0000 | 262K | 💰 Abordable |
 | qwen/qwen3.5-9b | Qwen | $0.1000 | $0.1500 | $0.1375 | 262K | 👍 Bon marché |
 | qwen/qwen3.5-flash-02-23 | Qwen | $0.0650 | $0.2600 | $0.2112 | 1000K | 👍 Bon marché |
-| qwen/qwen3.6-27b | Qwen | $0.3200 | $3.2000 | $2.4800 | 262K | 🔋 Milieu de gamme |
+| qwen/qwen3.6-27b | Qwen | $0.6000 | $3.6000 | $2.8500 | 262K | 🔋 Milieu de gamme |
 | qwen/qwen3.6-35b-a3b | Qwen | $0.1400 | $1.0000 | $0.7850 | 262K | 💰 Abordable |
 | qwen/qwen3.6-flash | Qwen | $0.1875 | $1.1250 | $0.8906 | 1000K | 💰 Abordable |
 | qwen/qwen3.6-max-preview | Qwen | $1.0270 | $6.1620 | $4.8783 | 262K | 🔋 Milieu de gamme |
@@ -357,7 +355,7 @@
 | qwen/qwen3.7-max | Qwen | $1.4750 | $4.4250 | $3.6875 | 1000K | 🔋 Milieu de gamme |
 | qwen/qwen3.7-plus | Qwen | $0.3200 | $1.2800 | $1.0400 | 1000K | 💰 Abordable |
 | qwen/qwen3.8-2.4t-a95b | Qwen | $2.0000 | $6.0000 | $5.0000 | 1049K | 🔋 Milieu de gamme |
-| qwen/qwen3.8-27b | Qwen | $0.4000 | $3.0000 | $2.3500 | 1000K | 🔋 Milieu de gamme |
+| qwen/qwen3.8-27b | Qwen | $0.4250 | $2.5500 | $2.0187 | 1000K | 🔋 Milieu de gamme |
 | qwen/qwen3.8-max | Qwen | $2.0000 | $6.0000 | $5.0000 | 1000K | 🔋 Milieu de gamme |
 | qwen/qwen-2.5-72b-instruct | Qwen | $0.3600 | $0.4000 | $0.3900 | 33K | 👍 Bon marché |
 | qwen/qwen-2.5-coder-32b-instruct | Qwen | $0.6600 | $1.0000 | $0.9150 | 33K | 💰 Abordable |
@@ -419,4 +417,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-08-25
+- 2026-08-26
