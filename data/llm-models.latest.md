@@ -1,8 +1,8 @@
-# 📊 Puissance et Prix des LLMs — 2026-08-28
+# 📊 Puissance et Prix des LLMs — 2026-08-29
 
-> Mise à jour automatique quotidienne. Source : OpenRouter API. 362 modèles.
+> Mise à jour automatique quotidienne. Source : OpenRouter API. 370 modèles.
 
-**Statistiques :** 362 modèles | Prix input: 362 | Prix output: 362 | Contexte connu: 362
+**Statistiques :** 370 modèles | Prix input: 370 | Prix output: 370 | Contexte connu: 370
 
 ## 🏆 Top 5 moins chers (context ≥ 32K)
 
@@ -12,9 +12,9 @@
 | inclusionai/ling-3.0-flash | $0.0525 | 262K |
 | meta-llama/llama-3.1-8b-instruct | $0.0725 | 131K |
 | mistralai/mistral-small-24b-instruct-2501 | $0.0725 | 33K |
-| nex-agi/nex-n2-mini | $0.0813 | 262K |
+| deepseek/deepseek-v4-flash-0731 | $0.0788 | 1311K |
 
-## Tableau complet (362 modèles)
+## Tableau complet (370 modèles)
 
 | Modèle | Éditeur | Input/1M | Output/1M | Blended/1M | Contexte | Best for |
 |--------|---------|----------|-----------|------------|---------|----------|
@@ -23,18 +23,17 @@
 | ~anthropic/claude-fable-latest | ~anthropic | $10.0000 | $50.0000 | $40.0000 | 1000K | ⚡ Premium |
 | ~anthropic/claude-opus-latest | ~anthropic | $5.0000 | $25.0000 | $20.0000 | 1000K | ⚡ Premium |
 | ~deepseek/deepseek-v4-flash-latest | ~deepseek | $0.0300 | $0.1000 | $0.0825 | 1311K | 💰 Ultra low-cost |
-| ~google/gemini-flash-latest | ~google | $0.3750 | $1.8750 | $1.5000 | 1049K | 💰 Abordable |
+| ~google/gemini-flash-latest | ~google | $0.7500 | $3.7500 | $3.0000 | 1049K | 🔋 Milieu de gamme |
 | ~google/gemini-pro-latest | ~google | $2.0000 | $12.0000 | $9.5000 | 1049K | 🔋 Milieu de gamme |
 | ~moonshotai/kimi-latest | ~moonshotai | $2.5500 | $12.7500 | $10.2000 | 1049K | ⚡ Premium |
 | ~openai/gpt-latest | ~openai | $2.0000 | $10.0000 | $8.0000 | 1050K | 🔋 Milieu de gamme |
 | ~openai/gpt-mini-latest | ~openai | $0.7500 | $4.5000 | $3.5625 | 400K | 🔋 Milieu de gamme |
 | ~x-ai/grok-latest | ~x Ai | $2.0000 | $6.0000 | $5.0000 | 500K | 🔋 Milieu de gamme |
-| ~z-ai/glm-latest | ~z Ai | $1.2500 | $4.4000 | $3.6125 | 1311K | 🔋 Milieu de gamme |
+| ~z-ai/glm-latest | ~z Ai | $1.1875 | $4.1800 | $3.4319 | 1311K | 🔋 Milieu de gamme |
 | aion-labs/aion-2.0 | Aion Labs | $0.8000 | $1.6000 | $1.4000 | 131K | 💰 Abordable |
 | aion-labs/aion-3.0 | Aion Labs | $3.0000 | $6.0000 | $5.2500 | 131K | 🔋 Milieu de gamme |
 | aion-labs/aion-3.0-mini | Aion Labs | $0.7000 | $1.4000 | $1.2250 | 131K | 💰 Abordable |
 | aion-labs/aion-rp-llama-3.1-8b | Aion Labs | $0.8000 | $1.6000 | $1.4000 | 33K | 💰 Abordable |
-| allenai/olmo-3-32b-think | Allenai | $0.1500 | $0.5000 | $0.4125 | 66K | 👍 Bon marché |
 | amazon/nova-2-lite-v1 | Amazon | $0.3000 | $2.5000 | $1.9500 | 1000K | 💰 Abordable |
 | amazon/nova-lite-v1 | Amazon | $0.0600 | $0.2400 | $0.1950 | 300K | 👍 Bon marché |
 | amazon/nova-micro-v1 | Amazon | $0.0350 | $0.1400 | $0.1138 | 128K | 👍 Bon marché |
@@ -70,7 +69,6 @@
 | anthropic/claude-opus-5:batch | Anthropic | $2.5000 | $12.5000 | $10.0000 | 1000K | ⚡ Premium |
 | anthropic/claude-opus-5-fast | Anthropic | $10.0000 | $50.0000 | $40.0000 | 1000K | ⚡ Premium |
 | arcee-ai/trinity-large-thinking | Arcee Ai | $0.2200 | $0.8500 | $0.6925 | 262K | 💰 Abordable |
-| arcee-ai/virtuoso-large | Arcee Ai | $0.7500 | $1.2000 | $1.0875 | 131K | 💰 Abordable |
 | baidu/ernie-4.5-vl-424b-a47b | Baidu | $0.4200 | $1.2500 | $1.0425 | 123K | 💰 Abordable |
 | bytedance/ui-tars-1.5-7b | Bytedance | $0.1000 | $0.2000 | $0.1750 | 128K | 👍 Bon marché |
 | bytedance-seed/seed-1.6 | Bytedance Seed | $0.2500 | $2.0000 | $1.5625 | 262K | 💰 Abordable |
@@ -90,11 +88,13 @@
 | deepseek/deepseek-v3.1-terminus | Deepseek | $0.2700 | $1.0000 | $0.8175 | 164K | 💰 Abordable |
 | deepseek/deepseek-v3.2 | Deepseek | $0.2690 | $0.4000 | $0.3673 | 164K | 👍 Bon marché |
 | deepseek/deepseek-v3.2-exp | Deepseek | $0.2700 | $0.4100 | $0.3750 | 164K | 👍 Bon marché |
-| deepseek/deepseek-v4-flash | Deepseek | $0.0868 | $0.1736 | $0.1519 | 1049K | 👍 Bon marché |
-| deepseek/deepseek-v4-flash-0731 | Deepseek | $0.0600 | $0.1200 | $0.1050 | 1311K | 👍 Bon marché |
+| deepseek/deepseek-v4-flash | Deepseek | $0.0834 | $0.1669 | $0.1460 | 1049K | 👍 Bon marché |
+| deepseek/deepseek-v4-flash-0731 | Deepseek | $0.0450 | $0.0900 | $0.0788 | 1311K | 💰 Ultra low-cost |
+| deepseek/deepseek-v4-flash-0731:batch | Deepseek | $0.1400 | $0.2800 | $0.2450 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-vision-exp | Deepseek | $0.2200 | $0.6600 | $0.5500 | 1049K | 💰 Abordable |
-| deepseek/deepseek-v4-pro | Deepseek | $0.7619 | $1.5239 | $1.3334 | 1049K | 💰 Abordable |
+| deepseek/deepseek-v4-pro | Deepseek | $0.6301 | $1.2601 | $1.1026 | 1049K | 💰 Abordable |
 | deepseek/deepseek-v4-pro-0813 | Deepseek | $0.6600 | $1.9800 | $1.6500 | 1049K | 💰 Abordable |
+| deepseek/deepseek-v4-pro-0813:batch | Deepseek | $1.3200 | $3.9600 | $3.3000 | 1049K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1 | Deepseek | $0.7000 | $2.5000 | $2.0500 | 64K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1-0528 | Deepseek | $0.5000 | $2.1500 | $1.7375 | 164K | 💰 Abordable |
 | deepseek/deepseek-r1-distill-llama-70b | Deepseek | $0.8000 | $0.8000 | $0.8000 | 8K | 💰 Abordable |
@@ -120,7 +120,7 @@
 | google/gemini-3.5-flash-lite:batch | Google | $0.1500 | $1.2500 | $0.9750 | 1049K | 💰 Abordable |
 | google/gemini-3.6-flash | Google | $0.7500 | $3.7500 | $3.0000 | 1049K | 🔋 Milieu de gamme |
 | google/gemini-3.6-flash:batch | Google | $0.3750 | $1.8750 | $1.5000 | 1049K | 💰 Abordable |
-| google/gemini-3.7-flash | Google | $0.3750 | $1.8750 | $1.5000 | 1049K | 💰 Abordable |
+| google/gemini-3.7-flash | Google | $0.7500 | $3.7500 | $3.0000 | 1049K | 🔋 Milieu de gamme |
 | google/gemini-3.7-flash:batch | Google | $0.1875 | $0.9375 | $0.7500 | 1049K | 💰 Abordable |
 | google/gemma-2-27b-it | Google | $0.6500 | $0.6500 | $0.6500 | 8K | 💰 Abordable |
 | google/gemma-3-12b-it | Google | $0.0500 | $0.1500 | $0.1250 | 131K | 👍 Bon marché |
@@ -128,6 +128,7 @@
 | google/gemma-3-4b-it | Google | $0.0500 | $0.1000 | $0.0875 | 131K | 💰 Ultra low-cost |
 | google/gemma-4-26b-a4b-it | Google | $0.0700 | $0.3400 | $0.2725 | 262K | 👍 Bon marché |
 | google/gemma-4-31b-it | Google | $0.0900 | $0.3400 | $0.2775 | 262K | 👍 Bon marché |
+| google/gemma-4-31b-it:batch | Google | $0.3900 | $0.9700 | $0.8250 | 262K | 💰 Abordable |
 | google/gemini-2.5-flash-image | Google | $0.3000 | $2.5000 | $1.9500 | 33K | 💰 Abordable |
 | google/gemini-3.1-flash-image-preview | Google | $0.5000 | $3.0000 | $2.3750 | 66K | 🔋 Milieu de gamme |
 | google/gemini-3.1-flash-image | Google | $0.5000 | $3.0000 | $2.3750 | 131K | 🔋 Milieu de gamme |
@@ -144,7 +145,8 @@
 | kwaipilot/kat-coder-pro-v2.5 | Kwaipilot | $0.7400 | $2.9600 | $2.4050 | 262K | 🔋 Milieu de gamme |
 | mancer/weaver | Mancer | $0.5000 | $0.7500 | $0.6875 | 8K | 💰 Abordable |
 | meituan/longcat-2.0 | Meituan | $0.3000 | $1.2000 | $0.9750 | 1049K | 💰 Abordable |
-| meta/muse-glimmer-30b | Meta | $0.3500 | $1.5000 | $1.2125 | 131K | 💰 Abordable |
+| meta/muse-glimmer-30b | Meta | $0.3000 | $1.2000 | $0.9750 | 131K | 💰 Abordable |
+| meta/muse-glimmer-30b:batch | Meta | $0.3500 | $1.5000 | $1.2125 | 131K | 💰 Abordable |
 | meta/muse-spark-1.1 | Meta | $1.2500 | $4.2500 | $3.5000 | 1049K | 🔋 Milieu de gamme |
 | meta/muse-spark-1.2 | Meta | $1.2500 | $4.2500 | $3.5000 | 1049K | 🔋 Milieu de gamme |
 | meta/muse-spark-1.2-contributor | Meta | $0.1000 | $0.2000 | $0.1750 | 1049K | 👍 Bon marché |
@@ -199,6 +201,7 @@
 | moonshotai/kimi-k2.6 | Moonshotai | $0.9500 | $4.0000 | $3.2375 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2.7-code | Moonshotai | $0.6600 | $3.4000 | $2.7150 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k3 | Moonshotai | $3.0000 | $15.0000 | $12.0000 | 1049K | ⚡ Premium |
+| moonshotai/kimi-k3:batch | Moonshotai | $3.0000 | $15.0000 | $12.0000 | 1049K | ⚡ Premium |
 | morph/morph-v3-fast | Morph | $0.8000 | $1.2000 | $1.1000 | 82K | 💰 Abordable |
 | morph/morph-v3-large | Morph | $0.9000 | $1.9000 | $1.6500 | 262K | 💰 Abordable |
 | nex-agi/nex-n2-mini | Nex Agi | $0.0250 | $0.1000 | $0.0813 | 262K | 💰 Ultra low-cost |
@@ -211,7 +214,7 @@
 | nvidia/nemotron-3-super-120b-a12b | Nvidia | $0.0850 | $0.4000 | $0.3212 | 1000K | 👍 Bon marché |
 | nvidia/nemotron-3-ultra-550b-a55b | Nvidia | $0.5000 | $2.2000 | $1.7750 | 262K | 💰 Abordable |
 | nvidia/nemotron-3-ultra-550b-a55b:batch | Nvidia | $0.6000 | $3.6000 | $2.8500 | 512K | 🔋 Milieu de gamme |
-| nvidia/nemotron-3.5-lightning | Nvidia | $0.1000 | $0.2500 | $0.2125 | 262K | 👍 Bon marché |
+| nvidia/nemotron-3.5-lightning | Nvidia | $0.0800 | $0.2000 | $0.1700 | 262K | 👍 Bon marché |
 | openai/gpt-audio | Openai | $2.5000 | $10.0000 | $8.1250 | 128K | 🔋 Milieu de gamme |
 | openai/gpt-audio-mini | Openai | $0.6000 | $2.4000 | $1.9500 | 128K | 💰 Abordable |
 | openai/gpt-chat-latest | Openai | $5.0000 | $30.0000 | $23.7500 | 400K | ⚡ Premium |
@@ -260,7 +263,9 @@
 | openai/gpt-5.6-terra | Openai | $2.0000 | $12.0000 | $9.5000 | 1050K | 🔋 Milieu de gamme |
 | openai/gpt-5.6-terra-pro | Openai | $2.0000 | $12.0000 | $9.5000 | 1050K | 🔋 Milieu de gamme |
 | openai/gpt-oss-120b | Openai | $0.0370 | $0.1700 | $0.1368 | 131K | 👍 Bon marché |
+| openai/gpt-oss-120b:batch | Openai | $0.1500 | $0.6000 | $0.4875 | 131K | 👍 Bon marché |
 | openai/gpt-oss-20b | Openai | $0.0300 | $0.1300 | $0.1050 | 131K | 👍 Bon marché |
+| openai/gpt-oss-20b:batch | Openai | $0.0500 | $0.2000 | $0.1625 | 131K | 👍 Bon marché |
 | openai/gpt-oss-safeguard-20b | Openai | $0.0750 | $0.3000 | $0.2437 | 131K | 👍 Bon marché |
 | openai/o1 | Openai | $15.0000 | $60.0000 | $48.7500 | 200K | ⚡ Premium |
 | openai/o1-pro | Openai | $150.0000 | $600.0000 | $487.5000 | 200K | 👑 Très haut de gamme |
@@ -302,7 +307,7 @@
 | qwen/qwen3-next-80b-a3b-thinking | Qwen | $0.1500 | $1.2000 | $0.9375 | 262K | 💰 Abordable |
 | qwen/qwen3-vl-235b-a22b-instruct | Qwen | $0.2100 | $1.9000 | $1.4775 | 262K | 💰 Abordable |
 | qwen/qwen3-vl-235b-a22b-thinking | Qwen | $0.4000 | $4.0000 | $3.1000 | 131K | 🔋 Milieu de gamme |
-| qwen/qwen3-vl-30b-a3b-instruct | Qwen | $0.1300 | $0.5200 | $0.4225 | 262K | 👍 Bon marché |
+| qwen/qwen3-vl-30b-a3b-instruct | Qwen | $0.1500 | $0.6000 | $0.4875 | 262K | 👍 Bon marché |
 | qwen/qwen3-vl-30b-a3b-thinking | Qwen | $0.2000 | $2.4000 | $1.8500 | 262K | 💰 Abordable |
 | qwen/qwen3-vl-32b-instruct | Qwen | $0.1040 | $0.4160 | $0.3380 | 131K | 👍 Bon marché |
 | qwen/qwen3-vl-8b-instruct | Qwen | $0.1170 | $0.4550 | $0.3705 | 262K | 👍 Bon marché |
@@ -314,6 +319,7 @@
 | qwen/qwen3.5-27b | Qwen | $0.1950 | $1.5600 | $1.2188 | 262K | 💰 Abordable |
 | qwen/qwen3.5-35b-a3b | Qwen | $0.2500 | $1.2500 | $1.0000 | 262K | 💰 Abordable |
 | qwen/qwen3.5-9b | Qwen | $0.1000 | $0.1500 | $0.1375 | 262K | 👍 Bon marché |
+| qwen/qwen3.5-9b:batch | Qwen | $0.1700 | $0.2500 | $0.2300 | 262K | 👍 Bon marché |
 | qwen/qwen3.5-flash-02-23 | Qwen | $0.0650 | $0.2600 | $0.2112 | 1000K | 👍 Bon marché |
 | qwen/qwen3.6-27b | Qwen | $0.6000 | $3.6000 | $2.8500 | 262K | 🔋 Milieu de gamme |
 | qwen/qwen3.6-35b-a3b | Qwen | $0.1000 | $0.9000 | $0.7000 | 262K | 💰 Abordable |
@@ -324,7 +330,7 @@
 | qwen/qwen3.7-max | Qwen | $1.4750 | $4.4250 | $3.6875 | 1000K | 🔋 Milieu de gamme |
 | qwen/qwen3.7-plus | Qwen | $0.3200 | $1.2800 | $1.0400 | 1000K | 💰 Abordable |
 | qwen/qwen3.8-2.4t-a95b | Qwen | $2.0000 | $6.0000 | $5.0000 | 1049K | 🔋 Milieu de gamme |
-| qwen/qwen3.8-2.4t-a95b:batch | Qwen | $2.0000 | $6.0000 | $5.0000 | 1010K | 🔋 Milieu de gamme |
+| qwen/qwen3.8-2.4t-a95b:batch | Qwen | $2.5000 | $6.2500 | $5.3125 | 1010K | 🔋 Milieu de gamme |
 | qwen/qwen3.8-27b | Qwen | $0.4250 | $2.5500 | $2.0187 | 1000K | 🔋 Milieu de gamme |
 | qwen/qwen3.8-flash | Qwen | $0.1500 | $0.4700 | $0.3900 | 1000K | 👍 Bon marché |
 | qwen/qwen3.8-max | Qwen | $2.0000 | $6.0000 | $5.0000 | 1000K | 🔋 Milieu de gamme |
@@ -345,7 +351,7 @@
 | tencent/hy-mt2-1.8b | Tencent | $0.0440 | $0.1770 | $0.1437 | 8K | 👍 Bon marché |
 | tencent/hy-mt2-30b-a3b | Tencent | $0.0740 | $0.2950 | $0.2397 | 8K | 👍 Bon marché |
 | tencent/hy-mt2-7b | Tencent | $0.0740 | $0.2950 | $0.2397 | 8K | 👍 Bon marché |
-| tencent/hy3 | Tencent | $0.0825 | $0.3300 | $0.2681 | 262K | 👍 Bon marché |
+| tencent/hy3 | Tencent | $0.1320 | $0.5280 | $0.4290 | 262K | 👍 Bon marché |
 | tencent/hy3-preview | Tencent | $0.1800 | $0.6000 | $0.4950 | 262K | 👍 Bon marché |
 | tencent/hy4-preview | Tencent | $0.8340 | $2.5010 | $2.0842 | 1049K | 🔋 Milieu de gamme |
 | thedrummer/cydonia-24b-v4.1 | Thedrummer | $0.3000 | $0.5000 | $0.4500 | 131K | 👍 Bon marché |
@@ -354,6 +360,7 @@
 | thinkingmachines/inkling | Thinkingmachines | $0.9500 | $4.0500 | $3.2750 | 1049K | 🔋 Milieu de gamme |
 | thinkingmachines/inkling:batch | Thinkingmachines | $1.0000 | $4.0500 | $3.2875 | 524K | 🔋 Milieu de gamme |
 | thinkingmachines/inkling-small | Thinkingmachines | $0.4500 | $1.2000 | $1.0125 | 1049K | 💰 Abordable |
+| thinkingmachines/inkling-small:batch | Thinkingmachines | $0.5000 | $1.2000 | $1.0250 | 524K | 💰 Abordable |
 | undi95/remm-slerp-l2-13b | Undi95 | $0.4500 | $0.6500 | $0.6000 | 6K | 💰 Abordable |
 | upstage/solar-pro-3 | Upstage | $0.1500 | $0.6000 | $0.4875 | 131K | 👍 Bon marché |
 | upstage/solar-pro4 | Upstage | $0.0300 | $0.1200 | $0.0975 | 524K | 💰 Ultra low-cost |
@@ -379,6 +386,7 @@
 | z-ai/glm-5.2 | Z Ai | $1.1900 | $3.7400 | $3.1025 | 1049K | 🔋 Milieu de gamme |
 | z-ai/glm-5.3 | Z Ai | $1.4000 | $4.4000 | $3.6500 | 1311K | 🔋 Milieu de gamme |
 | z-ai/glm-5.3-flash | Z Ai | $0.0750 | $0.2500 | $0.2062 | 1311K | 👍 Bon marché |
+| z-ai/glm-5.3-flash:batch | Z Ai | $0.1500 | $0.5000 | $0.4125 | 1049K | 👍 Bon marché |
 | z-ai/glm-5v-turbo | Z Ai | $1.2000 | $4.0000 | $3.3000 | 203K | 🔋 Milieu de gamme |
 
 ## Méthodologie
@@ -388,4 +396,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-08-28
+- 2026-08-29
