@@ -1,4 +1,4 @@
-# 📊 Puissance et Prix des LLMs — 2026-08-30
+# 📊 Puissance et Prix des LLMs — 2026-08-31
 
 > Mise à jour automatique quotidienne. Source : OpenRouter API. 370 modèles.
 
@@ -88,11 +88,11 @@
 | deepseek/deepseek-v3.1-terminus | Deepseek | $0.2700 | $1.0000 | $0.8175 | 164K | 💰 Abordable |
 | deepseek/deepseek-v3.2 | Deepseek | $0.2690 | $0.4000 | $0.3673 | 164K | 👍 Bon marché |
 | deepseek/deepseek-v3.2-exp | Deepseek | $0.2700 | $0.4100 | $0.3750 | 164K | 👍 Bon marché |
-| deepseek/deepseek-v4-flash | Deepseek | $0.0801 | $0.1602 | $0.1401 | 1049K | 👍 Bon marché |
+| deepseek/deepseek-v4-flash | Deepseek | $0.0886 | $0.1772 | $0.1551 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-0731 | Deepseek | $0.0650 | $0.1800 | $0.1512 | 1311K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-0731:batch | Deepseek | $0.1400 | $0.2800 | $0.2450 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-v4-flash-vision-exp | Deepseek | $0.2200 | $0.6600 | $0.5500 | 1049K | 💰 Abordable |
-| deepseek/deepseek-v4-pro | Deepseek | $0.4374 | $0.8749 | $0.7655 | 1049K | 💰 Abordable |
+| deepseek/deepseek-v4-pro | Deepseek | $1.0423 | $2.0845 | $1.8240 | 1049K | 💰 Abordable |
 | deepseek/deepseek-v4-pro-0813 | Deepseek | $0.6600 | $1.9800 | $1.6500 | 1049K | 💰 Abordable |
 | deepseek/deepseek-v4-pro-0813:batch | Deepseek | $1.3200 | $3.9600 | $3.3000 | 1049K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1 | Deepseek | $0.7000 | $2.5000 | $2.0500 | 64K | 🔋 Milieu de gamme |
@@ -155,7 +155,7 @@
 | meta-llama/llama-3.2-1b-instruct | Meta Llama | $0.0270 | $0.2010 | $0.1575 | 60K | 👍 Bon marché |
 | meta-llama/llama-3.2-3b-instruct | Meta Llama | $0.0500 | $0.3300 | $0.2600 | 131K | 👍 Bon marché |
 | meta-llama/llama-3.3-70b-instruct | Meta Llama | $0.7100 | $0.7100 | $0.7100 | 131K | 💰 Abordable |
-| meta-llama/llama-4-maverick | Meta Llama | $0.2000 | $0.8000 | $0.6500 | 1049K | 💰 Abordable |
+| meta-llama/llama-4-maverick | Meta Llama | $0.2000 | $0.6960 | $0.5720 | 1049K | 💰 Abordable |
 | meta-llama/llama-4-scout | Meta Llama | $0.1100 | $0.3400 | $0.2825 | 1311K | 👍 Bon marché |
 | meta-llama/llama-guard-4-12b | Meta Llama | $0.1800 | $0.1800 | $0.1800 | 164K | 👍 Bon marché |
 | microsoft/phi-4 | Microsoft | $0.0700 | $0.1400 | $0.1225 | 16K | 👍 Bon marché |
@@ -173,7 +173,7 @@
 | mistralai/mistral-large-2407 | Mistralai | $2.0000 | $6.0000 | $5.0000 | 131K | 🔋 Milieu de gamme |
 | mistralai/codestral-2508 | Mistralai | $0.3000 | $0.9000 | $0.7500 | 256K | 💰 Abordable |
 | mistralai/codestral-2508:batch | Mistralai | $0.3000 | $0.9000 | $0.7500 | 256K | 💰 Abordable |
-| mistralai/devstral-2512 | Mistralai | $0.4400 | $2.2000 | $1.7600 | 262K | 💰 Abordable |
+| mistralai/devstral-2512 | Mistralai | $0.4000 | $2.0000 | $1.6000 | 262K | 💰 Abordable |
 | mistralai/ministral-14b-2512 | Mistralai | $0.2000 | $0.2000 | $0.2000 | 262K | 👍 Bon marché |
 | mistralai/ministral-3b-2512 | Mistralai | $0.1000 | $0.1000 | $0.1000 | 131K | 👍 Bon marché |
 | mistralai/ministral-8b-2512 | Mistralai | $0.1500 | $0.1500 | $0.1500 | 262K | 👍 Bon marché |
@@ -197,7 +197,7 @@
 | moonshotai/kimi-k2 | Moonshotai | $0.5700 | $2.3000 | $1.8675 | 131K | 💰 Abordable |
 | moonshotai/kimi-k2-0905 | Moonshotai | $0.6000 | $2.5000 | $2.0250 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2-thinking | Moonshotai | $0.6000 | $2.5000 | $2.0250 | 262K | 🔋 Milieu de gamme |
-| moonshotai/kimi-k2.5 | Moonshotai | $0.6000 | $3.0000 | $2.4000 | 262K | 🔋 Milieu de gamme |
+| moonshotai/kimi-k2.5 | Moonshotai | $0.4500 | $2.2500 | $1.8000 | 262K | 💰 Abordable |
 | moonshotai/kimi-k2.6 | Moonshotai | $0.9500 | $4.0000 | $3.2375 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k2.7-code | Moonshotai | $0.6600 | $3.4000 | $2.7150 | 262K | 🔋 Milieu de gamme |
 | moonshotai/kimi-k3 | Moonshotai | $3.0000 | $15.0000 | $12.0000 | 1049K | ⚡ Premium |
@@ -396,4 +396,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-08-30
+- 2026-08-31
