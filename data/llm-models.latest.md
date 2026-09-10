@@ -1,8 +1,8 @@
-# 📊 Puissance et Prix des LLMs — 2026-09-09
+# 📊 Puissance et Prix des LLMs — 2026-09-10
 
-> Mise à jour automatique quotidienne. Source : OpenRouter API. 405 modèles.
+> Mise à jour automatique quotidienne. Source : OpenRouter API. 410 modèles.
 
-**Statistiques :** 405 modèles | Prix input: 405 | Prix output: 405 | Contexte connu: 405
+**Statistiques :** 410 modèles | Prix input: 410 | Prix output: 410 | Contexte connu: 410
 
 ## 🏆 Top 5 moins chers (context ≥ 32K)
 
@@ -12,9 +12,9 @@
 | inclusionai/ling-3.0-flash | $0.0525 | 262K |
 | meta-llama/llama-3.1-8b-instruct | $0.0725 | 131K |
 | mistralai/mistral-small-24b-instruct-2501 | $0.0725 | 33K |
-| google/gemma-3-4b-it | $0.0875 | 131K |
+| mistralai/ministral-8b-2512:batch | $0.0750 | 262K |
 
-## Tableau complet (405 modèles)
+## Tableau complet (410 modèles)
 
 | Modèle | Éditeur | Input/1M | Output/1M | Blended/1M | Contexte | Best for |
 |--------|---------|----------|-----------|------------|---------|----------|
@@ -30,7 +30,7 @@
 | ~openai/gpt-mini-latest | ~openai | $0.7500 | $4.5000 | $3.5625 | 400K | 🔋 Milieu de gamme |
 | ~x-ai/grok-latest | ~x Ai | $2.0000 | $6.0000 | $5.0000 | 500K | 🔋 Milieu de gamme |
 | ~z-ai/glm-flash-latest | ~z Ai | $0.0750 | $0.2500 | $0.2062 | 1311K | 👍 Bon marché |
-| ~z-ai/glm-latest | ~z Ai | $1.1130 | $3.4980 | $2.9017 | 1311K | 🔋 Milieu de gamme |
+| ~z-ai/glm-latest | ~z Ai | $1.0850 | $3.4100 | $2.8287 | 1311K | 🔋 Milieu de gamme |
 | aion-labs/aion-2.0 | Aion Labs | $0.8000 | $1.6000 | $1.4000 | 131K | 💰 Abordable |
 | aion-labs/aion-3.0 | Aion Labs | $3.0000 | $6.0000 | $5.2500 | 131K | 🔋 Milieu de gamme |
 | aion-labs/aion-3.0-mini | Aion Labs | $0.7000 | $1.4000 | $1.2250 | 131K | 💰 Abordable |
@@ -82,7 +82,7 @@
 | cohere/command-r-08-2024 | Cohere | $0.1500 | $0.6000 | $0.4875 | 128K | 👍 Bon marché |
 | cohere/command-r-plus-08-2024 | Cohere | $2.5000 | $10.0000 | $8.1250 | 128K | 🔋 Milieu de gamme |
 | cohere/command-r7b-12-2024 | Cohere | $0.0375 | $0.1500 | $0.1219 | 128K | 👍 Bon marché |
-| deepseek/deepseek-chat | Deepseek | $0.3200 | $0.8900 | $0.7475 | 164K | 💰 Abordable |
+| deepseek/deepseek-chat | Deepseek | $0.2574 | $1.0287 | $0.8359 | 164K | 💰 Abordable |
 | deepseek/deepseek-chat-v3-0324 | Deepseek | $0.2900 | $1.1400 | $0.9275 | 164K | 💰 Abordable |
 | deepseek/deepseek-chat-v3.1 | Deepseek | $0.2500 | $0.9500 | $0.7750 | 164K | 💰 Abordable |
 | deepseek/deepseek-v3.1-terminus | Deepseek | $0.2700 | $1.0000 | $0.8175 | 164K | 💰 Abordable |
@@ -96,6 +96,7 @@
 | deepseek/deepseek-v4-pro | Deepseek | $0.9553 | $1.9105 | $1.6717 | 1049K | 💰 Abordable |
 | deepseek/deepseek-v4-pro-0813 | Deepseek | $1.0494 | $3.1482 | $2.6235 | 1049K | 🔋 Milieu de gamme |
 | deepseek/deepseek-v4-pro-0813:batch | Deepseek | $0.6600 | $1.9800 | $1.6500 | 1049K | 💰 Abordable |
+| deepseek/deepseek-v4.1-flash | Deepseek | $0.1500 | $0.6000 | $0.4875 | 1049K | 👍 Bon marché |
 | deepseek/deepseek-r1 | Deepseek | $0.7000 | $2.5000 | $2.0500 | 64K | 🔋 Milieu de gamme |
 | deepseek/deepseek-r1-0528 | Deepseek | $0.5000 | $2.1500 | $1.7375 | 164K | 💰 Abordable |
 | deepseek/deepseek-r1-distill-llama-70b | Deepseek | $0.8000 | $0.8000 | $0.8000 | 8K | 💰 Abordable |
@@ -170,7 +171,7 @@
 | minimax/minimax-m2 | Minimax | $0.2550 | $1.0200 | $0.8287 | 205K | 💰 Abordable |
 | minimax/minimax-m2-her | Minimax | $0.3000 | $1.2000 | $0.9750 | 66K | 💰 Abordable |
 | minimax/minimax-m2.1 | Minimax | $0.3000 | $1.2000 | $0.9750 | 205K | 💰 Abordable |
-| minimax/minimax-m2.5 | Minimax | $0.2700 | $1.0800 | $0.8775 | 205K | 💰 Abordable |
+| minimax/minimax-m2.5 | Minimax | $0.3000 | $1.2000 | $0.9750 | 205K | 💰 Abordable |
 | minimax/minimax-m2.7 | Minimax | $0.3000 | $1.2000 | $0.9750 | 205K | 💰 Abordable |
 | minimax/minimax-m3 | Minimax | $0.3000 | $1.2000 | $0.9750 | 1049K | 💰 Abordable |
 | minimax/minimax-m3:batch | Minimax | $0.3000 | $1.2000 | $0.9750 | 524K | 💰 Abordable |
@@ -178,13 +179,17 @@
 | mistralai/mistral-large | Mistralai | $2.0000 | $6.0000 | $5.0000 | 128K | 🔋 Milieu de gamme |
 | mistralai/mistral-large-2407 | Mistralai | $2.0000 | $6.0000 | $5.0000 | 131K | 🔋 Milieu de gamme |
 | mistralai/codestral-2508 | Mistralai | $0.3000 | $0.9000 | $0.7500 | 256K | 💰 Abordable |
+| mistralai/codestral-2508:batch | Mistralai | $0.1500 | $0.4500 | $0.3750 | 256K | 👍 Bon marché |
 | mistralai/devstral-2512 | Mistralai | $0.4000 | $2.0000 | $1.6000 | 262K | 💰 Abordable |
 | mistralai/ministral-14b-2512 | Mistralai | $0.2000 | $0.2000 | $0.2000 | 262K | 👍 Bon marché |
 | mistralai/ministral-3b-2512 | Mistralai | $0.1000 | $0.1000 | $0.1000 | 131K | 👍 Bon marché |
 | mistralai/ministral-8b-2512 | Mistralai | $0.1500 | $0.1500 | $0.1500 | 262K | 👍 Bon marché |
+| mistralai/ministral-8b-2512:batch | Mistralai | $0.0750 | $0.0750 | $0.0750 | 262K | 💰 Ultra low-cost |
 | mistralai/mistral-large-2512 | Mistralai | $0.5000 | $1.5000 | $1.2500 | 262K | 💰 Abordable |
+| mistralai/mistral-large-2512:batch | Mistralai | $0.2500 | $0.7500 | $0.6250 | 262K | 💰 Abordable |
 | mistralai/mistral-medium-3 | Mistralai | $0.4000 | $2.0000 | $1.6000 | 131K | 💰 Abordable |
 | mistralai/mistral-medium-3.1 | Mistralai | $0.4000 | $2.0000 | $1.6000 | 131K | 💰 Abordable |
+| mistralai/mistral-medium-3.1:batch | Mistralai | $0.2000 | $1.0000 | $0.8000 | 131K | 💰 Abordable |
 | mistralai/mistral-medium-3-5 | Mistralai | $1.5000 | $7.5000 | $6.0000 | 262K | 🔋 Milieu de gamme |
 | mistralai/mistral-medium-3-5:batch | Mistralai | $0.7500 | $3.7500 | $3.0000 | 262K | 🔋 Milieu de gamme |
 | mistralai/mistral-nemo | Mistralai | $0.0190 | $0.0300 | $0.0272 | 131K | 💰 Ultra low-cost |
@@ -192,6 +197,7 @@
 | mistralai/mistral-small-3.1-24b-instruct | Mistralai | $0.3510 | $0.5550 | $0.5040 | 128K | 💰 Abordable |
 | mistralai/mistral-small-3.2-24b-instruct | Mistralai | $0.0750 | $0.2000 | $0.1688 | 131K | 👍 Bon marché |
 | mistralai/mistral-small-2603 | Mistralai | $0.1500 | $0.6000 | $0.4875 | 262K | 👍 Bon marché |
+| mistralai/mistral-small-2603:batch | Mistralai | $0.0750 | $0.3000 | $0.2437 | 262K | 👍 Bon marché |
 | mistralai/mixtral-8x22b-instruct | Mistralai | $2.0000 | $6.0000 | $5.0000 | 66K | 🔋 Milieu de gamme |
 | mistralai/mistral-saba | Mistralai | $0.2000 | $0.6000 | $0.5000 | 33K | 💰 Abordable |
 | mistralai/voxtral-small-24b-2507 | Mistralai | $0.1000 | $0.3000 | $0.2500 | 33K | 👍 Bon marché |
@@ -208,7 +214,6 @@
 | nousresearch/hermes-3-llama-3.1-405b | Nousresearch | $1.0000 | $1.0000 | $1.0000 | 131K | 💰 Abordable |
 | nousresearch/hermes-3-llama-3.1-70b | Nousresearch | $0.7000 | $0.7000 | $0.7000 | 131K | 💰 Abordable |
 | nousresearch/hermes-4-405b | Nousresearch | $1.0000 | $3.0000 | $2.5000 | 131K | 🔋 Milieu de gamme |
-| nousresearch/hermes-4-70b | Nousresearch | $0.1300 | $0.4000 | $0.3325 | 131K | 👍 Bon marché |
 | nvidia/nemotron-3-nano-30b-a3b | Nvidia | $0.0500 | $0.2000 | $0.1625 | 262K | 👍 Bon marché |
 | nvidia/nemotron-3-super-120b-a12b | Nvidia | $0.0850 | $0.4000 | $0.3212 | 262K | 👍 Bon marché |
 | nvidia/nemotron-3-ultra-550b-a55b | Nvidia | $0.6250 | $3.1250 | $2.5000 | 262K | 🔋 Milieu de gamme |
@@ -324,7 +329,7 @@
 | qwen/qwen3-235b-a22b-2507 | Qwen | $0.2200 | $0.8800 | $0.7150 | 262K | 💰 Abordable |
 | qwen/qwen3-235b-a22b-thinking-2507 | Qwen | $0.2300 | $2.3000 | $1.7825 | 131K | 💰 Abordable |
 | qwen/qwen3-30b-a3b | Qwen | $0.1200 | $0.5000 | $0.4050 | 131K | 👍 Bon marché |
-| qwen/qwen3-30b-a3b-instruct-2507 | Qwen | $0.0481 | $0.1930 | $0.1568 | 262K | 👍 Bon marché |
+| qwen/qwen3-30b-a3b-instruct-2507 | Qwen | $0.0900 | $0.3000 | $0.2475 | 262K | 👍 Bon marché |
 | qwen/qwen3-30b-a3b-thinking-2507 | Qwen | $0.2000 | $2.4000 | $1.8500 | 82K | 💰 Abordable |
 | qwen/qwen3-32b | Qwen | $0.0800 | $0.2800 | $0.2300 | 131K | 👍 Bon marché |
 | qwen/qwen3-8b | Qwen | $0.1170 | $0.4550 | $0.3705 | 131K | 👍 Bon marché |
@@ -347,7 +352,7 @@
 | qwen/qwen3.5-397b-a17b | Qwen | $0.5500 | $3.5000 | $2.7625 | 262K | 🔋 Milieu de gamme |
 | qwen/qwen3.5-plus-02-15 | Qwen | $0.2600 | $1.5600 | $1.2350 | 1000K | 💰 Abordable |
 | qwen/qwen3.5-plus-20260420 | Qwen | $0.3000 | $1.8000 | $1.4250 | 1000K | 💰 Abordable |
-| qwen/qwen3.5-122b-a10b | Qwen | $0.2900 | $2.4000 | $1.8725 | 262K | 💰 Abordable |
+| qwen/qwen3.5-122b-a10b | Qwen | $0.2600 | $2.0800 | $1.6250 | 262K | 💰 Abordable |
 | qwen/qwen3.5-27b | Qwen | $0.1950 | $1.5600 | $1.2188 | 262K | 💰 Abordable |
 | qwen/qwen3.5-35b-a3b | Qwen | $0.3125 | $1.2500 | $1.0156 | 262K | 💰 Abordable |
 | qwen/qwen3.5-9b | Qwen | $0.1000 | $0.1500 | $0.1375 | 262K | 👍 Bon marché |
@@ -420,7 +425,7 @@
 | z-ai/glm-5.2:batch | Z Ai | $0.7000 | $2.2000 | $1.8250 | 1049K | 💰 Abordable |
 | z-ai/glm-5.3 | Z Ai | $1.4000 | $4.4000 | $3.6500 | 1311K | 🔋 Milieu de gamme |
 | z-ai/glm-5.3:batch | Z Ai | $0.7000 | $2.2000 | $1.8250 | 1049K | 💰 Abordable |
-| z-ai/glm-5.3-flash | Z Ai | $0.0750 | $0.2500 | $0.2062 | 1311K | 👍 Bon marché |
+| z-ai/glm-5.3-flash | Z Ai | $0.1500 | $0.5000 | $0.4125 | 1311K | 👍 Bon marché |
 | z-ai/glm-5.3-flash:batch | Z Ai | $0.0750 | $0.2500 | $0.2062 | 1049K | 👍 Bon marché |
 | z-ai/glm-5v-turbo | Z Ai | $1.2000 | $4.0000 | $3.3000 | 203K | 🔋 Milieu de gamme |
 
@@ -431,4 +436,4 @@
 - Modèles gratuits (prix = 0) exclus
 - Mise à jour : quotidienne via GitHub Actions
 - Zéro consommation de tokens LLM — simple collecte HTTP
-- 2026-09-09
+- 2026-09-10
